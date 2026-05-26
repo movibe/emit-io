@@ -1,0 +1,9 @@
+name = "hono-logger-worker"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# Replace with your real ingest endpoint when deploying.
+[vars]
+LOG_INGEST_URL = "https://example.com/ingest/logs"
+LOG_INGEST_TOKEN = "demo-token-replace-me"

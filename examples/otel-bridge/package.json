@@ -1,0 +1,27 @@
+{
+  "name": "@movibe/logger-example-otel-bridge",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Example: @movibe/logger-otel wired to a Node.js OpenTelemetry SDK",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node --import ./dist/tracing.js dist/index.js",
+    "dev": "tsc -p tsconfig.json && node --import ./dist/tracing.js dist/index.js"
+  },
+  "dependencies": {
+    "@movibe/logger": "workspace:*",
+    "@movibe/logger-otel": "workspace:*",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/api-logs": "^0.50.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.46.0",
+    "@opentelemetry/exporter-logs-otlp-http": "^0.50.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.50.0",
+    "@opentelemetry/sdk-logs": "^0.50.0",
+    "@opentelemetry/sdk-node": "^0.50.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "typescript": "^5.3.3"
+  }
+}

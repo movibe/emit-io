@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "logger-rn-example",
+    "slug": "logger-rn-example",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "loggerrnexample",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.movibe.loggerrnexample"
+    },
+    "android": {
+      "package": "com.movibe.loggerrnexample"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
