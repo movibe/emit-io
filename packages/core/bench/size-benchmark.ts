@@ -16,7 +16,7 @@ function getSize(dir: string): number {
 
 async function main() {
   const bench = new Bench({ time: 1000 })
-  const { LoggerStrategy, ConsoleTransport, LogLevelEnum } = await import('../src/index.js')
+  const { LoggerStrategy, ConsoleTransport, LogLevelEnum } = await import('../dist/index.js')
 
   const noopTransport = {
     name: 'noop',
@@ -46,7 +46,7 @@ async function main() {
   for (const pkg of pkgs) {
     const size = getSize(`packages/${pkg}/dist`)
     total += size
-    console.log(`  @emit-io/${pkg.padEnd(12)} ${(size / 1024).toFixed(1)} KB`)
+    console.log(`  emit-io-${pkg.padEnd(13)} ${(size / 1024).toFixed(1)} KB`)
   }
   console.log(`  ${'TOTAL'.padStart(18)} ${(total / 1024).toFixed(1)} KB`)
 }

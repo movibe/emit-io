@@ -33,20 +33,11 @@ jobs:
 
       - name: Create auto patch changeset
         run: |
-          cat > .changeset/auto-patch-$(date +%s).md << 'EOF'
-          ---
-          "emit-io-core": patch
-          "emit-io-react": patch
-          "emit-io-react-native": patch
-          "emit-io-fastify": patch
-          "emit-io-hono": patch
-          "emit-io-next": patch
-          "emit-io-otel": patch
-          "emit-io-codegen": patch
-          ---
-
-          Auto patch release
-          EOF
+          # Derive package names from workspace package.json files
+          FRONTMATTER=$(find packages -maxdepth 2 -name "package.json" ! -path "*/node_modules/*" \
+            -exec node -e "const p=require(process.argv[1]); if(p.name && !p.private) console.log('\"'+p.name+'\": patch')" {} \;)
+          FILE=".changeset/auto-patch-$(date +%s).md"
+          printf -- "---\n%s\n---\n\nAuto patch release\n" "$FRONTMATTER" > "$FILE"
 
       - name: Version packages
         run: bun changeset version
