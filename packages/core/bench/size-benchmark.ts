@@ -1,8 +1,11 @@
 import { Bench } from 'tinybench'
-import { readdirSync, statSync } from 'fs'
-import { join } from 'path'
+import { readdirSync, statSync, existsSync } from 'fs'
+import { join, resolve } from 'path'
+
+const ROOT = resolve(import.meta.dirname, '../../..')
 
 function getSize(dir: string): number {
+  if (!existsSync(dir)) return 0
   let total = 0
   for (const file of readdirSync(dir, { recursive: true })) {
     const path = join(dir, file as string)
@@ -16,7 +19,7 @@ function getSize(dir: string): number {
 
 async function main() {
   const bench = new Bench({ time: 1000 })
-  const { LoggerStrategy, ConsoleTransport, LogLevelEnum } = await import('../dist/index.js')
+  const { LoggerStrategy, LogLevelEnum } = await import('../dist/index.js')
 
   const noopTransport = {
     name: 'noop',
@@ -44,11 +47,12 @@ async function main() {
   const pkgs = ['core', 'react', 'react-native', 'next', 'fastify', 'hono', 'otel', 'codegen']
   let total = 0
   for (const pkg of pkgs) {
-    const size = getSize(`packages/${pkg}/dist`)
+    const size = getSize(join(ROOT, 'packages', pkg, 'dist'))
     total += size
-    console.log(`  emit-io-${pkg.padEnd(13)} ${(size / 1024).toFixed(1)} KB`)
+    const label = `emit-io-${pkg}`
+    console.log(`  ${label.padEnd(22)} ${(size / 1024).toFixed(1)} KB`)
   }
-  console.log(`  ${'TOTAL'.padStart(18)} ${(total / 1024).toFixed(1)} KB`)
+  console.log(`  ${'TOTAL'.padEnd(22)} ${(total / 1024).toFixed(1)} KB`)
 }
 
 main()
