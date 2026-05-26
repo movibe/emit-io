@@ -1,13 +1,13 @@
-# @emit/codegen
+# @emitio/codegen
 
-CLI code generator for [@emit/core](https://github.com/Emit-logger/emit) — define analytics events in YAML, get a typed TypeScript tracker, drift detection, and JSON Schema / Avro export.
+CLI code generator for [@emitio/core](https://github.com/Emit-logger/emit) — define analytics events in YAML, get a typed TypeScript tracker, drift detection, and JSON Schema / Avro export.
 
 ## Install
 
 ```bash
-npm install --save-dev @emit/codegen
+npm install --save-dev @emitio/codegen
 # or run without installing:
-npx @emit/codegen --help
+npx @emitio/codegen --help
 ```
 
 ## Quick Start
@@ -37,7 +37,7 @@ Fields use the format `fieldName: type` for required fields, `fieldName?: type` 
 ### 2. Generate TypeScript types + tracker
 
 ```bash
-npx @emit/codegen generate analytics-schema.yaml --out src/analytics
+npx @emitio/codegen generate analytics-schema.yaml --out src/analytics
 ```
 
 Outputs:
@@ -48,7 +48,7 @@ Outputs:
 
 ```typescript
 import { createAnalyticsTracker } from './analytics/analytics-tracker'
-import { LoggerStrategy } from '@emit/core'
+import { LoggerStrategy } from '@emitio/core'
 
 const logger = new LoggerStrategy({ /* ... */ })
 const tracker = createAnalyticsTracker(logger)
@@ -63,7 +63,7 @@ tracker['user-signed-up']({ method: 'google', plan: 'pro' })
 ### `generate`
 
 ```bash
-npx @emit/codegen generate <schema.yaml> [options]
+npx @emitio/codegen generate <schema.yaml> [options]
 
 Options:
   --out <dir>      Output directory (default: same directory as schema file)
@@ -76,7 +76,7 @@ Options:
 Detects schema drift against a stored snapshot. Used in CI to catch accidental event or property removals.
 
 ```bash
-npx @emit/codegen check <schema.yaml> [options]
+npx @emitio/codegen check <schema.yaml> [options]
 
 Options:
   --update         Accept breaking changes and update the snapshot
@@ -93,7 +93,7 @@ On first run, a snapshot file `.analytics-schema.snapshot.json` is created next 
 ### `export`
 
 ```bash
-npx @emit/codegen export <schema.yaml> --format <fmt> [options]
+npx @emitio/codegen export <schema.yaml> --format <fmt> [options]
 
 Options:
   --format json-schema | avro    Required
@@ -107,7 +107,7 @@ Generates one file per event:
 ## PII Detection
 
 ```bash
-npx @emit/codegen generate schema.yaml --detect-pii
+npx @emitio/codegen generate schema.yaml --detect-pii
 ```
 
 Field names matching common PII patterns (`email`, `phone`, `ssn`, `credit_card`, `ip`, etc.) emit a warning to stderr:
@@ -123,7 +123,7 @@ Use `--strict-pii` to fail the build when PII is detected.
 ```yaml
 # .github/workflows/analytics.yml
 - name: Check analytics schema drift
-  run: npx @emit/codegen check analytics-schema.yaml --strict
+  run: npx @emitio/codegen check analytics-schema.yaml --strict
 ```
 
 ## Schema Format Reference

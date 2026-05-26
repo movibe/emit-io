@@ -1,7 +1,7 @@
 // middleware.ts — placed at the root of your Next.js project
 import { NextResponse } from 'next/server'
-import { withLogger } from '@emit/next'
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/core'
+import { withLogger } from '@emitio/next'
+import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emitio/core'
 
 const logger = new LoggerStrategy({
   transports: [

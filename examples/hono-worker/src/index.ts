@@ -1,5 +1,5 @@
 /**
- * Cloudflare Worker example using Hono + @emit/hono.
+ * Cloudflare Worker example using Hono + @emitio/hono.
  *
  * - LoggerStrategy with HTTPTransport ships log batches to a remote ingest URL.
  * - loggerMiddleware attaches a request-scoped child logger to each request.
@@ -12,8 +12,8 @@ import {
   LoggerStrategy,
   HTTPTransport,
   LogLevelEnum,
-} from '@emit/core'
-import { loggerMiddleware } from '@emit/hono'
+} from '@emitio/core'
+import { loggerMiddleware } from '@emitio/hono'
 
 export interface Env {
   LOG_INGEST_URL: string
@@ -64,7 +64,7 @@ app.get('/', (c) => {
   log.info('hello-handler')
   return c.json({
     ok: true,
-    message: 'Hello from Hono on Cloudflare Workers with @emit/core',
+    message: 'Hello from Hono on Cloudflare Workers with @emitio/core',
     requestId: c.get('requestId'),
   })
 })

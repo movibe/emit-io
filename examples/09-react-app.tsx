@@ -1,11 +1,11 @@
 import React from 'react'
-import { LoggerStrategy, type AnalyticsProvider } from '@emit/core'
+import { LoggerStrategy, type AnalyticsProvider } from '@emitio/core'
 import {
   AnalyticsProvider as AnalyticsContext,
   useAnalytics,
   useEventTracking,
   AnalyticsErrorBoundary,
-} from '@emit/react'
+} from '@emitio/react'
 
 // Create the logger once at module level — share via context
 const consoleProvider: AnalyticsProvider = {

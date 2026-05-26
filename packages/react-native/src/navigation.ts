@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import type { LoggerStrategy } from '@emit/core'
+import type { LoggerStrategy } from '@emitio/core'
 
 /**
  * Track screen views via @react-navigation/native NavigationContainer ref.

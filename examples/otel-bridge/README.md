@@ -1,7 +1,7 @@
 # otel-bridge example
 
-End-to-end Node.js example wiring [`@emit/core`](../../packages/core) into
-the OpenTelemetry SDK via [`@emit/otel`](../../packages/otel).
+End-to-end Node.js example wiring [`@emitio/core`](../../packages/core) into
+the OpenTelemetry SDK via [`@emitio/otel`](../../packages/otel).
 
 It demonstrates:
 
@@ -24,13 +24,13 @@ src/
 
 ## Install + build
 
-From the monorepo root (uses the workspace versions of `@emit/core` and
-`@emit/otel`):
+From the monorepo root (uses the workspace versions of `@emitio/core` and
+`@emitio/otel`):
 
 ```bash
 bun install
-bun run --filter @emit/core build
-bun run --filter @emit/otel build:all
+bun run --filter @emitio/core build
+bun run --filter @emitio/otel build:all
 cd examples/otel-bridge
 bun run build
 ```

@@ -1,18 +1,18 @@
-# @emit/next
+# @emitio/next
 
-Next.js bindings for [@emit/core](https://github.com/Emit-logger/emit) — middleware logging and App Router route handler instrumentation.
+Next.js bindings for [@emitio/core](https://github.com/Emit-logger/emit) — middleware logging and App Router route handler instrumentation.
 
 ## Install
 
 ```bash
-npm install @emit/core @emit/next
+npm install @emitio/core @emitio/next
 ```
 
 ## Quick Start
 
 ```typescript
 // lib/emit.ts
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/core'
+import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emitio/core'
 
 export const emit = new LoggerStrategy({
   transports: [new JSONTransport({ minLevel: LogLevelEnum.INFO })],
@@ -21,7 +21,7 @@ export const emit = new LoggerStrategy({
 
 ```typescript
 // middleware.ts
-import { withLogger } from '@emit/next'
+import { withLogger } from '@emitio/next'
 import { NextResponse } from 'next/server'
 import { logger } from './lib/logger'
 
@@ -35,7 +35,7 @@ export const config = { matcher: ['/((?!_next|favicon).*)'] }
 
 ```typescript
 // app/api/orders/route.ts
-import { instrumentRoute } from '@emit/next'
+import { instrumentRoute } from '@emitio/next'
 import { logger } from '@/lib/logger'
 
 export const GET = instrumentRoute(
@@ -56,8 +56,8 @@ Wraps a Next.js middleware function. Adds:
 - Optional `pageview` analytics event on GET requests
 
 ```typescript
-import { withLogger } from '@emit/next'
-import type { MiddlewareOptions } from '@emit/next'
+import { withLogger } from '@emitio/next'
+import type { MiddlewareOptions } from '@emitio/next'
 
 const options: MiddlewareOptions = {
   logger,
@@ -76,8 +76,8 @@ Wraps an App Router route handler (`GET`, `POST`, etc.). Adds:
 - Catches errors and logs them before re-throwing
 
 ```typescript
-import { instrumentRoute } from '@emit/next'
-import type { RouteHandlerOptions } from '@emit/next'
+import { instrumentRoute } from '@emitio/next'
+import type { RouteHandlerOptions } from '@emitio/next'
 
 export const POST = instrumentRoute(
   async (req, ctx) => {
@@ -102,7 +102,7 @@ emit.info('processing order', { orderId: '123' })
 
 | Package | Version |
 |---|---|
-| `@emit/core` | `^1.0.0` |
+| `@emitio/core` | `^1.0.0` |
 | `next` | `^14.0.0 \|\| ^15.0.0` |
 
 ## License

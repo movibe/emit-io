@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { withLogger } from '@emit/next'
+import { withLogger } from '@emitio/next'
 import { logger } from './lib/logger.js'
 
 export const middleware = withLogger(

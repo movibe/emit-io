@@ -1,8 +1,8 @@
 {
-  "name": "@emit/core-example-otel-bridge",
+  "name": "@emitio/example-otel-bridge",
   "version": "0.0.0",
   "private": true,
-  "description": "Example: @emit/otel wired to a Node.js OpenTelemetry SDK",
+  "description": "Example: @emitio/otel wired to a Node.js OpenTelemetry SDK",
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -10,8 +10,8 @@
     "dev": "tsc -p tsconfig.json && node --import ./dist/tracing.js dist/index.js"
   },
   "dependencies": {
-    "@emit/core": "workspace:*",
-    "@emit/otel": "workspace:*",
+    "@emitio/core": "workspace:*",
+    "@emitio/otel": "workspace:*",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/api-logs": "^0.50.0",
     "@opentelemetry/auto-instrumentations-node": "^0.46.0",

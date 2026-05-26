@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { instrumentRoute } from '@emit/next'
+import { instrumentRoute } from '@emitio/next'
 import { logger } from '../../../lib/logger.js'
 
 export const GET = instrumentRoute(

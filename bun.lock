@@ -17,7 +17,7 @@
       },
     },
     "packages/codegen": {
-      "name": "@emit/codegen",
+      "name": "@emitio/codegen",
       "version": "1.0.0",
       "bin": {
         "logger-codegen": "./dist/index.js",
@@ -32,7 +32,7 @@
       },
     },
     "packages/core": {
-      "name": "@emit/core",
+      "name": "@emitio/core",
       "version": "1.0.0",
       "devDependencies": {
         "@types/node": "^20.11.19",
@@ -44,71 +44,71 @@
       },
     },
     "packages/fastify": {
-      "name": "@emit/fastify",
+      "name": "@emitio/fastify",
       "version": "1.0.0",
       "dependencies": {
         "fastify-plugin": "^5.0.0",
       },
       "devDependencies": {
-        "@emit/core": "workspace:*",
+        "@emitio/core": "workspace:*",
         "@types/node": "^20.11.19",
         "fastify": "^5.0.0",
         "typescript": "^5.3.3",
       },
       "peerDependencies": {
-        "@emit/core": "^1.0.0",
+        "@emitio/core": "^1.0.0",
         "fastify": "^4.0.0 || ^5.0.0",
       },
     },
     "packages/hono": {
-      "name": "@emit/hono",
+      "name": "@emitio/hono",
       "version": "1.0.0",
       "devDependencies": {
-        "@emit/core": "workspace:*",
+        "@emitio/core": "workspace:*",
         "@types/node": "^20.11.19",
         "hono": "^4.0.0",
         "typescript": "^5.3.3",
       },
       "peerDependencies": {
-        "@emit/core": "^1.0.0",
+        "@emitio/core": "^1.0.0",
         "hono": "^4.0.0",
       },
     },
     "packages/next": {
-      "name": "@emit/next",
+      "name": "@emitio/next",
       "version": "1.0.0",
       "devDependencies": {
-        "@emit/core": "workspace:*",
+        "@emitio/core": "workspace:*",
         "@types/node": "^20.11.19",
         "next": "^15.0.0",
         "typescript": "^5.3.3",
       },
       "peerDependencies": {
-        "@emit/core": "^1.0.0",
+        "@emitio/core": "^1.0.0",
         "next": "^14.0.0 || ^15.0.0",
       },
     },
     "packages/otel": {
-      "name": "@emit/otel",
+      "name": "@emitio/otel",
       "version": "1.0.0",
       "devDependencies": {
-        "@emit/core": "workspace:*",
+        "@emitio/core": "workspace:*",
         "@opentelemetry/api": "^1.9.0",
         "@opentelemetry/api-logs": "^0.50.0",
         "@types/node": "^20.11.19",
         "typescript": "^5.3.3",
       },
       "peerDependencies": {
-        "@emit/core": "^1.0.0",
+        "@emitio/core": "^1.0.0",
         "@opentelemetry/api": "^1.7.0",
         "@opentelemetry/api-logs": "^0.50.0",
       },
     },
     "packages/react": {
-      "name": "@emit/react",
+      "name": "@emitio/react",
       "version": "1.0.0",
       "devDependencies": {
-        "@emit/core": "workspace:*",
+        "@emitio/core": "workspace:*",
         "@types/react": "^18.2.0",
         "@types/react-dom": "^18.2.0",
         "react": "^18.2.0",
@@ -116,16 +116,16 @@
         "typescript": "^5.3.3",
       },
       "peerDependencies": {
-        "@emit/core": "^1.0.0",
+        "@emitio/core": "^1.0.0",
         "react": "^18.0.0 || ^19.0.0",
         "react-dom": "^18.0.0 || ^19.0.0",
       },
     },
     "packages/react-native": {
-      "name": "@emit/react-native",
+      "name": "@emitio/react-native",
       "version": "1.0.0",
       "devDependencies": {
-        "@emit/core": "workspace:*",
+        "@emitio/core": "workspace:*",
         "@react-navigation/native": "^6.0.0",
         "@testing-library/react": "^16.0.0",
         "@types/react": "^18.2.0",
@@ -135,7 +135,7 @@
         "typescript": "^5.3.3",
       },
       "peerDependencies": {
-        "@emit/core": "^1.0.0",
+        "@emitio/core": "^1.0.0",
         "react": "^18.0.0 || ^19.0.0",
         "react-native": ">=0.72.0",
       },
@@ -444,21 +444,21 @@
 
     "@dabh/diagnostics": ["@dabh/diagnostics@2.0.8", "", { "dependencies": { "@so-ric/colorspace": "^1.1.6", "enabled": "2.0.x", "kuler": "^2.0.0" } }, "sha512-R4MSXTVnuMzGD7bzHdW2ZhhdPC/igELENcq5IjEverBvq5hn1SXCWcsi6eSsdWP0/Ur+SItRRjAktmdoX/8R/Q=="],
 
-    "@emit/codegen": ["@emit/codegen@workspace:packages/codegen"],
+    "@emitio/codegen": ["@emitio/codegen@workspace:packages/codegen"],
 
-    "@emit/core": ["@emit/core@workspace:packages/core"],
+    "@emitio/core": ["@emitio/core@workspace:packages/core"],
 
-    "@emit/fastify": ["@emit/fastify@workspace:packages/fastify"],
+    "@emitio/fastify": ["@emitio/fastify@workspace:packages/fastify"],
 
-    "@emit/hono": ["@emit/hono@workspace:packages/hono"],
+    "@emitio/hono": ["@emitio/hono@workspace:packages/hono"],
 
-    "@emit/next": ["@emit/next@workspace:packages/next"],
+    "@emitio/next": ["@emitio/next@workspace:packages/next"],
 
-    "@emit/otel": ["@emit/otel@workspace:packages/otel"],
+    "@emitio/otel": ["@emitio/otel@workspace:packages/otel"],
 
-    "@emit/react": ["@emit/react@workspace:packages/react"],
+    "@emitio/react": ["@emitio/react@workspace:packages/react"],
 
-    "@emit/react-native": ["@emit/react-native@workspace:packages/react-native"],
+    "@emitio/react-native": ["@emitio/react-native@workspace:packages/react-native"],
 
     "@emnapi/runtime": ["@emnapi/runtime@1.10.0", "", { "dependencies": { "tslib": "^2.4.0" } }, "sha512-ewvYlk86xUoGI0zQRNq/mC+16R1QeDlKQy21Ki3oSYXNgLb45GV1P6A0M+/s6nyCuNDqe5VpaY84BzXGwVbwFA=="],
 

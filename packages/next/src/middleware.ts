@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server'
-import { runWithContext, type LoggerStrategy } from '@emit/core'
+import { runWithContext, type LoggerStrategy } from '@emitio/core'
 
 export interface MiddlewareOptions {
   logger: LoggerStrategy

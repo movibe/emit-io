@@ -1,11 +1,11 @@
-# @emit/core
+# @emitio/core
 
 Core logging + analytics library for TypeScript — Node, browser, edge, React Native.
 
 ## Install
 
 ```bash
-npm install @emit/core
+npm install @emitio/core
 ```
 
 ## Quick Start
@@ -19,7 +19,7 @@ import {
   redact,
   sample,
   LogLevelEnum,
-} from '@emit/core'
+} from '@emitio/core'
 
 const emit = new LoggerStrategy({
   transports: [
@@ -148,7 +148,7 @@ Connects via WebSocket to a devtools panel. Buffers entries while disconnected a
 Built-in plugins are plain `(entry: LogEntry) => LogEntry | null` functions.
 
 ```typescript
-import { redact, sample, rateLimit, normalizeStack } from '@emit/core'
+import { redact, sample, rateLimit, normalizeStack } from '@emitio/core'
 
 redact({ paths: ['password', 'user.token', '*.secret'] })
 sample({ rate: 0.05, levels: [LogLevelEnum.DEBUG] })
@@ -159,7 +159,7 @@ normalizeStack({ maxFrames: 10 })
 ## Type-Safe Events
 
 ```typescript
-declare module '@emit/core' {
+declare module '@emitio/core' {
   interface EventRegistry {
     'purchase': { orderId: string; total: number }
     'page-view': { path: string }
@@ -176,7 +176,7 @@ emit.event('unknown', {})  // TS error
 const reqLog = emit.child({ requestId: 'abc-123' })
 reqLog.info('request received')  // logs include requestId
 
-import { runWithContext } from '@emit/core'
+import { runWithContext } from '@emitio/core'
 await runWithContext({ traceId: 'tx-1' }, async () => {
   reqLog.info('in trace')  // merges traceId from ALS + requestId from binding
 })
@@ -195,7 +195,7 @@ emit.setConsent({ analytics: true })    // re-enable after user consent
 ## Circuit Breaker
 
 ```typescript
-import { circuitBreaker } from '@emit/core'
+import { circuitBreaker } from '@emitio/core'
 
 const safe = circuitBreaker(myProvider, {
   failureThreshold: 5,
@@ -221,7 +221,7 @@ emit.init()              // flushes buffer → providers
 ## Test Helpers
 
 ```typescript
-import { createTestLogger } from '@emit/core/test'
+import { createTestLogger } from '@emitio/core/test'
 
 const { logger, entries } = createTestLogger()
 emit.info('hello', { x: 1 })

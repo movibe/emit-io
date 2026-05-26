@@ -1,18 +1,18 @@
-# @emit/react
+# @emitio/react
 
-React bindings for [@emit/core](https://github.com/Emit-logger/emit) — hooks, context provider, and server action wrapper.
+React bindings for [@emitio/core](https://github.com/Emit-logger/emit) — hooks, context provider, and server action wrapper.
 
 ## Install
 
 ```bash
-npm install @emit/core @emit/react
+npm install @emitio/core @emitio/react
 ```
 
 ## Quick Start
 
 ```tsx
-import { AnalyticsProvider, useAnalytics, usePageTracking, useTrackEvent } from '@emit/react'
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/core'
+import { AnalyticsProvider, useAnalytics, usePageTracking, useTrackEvent } from '@emitio/react'
+import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emitio/core'
 
 const logger = new LoggerStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
@@ -90,7 +90,7 @@ Fires `form-submit-start` and `form-submit-complete` events automatically.
 Safe to import in server components and server actions — no `'use client'` directive.
 
 ```typescript
-import { withAnalytics } from '@emit/react/server'
+import { withAnalytics } from '@emitio/react/server'
 import { logger } from '@/lib/logger'
 
 export const submitForm = withAnalytics(
@@ -124,7 +124,7 @@ interface AnalyticsContextValue {
 
 | Package | Version |
 |---|---|
-| `@emit/core` | `^1.0.0` |
+| `@emitio/core` | `^1.0.0` |
 | `react` | `^18.0.0 \|\| ^19.0.0` |
 | `react-dom` | `^18.0.0 \|\| ^19.0.0` |
 

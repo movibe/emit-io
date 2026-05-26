@@ -26,7 +26,7 @@ const winstonLogger = winston.createLogger({
 async function main() {
   const benchSimple = new Bench({ time: 1000 })
   benchSimple
-    .add('@emit/core info', () => {
+    .add('@emitio/core info', () => {
       emitLogger.info('hello world')
     })
     .add('pino info', () => {
@@ -42,7 +42,7 @@ async function main() {
 
   const benchCtx = new Bench({ time: 1000 })
   benchCtx
-    .add('@emit/core info+ctx', () => {
+    .add('@emitio/core info+ctx', () => {
       emitLogger.info('hello', { userId: 'abc', requestId: 'xyz', count: 42 })
     })
     .add('pino info+ctx', () => {
@@ -62,7 +62,7 @@ async function main() {
   const winstonChild = winstonLogger.child({ requestId: 'abc' })
 
   benchChild
-    .add('@emit/core child info', () => {
+    .add('@emitio/core child info', () => {
       emitChild.info('hello')
     })
     .add('pino child info', () => {

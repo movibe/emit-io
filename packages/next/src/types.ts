@@ -1,4 +1,4 @@
-// Shared types for @emit/next
+// Shared types for @emitio/next
 
 /** Context propagated via AsyncLocalStorage through middleware and route handlers */
 export interface RequestContext {

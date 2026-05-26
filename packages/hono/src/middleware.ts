@@ -1,5 +1,5 @@
 import type { MiddlewareHandler } from 'hono'
-import { runWithContext, type LoggerStrategy } from '@emit/core'
+import { runWithContext, type LoggerStrategy } from '@emitio/core'
 
 export interface LoggerMiddlewareOptions {
   logger: LoggerStrategy

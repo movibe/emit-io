@@ -4,7 +4,7 @@ import {
   useAnalytics,
   useEventTracking,
   useTrackEvent,
-} from '@emit/react'
+} from '@emitio/react'
 import { CrashButton } from './components/CrashButton'
 
 function Dashboard() {
@@ -26,7 +26,7 @@ function Dashboard() {
 
   return (
     <main style={styles.container}>
-      <h1 style={styles.title}>@emit/react · Vite Example</h1>
+      <h1 style={styles.title}>@emitio/react · Vite Example</h1>
       <p style={styles.subtitle}>
         Open DevTools console to see analytics events and log entries.
       </p>

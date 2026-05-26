@@ -1,4 +1,4 @@
-import { LoggerStrategy, JSONTransport, redact, LogLevelEnum } from '@emit/core'
+import { LoggerStrategy, JSONTransport, redact, LogLevelEnum } from '@emitio/core'
 
 // Redact plugin runs in the pipeline before any transport receives the entry.
 // Patterns support exact paths, dot-notation, and wildcards.
