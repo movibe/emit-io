@@ -1,6 +1,6 @@
 # @emit-io/hono
 
-Hono middleware for [@emit-io/core](https://github.com/Emit-io/emit) — request ID, child logger, timings, and ALS context propagation.
+Hono middleware for [@emit-io/core](https://github.com/movibe/emit-io) — request ID, child logger, timings, and ALS context propagation.
 
 ## Install
 

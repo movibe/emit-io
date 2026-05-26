@@ -1,6 +1,6 @@
 # @emit-io/fastify
 
-Fastify plugin for [@emit-io/core](https://github.com/Emit-io/emit) — per-request child logger, request ID, and automatic hook timings.
+Fastify plugin for [@emit-io/core](https://github.com/movibe/emit-io) — per-request child logger, request ID, and automatic hook timings.
 
 ## Install
 

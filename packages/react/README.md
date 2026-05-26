@@ -1,6 +1,6 @@
 # @emit-io/react
 
-React bindings for [@emit-io/core](https://github.com/Emit-io/emit) — hooks, context provider, and server action wrapper.
+React bindings for [@emit-io/core](https://github.com/movibe/emit-io) — hooks, context provider, and server action wrapper.
 
 ## Install
 

@@ -1,6 +1,6 @@
 # @emit-io/otel
 
-OpenTelemetry bridge for [@emit-io/core](https://github.com/Emit-io/emit) — emit OTel spans for analytics events and bridge structured logs into the OTel Logs API.
+OpenTelemetry bridge for [@emit-io/core](https://github.com/movibe/emit-io) — emit OTel spans for analytics events and bridge structured logs into the OTel Logs API.
 
 ## Install
 

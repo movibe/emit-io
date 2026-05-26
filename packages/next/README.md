@@ -1,6 +1,6 @@
 # @emit-io/next
 
-Next.js bindings for [@emit-io/core](https://github.com/Emit-io/emit) — middleware logging and App Router route handler instrumentation.
+Next.js bindings for [@emit-io/core](https://github.com/movibe/emit-io) — middleware logging and App Router route handler instrumentation.
 
 ## Install
 

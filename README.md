@@ -1,8 +1,8 @@
 # @emit-io/core
 
 [![npm version](https://img.shields.io/npm/v/@emit-io/core)](https://www.npmjs.com/package/@emit-io/core)
-[![Tests & Coverage](https://github.com/Emit-io/emit/actions/workflows/tests.yml/badge.svg)](https://github.com/Emit-io/emit/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/Emit-io/emit/branch/main/graph/badge.svg)](https://codecov.io/gh/Emit-io/emit)
+[![Tests & Coverage](https://github.com/movibe/emit-io/actions/workflows/tests.yml/badge.svg)](https://github.com/movibe/emit-io/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/movibe/emit-io/branch/main/graph/badge.svg)](https://codecov.io/gh/movibe/emit-io)
 
 Universal logging + analytics for TypeScript — Node, browser, edge, React Native.
 

@@ -1,6 +1,6 @@
 # @emit-io/react-native
 
-React Native bindings for [@emit-io/core](https://github.com/Emit-io/emit) — hooks, provider, AppState tracking, and React Navigation integration.
+React Native bindings for [@emit-io/core](https://github.com/movibe/emit-io) — hooks, provider, AppState tracking, and React Navigation integration.
 
 ## Install
 
