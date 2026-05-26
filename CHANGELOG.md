@@ -19,7 +19,7 @@
 + logger.logFeature('Auth', 'login_success', { method: 'oauth' })
 
 - declare global { interface EVENT_TAGS { ... } }
-+ declare module '@emit/logger' { interface EventRegistry { ... } }
++ declare module '@emit/core' { interface EventRegistry { ... } }
 ```
 
 React package — `AnalyticsContextValue` now exposes `captureError`; `error` is kept as a deprecated alias:
@@ -37,14 +37,14 @@ React package — `AnalyticsContextValue` now exposes `captureError`; `error` is
 - `circuitBreaker` provider wrapper
 - Consent gate (GDPR) — `setConsent` / `getConsent`
 - Pre-init event buffer
-- Test helpers (`@emit/logger/test`)
+- Test helpers (`@emit/core/test`)
 - React 19 support (`useFormAnalytics`, `withAnalytics` server action)
 - Codegen drift detection + JSON Schema / Avro export
 - New packages: `@emit/next`, `@emit/fastify`, `@emit/hono`, `@emit/otel`
 
 ### Package versions bumped to 3.0.0
 
-- `@emit/logger`
+- `@emit/core`
 - `@emit/react`
 - `@emit/next`
 - `@emit/fastify`

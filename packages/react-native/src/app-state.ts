@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { AppState, type AppStateStatus } from 'react-native'
-import type { LoggerStrategy } from '@emit/logger'
+import type { LoggerStrategy } from '@emit/core'
 
 /**
  * Tracks AppState transitions and emits analytics events:

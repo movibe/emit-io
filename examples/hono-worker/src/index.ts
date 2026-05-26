@@ -12,7 +12,7 @@ import {
   LoggerStrategy,
   HTTPTransport,
   LogLevelEnum,
-} from '@emit/logger'
+} from '@emit/core'
 import { loggerMiddleware } from '@emit/hono'
 
 export interface Env {
@@ -64,7 +64,7 @@ app.get('/', (c) => {
   log.info('hello-handler')
   return c.json({
     ok: true,
-    message: 'Hello from Hono on Cloudflare Workers with @emit/logger',
+    message: 'Hello from Hono on Cloudflare Workers with @emit/core',
     requestId: c.get('requestId'),
   })
 })

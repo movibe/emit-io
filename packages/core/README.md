@@ -1,11 +1,11 @@
-# @emit/logger
+# @emit/core
 
 Core logging + analytics library for TypeScript — Node, browser, edge, React Native.
 
 ## Install
 
 ```bash
-npm install @emit/logger
+npm install @emit/core
 ```
 
 ## Quick Start
@@ -19,7 +19,7 @@ import {
   redact,
   sample,
   LogLevelEnum,
-} from '@emit/logger'
+} from '@emit/core'
 
 const logger = new LoggerStrategy({
   transports: [
@@ -148,7 +148,7 @@ Connects via WebSocket to a devtools panel. Buffers entries while disconnected a
 Built-in plugins are plain `(entry: LogEntry) => LogEntry | null` functions.
 
 ```typescript
-import { redact, sample, rateLimit, normalizeStack } from '@emit/logger'
+import { redact, sample, rateLimit, normalizeStack } from '@emit/core'
 
 redact({ paths: ['password', 'user.token', '*.secret'] })
 sample({ rate: 0.05, levels: [LogLevelEnum.DEBUG] })
@@ -159,7 +159,7 @@ normalizeStack({ maxFrames: 10 })
 ## Type-Safe Events
 
 ```typescript
-declare module '@emit/logger' {
+declare module '@emit/core' {
   interface EventRegistry {
     'purchase': { orderId: string; total: number }
     'page-view': { path: string }
@@ -176,7 +176,7 @@ logger.event('unknown', {})  // TS error
 const reqLog = logger.child({ requestId: 'abc-123' })
 reqLog.info('request received')  // logs include requestId
 
-import { runWithContext } from '@emit/logger'
+import { runWithContext } from '@emit/core'
 await runWithContext({ traceId: 'tx-1' }, async () => {
   reqLog.info('in trace')  // merges traceId from ALS + requestId from binding
 })
@@ -195,7 +195,7 @@ logger.setConsent({ analytics: true })    // re-enable after user consent
 ## Circuit Breaker
 
 ```typescript
-import { circuitBreaker } from '@emit/logger'
+import { circuitBreaker } from '@emit/core'
 
 const safe = circuitBreaker(myProvider, {
   failureThreshold: 5,
@@ -221,7 +221,7 @@ logger.init()              // flushes buffer → providers
 ## Test Helpers
 
 ```typescript
-import { createTestLogger } from '@emit/logger/test'
+import { createTestLogger } from '@emit/core/test'
 
 const { logger, entries } = createTestLogger()
 logger.info('hello', { x: 1 })

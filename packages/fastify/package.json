@@ -1,7 +1,7 @@
 {
   "name": "@emit/fastify",
   "version": "1.0.0",
-  "description": "Fastify plugin for @emit/logger — per-request logging, request id, hook timings",
+  "description": "Fastify plugin for @emit/core — per-request logging, request id, hook timings",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -14,21 +14,21 @@
   },
   "files": ["dist", "README.md"],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=fastify --external=fastify-plugin --external=@emit/logger && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=fastify --external=fastify-plugin --external=@emit/logger",
-    "build:types": "npx tsc --emitDeclarationOnly",
+    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=fastify --external=fastify-plugin --external=@emit/core && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=fastify --external=fastify-plugin --external=@emit/core",
+    "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "vitest run",
     "prepack": "bun run build:all"
   },
   "peerDependencies": {
-    "@emit/logger": "^1.0.0",
+    "@emit/core": "^1.0.0",
     "fastify": "^4.0.0 || ^5.0.0"
   },
   "dependencies": {
     "fastify-plugin": "^5.0.0"
   },
   "devDependencies": {
-    "@emit/logger": "workspace:*",
+    "@emit/core": "workspace:*",
     "@types/node": "^20.11.19",
     "fastify": "^5.0.0",
     "typescript": "^5.3.3"

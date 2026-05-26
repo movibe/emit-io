@@ -1,12 +1,12 @@
 {
-  "name": "@emit/logger-example-fastify",
+  "name": "@emit/core-example-fastify",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "tsx src/server.ts"
   },
   "dependencies": {
-    "@emit/logger": "^1.0.0",
+    "@emit/core": "^1.0.0",
     "@emit/fastify": "^1.0.0",
     "fastify": "^5.0.0"
   },

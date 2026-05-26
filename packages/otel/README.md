@@ -1,11 +1,11 @@
 # @emit/otel
 
-OpenTelemetry bridge for [@emit/logger](https://github.com/Emit-logger/emit) — emit OTel spans for analytics events and bridge structured logs into the OTel Logs API.
+OpenTelemetry bridge for [@emit/core](https://github.com/Emit-logger/emit) — emit OTel spans for analytics events and bridge structured logs into the OTel Logs API.
 
 ## Install
 
 ```bash
-npm install @emit/logger @emit/otel \
+npm install @emit/core @emit/otel \
   @opentelemetry/api @opentelemetry/api-logs
 ```
 
@@ -19,7 +19,7 @@ import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
 import { LoggerProvider, SimpleLogRecordProcessor } from '@opentelemetry/sdk-logs'
 
-import { LoggerStrategy, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, LogLevelEnum } from '@emit/core'
 import { OTelProvider, OTelTransport } from '@emit/otel'
 
 // 1. Init OTel SDK externally
@@ -33,7 +33,7 @@ loggerProvider.addLogRecordProcessor(
   new SimpleLogRecordProcessor(new OTLPLogExporter({ url: 'http://collector:4318/v1/logs' }))
 )
 
-// 2. Wire into @emit/logger
+// 2. Wire into @emit/core
 const logger = new LoggerStrategy({
   transports: [
     new OTelTransport({
@@ -75,7 +75,7 @@ new OTelTransport({
 
 Log level mapping:
 
-| @emit/logger | OTel SeverityNumber |
+| @emit/core | OTel SeverityNumber |
 |---|---|
 | DEBUG | DEBUG |
 | INFO | INFO |
@@ -110,7 +110,7 @@ The OTel SDK must be started **before** constructing `OTelProvider` or `OTelTran
 
 | Package | Version |
 |---|---|
-| `@emit/logger` | `^1.0.0` |
+| `@emit/core` | `^1.0.0` |
 | `@opentelemetry/api` | `^1.7.0` |
 | `@opentelemetry/api-logs` | `^0.50.0` |
 

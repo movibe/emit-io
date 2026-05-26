@@ -1,5 +1,5 @@
 {
-  "name": "@emit/logger-example-otel-bridge",
+  "name": "@emit/core-example-otel-bridge",
   "version": "0.0.0",
   "private": true,
   "description": "Example: @emit/otel wired to a Node.js OpenTelemetry SDK",
@@ -10,7 +10,7 @@
     "dev": "tsc -p tsconfig.json && node --import ./dist/tracing.js dist/index.js"
   },
   "dependencies": {
-    "@emit/logger": "workspace:*",
+    "@emit/core": "workspace:*",
     "@emit/otel": "workspace:*",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/api-logs": "^0.50.0",

@@ -8,7 +8,7 @@
   "fixed": [],
   "linked": [
     [
-      "@emit/logger",
+      "@emit/core",
       "@emit/react",
       "@emit/react-native",
       "@emit/next",

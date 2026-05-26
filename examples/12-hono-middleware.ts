@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { loggerMiddleware } from '@emit/hono'
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/core'
 
 const logger = new LoggerStrategy({
   transports: [

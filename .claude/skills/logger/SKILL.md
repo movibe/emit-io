@@ -1,13 +1,13 @@
 ---
 name: emit-logger
-description: Use when a user asks about installing, configuring, or using @emit/logger in any project — Node, React, React Native, Next.js, Fastify, Hono, Cloudflare Workers. Also use when working on the monorepo itself (adding features, fixing bugs, running benchmarks, modifying any package under packages/)
+description: Use when a user asks about installing, configuring, or using @emit/core in any project — Node, React, React Native, Next.js, Fastify, Hono, Cloudflare Workers. Also use when working on the monorepo itself (adding features, fixing bugs, running benchmarks, modifying any package under packages/)
 ---
 
-# @emit/logger
+# @emit/core
 
 ## Overview
 
-Universal logging + analytics for TypeScript — Node, browser, edge, React Native. Published as [`@emit/logger`](https://www.npmjs.com/package/@emit/logger) on npm. Dual-purpose architecture: **analytics** (event/screen/identify dispatched to providers like PostHog) and **observability** (debug/info/warn/error/fatal piped through transports to console, JSON, HTTP, or OTel). Both layers run concurrently on every call.
+Universal logging + analytics for TypeScript — Node, browser, edge, React Native. Published as [`@emit/core`](https://www.npmjs.com/package/@emit/core) on npm. Dual-purpose architecture: **analytics** (event/screen/identify dispatched to providers like PostHog) and **observability** (debug/info/warn/error/fatal piped through transports to console, JSON, HTTP, or OTel). Both layers run concurrently on every call.
 
 ## Project Detection & Installation
 
@@ -17,16 +17,16 @@ When a user asks to install or use the logger, first identify the project type t
 
 | Signal | Project Type | Install |
 |---|---|---|
-| `package.json` has `next` | Next.js | `@emit/logger` + `@emit/next` |
-| `package.json` has `next` + `react` | Next.js App Router | `@emit/logger` + `@emit/next` + `@emit/react` |
-| `package.json` has `react` + `react-dom`, no `next` | React SPA | `@emit/logger` + `@emit/react` |
-| `package.json` has `react-native` | React Native | `@emit/logger` + `@emit/react-native` |
-| `package.json` has `fastify` | Fastify | `@emit/logger` + `@emit/fastify` |
-| `package.json` has `hono` | Hono | `@emit/logger` + `@emit/hono` |
-| `package.json` has `wrangler` or `@cloudflare/workers` | Cloudflare Worker | `@emit/logger` + `@emit/hono` (if using Hono) or just `@emit/logger` |
-| `package.json` has `@opentelemetry/api` | OTel-instrumented | `@emit/logger` + `@emit/otel` |
-| `tsconfig.json` exists, no framework | Plain Node/TS | `@emit/logger` |
-| `package.json` has `vite`, `esbuild`, or `webpack` + `react` | React SPA (bundler) | `@emit/logger` + `@emit/react` |
+| `package.json` has `next` | Next.js | `@emit/core` + `@emit/next` |
+| `package.json` has `next` + `react` | Next.js App Router | `@emit/core` + `@emit/next` + `@emit/react` |
+| `package.json` has `react` + `react-dom`, no `next` | React SPA | `@emit/core` + `@emit/react` |
+| `package.json` has `react-native` | React Native | `@emit/core` + `@emit/react-native` |
+| `package.json` has `fastify` | Fastify | `@emit/core` + `@emit/fastify` |
+| `package.json` has `hono` | Hono | `@emit/core` + `@emit/hono` |
+| `package.json` has `wrangler` or `@cloudflare/workers` | Cloudflare Worker | `@emit/core` + `@emit/hono` (if using Hono) or just `@emit/core` |
+| `package.json` has `@opentelemetry/api` | OTel-instrumented | `@emit/core` + `@emit/otel` |
+| `tsconfig.json` exists, no framework | Plain Node/TS | `@emit/core` |
+| `package.json` has `vite`, `esbuild`, or `webpack` + `react` | React SPA (bundler) | `@emit/core` + `@emit/react` |
 
 ### Detection Flow
 
@@ -34,7 +34,7 @@ When a user asks to install or use the logger, first identify the project type t
 1. Read user's package.json to identify framework
 2. Also check for tsconfig.json, vite.config.*, next.config.*
 3. Cross-reference with the heuristic table above
-4. Recommend install commands (always include @emit/logger as base)
+4. Recommend install commands (always include @emit/core as base)
 5. Show the minimal setup code snippet for that project type (see snippets below)
 6. If user also mentions analytics providers (PostHog, Sentry, etc.) or OTel, layer those on top
 ```
@@ -43,7 +43,7 @@ When a user asks to install or use the logger, first identify the project type t
 
 **Node / plain TypeScript:**
 ```typescript
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/core'
 const logger = new LoggerStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
 })
@@ -53,7 +53,7 @@ logger.info('started', { port: 3000 })
 **Next.js App Router:**
 ```typescript
 // lib/logger.ts
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/core'
 export const logger = new LoggerStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
 })
@@ -121,7 +121,7 @@ All packages published on npm under the `@emit` scope.
 
 ```
 packages/
-  core/         @emit/logger              — LoggerStrategy, transports, plugins, types
+  core/         @emit/core              — LoggerStrategy, transports, plugins, types
   react/        @emit/react         — React hooks, provider + RSC server
   react-native/ @emit/react-native   — RN hooks, provider, navigation, AppState
   fastify/      @emit/fastify       — Fastify plugin (per-request logging)
@@ -157,30 +157,30 @@ Root configuration: `{ globals: false, environment: 'node', include: ['packages/
 Exceptions: `react` and `codegen` use `bun test`. Files: `src/__tests__/*.test.ts`. Imports: `import { test, expect, describe, vi } from 'vitest'`. Mocking: `vi.spyOn()`, `vi.fn()`.
 
 ```
-npm test              # vitest run (all packages)
-npm run test:watch    # vitest watch mode
-npm run test:coverage # vitest run --coverage
+bun run test              # vitest run (all packages)
+bun run test:watch        # vitest watch mode
+bun run test:coverage     # vitest run --coverage
 ```
 
 ## Benchmarks
 
-**Tool: tinybench** — compares @emit/logger vs pino vs winston.
+**Tool: tinybench** — compares @emit/core vs pino vs winston.
 
 ```
-npm run bench          # standalone (tsx packages/core/bench/index.ts)
-npm run bench:compare  # vs pino/winston (tsx packages/core/bench/compare.ts)
+bun run bench          # standalone (tsx packages/core/bench/index.ts)
+bun run bench:compare  # vs pino/winston (tsx packages/core/bench/compare.ts)
 ```
 
 Results documented in `BENCHMARKS.md`. Always use `/dev/null` writes for fair comparison.
 
 ## Package Conventions
 
-- `name`: `@emit/logger-<suffix>` (or `@emit/logger` for core)
+- `name`: `@emit/<suffix>` (or `@emit/core` for core)
 - `type`: `"module"`, `main`: `./dist/index.cjs`, `module`: `./dist/index.js`
 - `exports`: conditional (`import`/`require`/`browser`/`workerd`/`edge-light`)
 - `files`: `["dist", "README.md", "LICENSE"]`
 - **Core:** zero runtime deps
-- **Framework packages:** framework as peerDependency, `@emit/logger` as devDependency
+- **Framework packages:** framework as peerDependency, `@emit/core` as devDependency
 - **codegen:** only package with non-peer runtime dep (`js-yaml`)
 
 ## Code Conventions
@@ -193,14 +193,14 @@ Results documented in `BENCHMARKS.md`. Always use `/dev/null` writes for fair co
 
 ## Release
 
-Uses **Changesets**: `npm run changeset` → `npm run version` → `npm run release`
+Uses **Changesets**: `bun run changeset` → `bun run version` → `bun run release`
 
 ## Common Workflows
 
 ### Add a new feature to core
 1. Modify source in `packages/core/src/`
 2. Add/update tests in `packages/core/src/__tests__/`
-3. Run `npm test`, then `npm run build` from root
+3. Run `bun run test`, then `bun run build` from root
 4. Add changeset if publishing
 
 ### Add a new package
@@ -208,7 +208,7 @@ Uses **Changesets**: `npm run changeset` → `npm run version` → `npm run rele
 2. Follow same build scripts pattern, add to root workspaces + build chain
 
 ### Compare performance
-Run `npm run bench:compare`, update BENCHMARKS.md with results (include `node -v`, `uname -mrs`).
+Run `bun run bench:compare`, update BENCHMARKS.md with results (include `node -v`, `uname -mrs`).
 
 ### Add a transport or plugin
 Create in `packages/core/src/`, implement `Transport` or `Plugin` from `types.ts`, export from `index.ts`, add tests.

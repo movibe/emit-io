@@ -1,11 +1,11 @@
 # @emit/react-native
 
-React Native bindings for [@emit/logger](https://github.com/Emit-logger/emit) — hooks, provider, AppState tracking, and React Navigation integration.
+React Native bindings for [@emit/core](https://github.com/Emit-logger/emit) — hooks, provider, AppState tracking, and React Navigation integration.
 
 ## Install
 
 ```bash
-npm install @emit/logger @emit/react-native
+npm install @emit/core @emit/react-native
 # optional: screen tracking via React Navigation
 npm install @react-navigation/native
 ```
@@ -14,7 +14,7 @@ npm install @react-navigation/native
 
 ```tsx
 import { AnalyticsProvider, useAnalytics, useScreenTracking } from '@emit/react-native'
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/core'
 
 const logger = new LoggerStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
@@ -125,7 +125,7 @@ interface AnalyticsContextValue {
 
 | Package | Version |
 |---|---|
-| `@emit/logger` | `^1.0.0` |
+| `@emit/core` | `^1.0.0` |
 | `react` | `^18.0.0 \|\| ^19.0.0` |
 | `react-native` | `>=0.72.0` |
 | `@react-navigation/native` | optional |

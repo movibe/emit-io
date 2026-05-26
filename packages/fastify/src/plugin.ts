@@ -1,6 +1,6 @@
 import fp from 'fastify-plugin'
 import type { FastifyPluginAsync } from 'fastify'
-import { type LoggerStrategy } from '@emit/logger'
+import { type LoggerStrategy } from '@emit/core'
 import { randomUUID } from 'node:crypto'
 
 declare module 'fastify' {

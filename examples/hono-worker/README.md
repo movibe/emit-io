@@ -60,7 +60,7 @@ the token to `wrangler.toml`.
   runtime — `HTTPTransport` relies on `globalThis.fetch`, `setInterval`, and
   `AbortController`, all available on Workers.
 - `nodejs_compat` is enabled in `wrangler.toml` only to keep TypeScript types
-  permissive across `@emit/logger`'s shared core; runtime code paths used
+  permissive across `@emit/core`'s shared core; runtime code paths used
   here do not require it.
 - Each request constructs its own logger so that `waitUntil(logger.close())`
   has a well-defined lifecycle. For higher throughput you can hoist the logger

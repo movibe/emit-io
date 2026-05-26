@@ -1,13 +1,13 @@
-# @emit/logger
+# @emit/core
 
-[![npm version](https://img.shields.io/npm/v/@emit/logger)](https://www.npmjs.com/package/@emit/logger)
+[![npm version](https://img.shields.io/npm/v/@emit/core)](https://www.npmjs.com/package/@emit/core)
 [![Tests & Coverage](https://github.com/Emit-logger/emit/actions/workflows/tests.yml/badge.svg)](https://github.com/Emit-logger/emit/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/Emit-logger/emit/branch/main/graph/badge.svg)](https://codecov.io/gh/Emit-logger/emit)
 
 Universal logging + analytics for TypeScript — Node, browser, edge, React Native.
 
 ```typescript
-import { LoggerStrategy, JSONTransport, ConsoleTransport, redact, sample, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, JSONTransport, ConsoleTransport, redact, sample, LogLevelEnum } from '@emit/core'
 
 const logger = new LoggerStrategy({
   transports: [
@@ -28,7 +28,7 @@ logger.captureError('Auth', 'login_failed', false, new Error('bad token'))
 const reqLog = logger.child({ requestId: 'abc-123' })
 reqLog.info('handling request')
 
-import { runWithContext } from '@emit/logger'
+import { runWithContext } from '@emit/core'
 await runWithContext({ traceId: 'tx' }, async () => {
   reqLog.info('inside trace')  // context auto-merged
 })
@@ -38,7 +38,7 @@ await runWithContext({ traceId: 'tx' }, async () => {
 
 | Package | Use | npm |
 |---|---|---|
-| `@emit/logger` | Core: logs, transports, plugins, providers | [![npm](https://img.shields.io/npm/v/@emit/logger)](https://www.npmjs.com/package/@emit/logger) |
+| `@emit/core` | Core: logs, transports, plugins, providers | [![npm](https://img.shields.io/npm/v/@emit/core)](https://www.npmjs.com/package/@emit/core) |
 | `@emit/react` | React (DOM/RSC): hooks, provider, server actions | [![npm](https://img.shields.io/npm/v/@emit/react)](https://www.npmjs.com/package/@emit/react) |
 | `@emit/react-native` | React Native: AppState, navigation, hooks | [![npm](https://img.shields.io/npm/v/@emit/react-native)](https://www.npmjs.com/package/@emit/react-native) |
 | `@emit/next` | Next.js: middleware, route handler instrumentation | [![npm](https://img.shields.io/npm/v/@emit/next)](https://www.npmjs.com/package/@emit/next) |
@@ -66,15 +66,15 @@ await runWithContext({ traceId: 'tx' }, async () => {
 ### Install
 
 ```bash
-npm install @emit/logger
+npm install @emit/core
 ```
 
-See [npm package page](https://www.npmjs.com/package/@emit/logger) for versions and stats.
+See [npm package page](https://www.npmjs.com/package/@emit/core) for versions and stats.
 
 ### Core
 
 ```typescript
-import { LoggerStrategy, ConsoleTransport, JSONTransport, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, ConsoleTransport, JSONTransport, LogLevelEnum } from '@emit/core'
 
 const logger = new LoggerStrategy({
   transports: [
@@ -102,12 +102,12 @@ logger.logFeature('Auth', 'login_success', { method: 'oauth' })
 ### React
 
 ```bash
-npm install @emit/logger @emit/react
+npm install @emit/core @emit/react
 ```
 
 ```tsx
 import { AnalyticsProvider, useAnalytics, usePageTracking } from '@emit/react'
-import { LoggerStrategy } from '@emit/logger'
+import { LoggerStrategy } from '@emit/core'
 
 const logger = new LoggerStrategy({ /* ... */ })
 
@@ -129,7 +129,7 @@ function ProductPage() {
 ### Next.js
 
 ```bash
-npm install @emit/logger @emit/next
+npm install @emit/core @emit/next
 ```
 
 ```typescript
@@ -156,12 +156,12 @@ export const GET = instrumentRoute(
 ### React Native
 
 ```bash
-npm install @emit/logger @emit/react-native
+npm install @emit/core @emit/react-native
 ```
 
 ```tsx
 import { AnalyticsProvider, useAnalytics, useScreenTracking } from '@emit/react-native'
-import { LoggerStrategy } from '@emit/logger'
+import { LoggerStrategy } from '@emit/core'
 
 const logger = new LoggerStrategy({ /* ... */ })
 
@@ -190,7 +190,7 @@ function HomeScreen() {
 | `DevToolsTransport` | WebSocket to devtools panel; buffers while disconnected |
 
 ```typescript
-import { HTTPTransport } from '@emit/logger'
+import { HTTPTransport } from '@emit/core'
 
 new HTTPTransport({
   url: 'https://logs.example.com/ingest',
@@ -205,7 +205,7 @@ new HTTPTransport({
 ## Plugins
 
 ```typescript
-import { redact, sample, rateLimit, normalizeStack } from '@emit/logger'
+import { redact, sample, rateLimit, normalizeStack } from '@emit/core'
 
 new LoggerStrategy({
   plugins: [
@@ -224,7 +224,7 @@ Plugins are plain functions `(entry: LogEntry) => LogEntry | null`. Return `null
 Two complementary paths — use one or both:
 
 ```typescript
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/core'
 import { OTelTransport, OTelProvider } from '@emit/otel'
 
 const logger = new LoggerStrategy({
@@ -255,7 +255,7 @@ logger.captureError('Payments', 'charge', true, err)
 ## Type-Safe Events
 
 ```typescript
-declare module '@emit/logger' {
+declare module '@emit/core' {
   interface EventRegistry {
     'purchase': { orderId: string; total: number }
     'page-view': { path: string }
@@ -274,7 +274,7 @@ const reqLog = logger.child({ requestId: 'abc-123', userId: 'u-1' })
 reqLog.info('request received')  // context: { requestId, userId }
 
 // AsyncLocalStorage — auto-merges into every log call in scope
-import { runWithContext } from '@emit/logger'
+import { runWithContext } from '@emit/core'
 
 await runWithContext({ traceId: 'trace-abc' }, async () => {
   await processOrder()  // all logs inside get traceId automatically
@@ -299,7 +299,7 @@ logger.getConsent() // { analytics: true, errors: true }
 ## Circuit Breaker
 
 ```typescript
-import { circuitBreaker } from '@emit/logger'
+import { circuitBreaker } from '@emit/core'
 import { PostHogProvider } from './providers/posthog'
 
 const safePostHog = circuitBreaker(new PostHogProvider(), {
@@ -342,12 +342,12 @@ See [CHANGELOG.md](./CHANGELOG.md) and [docs/MIGRATION_v2_to_v3.md](./docs/MIGRA
 + logger.logFeature('Auth', 'login_success', { method: 'oauth' })
 
 - declare global { interface EVENT_TAGS { ... } }
-+ declare module '@emit/logger' { interface EventRegistry { ... } }
++ declare module '@emit/core' { interface EventRegistry { ... } }
 ```
 
 ## Contributing
 
-PRs welcome. Run `bun install && npm test` from the repo root.
+PRs welcome. Run `bun install && bun run test` from the repo root.
 
 ### AI-Assisted Development
 

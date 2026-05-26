@@ -2,13 +2,13 @@
   "private": true,
   "workspaces": ["packages/core", "packages/react", "packages/react-native", "packages/codegen", "packages/fastify", "packages/next", "packages/hono", "packages/otel"],
   "scripts": {
-    "build": "npm -w packages/core run build:all && npm -w packages/react run build:all && npm -w packages/react-native run build:all && npm -w packages/next run build:all && npm -w packages/fastify run build:all && npm -w packages/hono run build:all && npm -w packages/otel run build:all && npm -w packages/codegen run build",
+    "build": "bun run --filter @emit/core build:all && bun run --filter @emit/react build:all && bun run --filter @emit/react-native build:all && bun run --filter @emit/next build:all && bun run --filter @emit/fastify build:all && bun run --filter @emit/hono build:all && bun run --filter @emit/otel build:all && bun run --filter @emit/codegen build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "bench": "tsx packages/core/bench/index.ts",
     "bench:compare": "tsx packages/core/bench/compare.ts",
-    "lint": "npm -w packages/core run lint",
+    "lint": "bun run --filter @emit/core lint",
     "changeset": "changeset",
     "version": "changeset version",
     "release": "bun run build && changeset publish"

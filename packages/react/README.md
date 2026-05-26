@@ -1,18 +1,18 @@
 # @emit/react
 
-React bindings for [@emit/logger](https://github.com/Emit-logger/emit) — hooks, context provider, and server action wrapper.
+React bindings for [@emit/core](https://github.com/Emit-logger/emit) — hooks, context provider, and server action wrapper.
 
 ## Install
 
 ```bash
-npm install @emit/logger @emit/react
+npm install @emit/core @emit/react
 ```
 
 ## Quick Start
 
 ```tsx
 import { AnalyticsProvider, useAnalytics, usePageTracking, useTrackEvent } from '@emit/react'
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/core'
 
 const logger = new LoggerStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
@@ -124,7 +124,7 @@ interface AnalyticsContextValue {
 
 | Package | Version |
 |---|---|
-| `@emit/logger` | `^1.0.0` |
+| `@emit/core` | `^1.0.0` |
 | `react` | `^18.0.0 \|\| ^19.0.0` |
 | `react-dom` | `^18.0.0 \|\| ^19.0.0` |
 

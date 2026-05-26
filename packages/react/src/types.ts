@@ -1,4 +1,4 @@
-import type { LoggerStrategy, AnalyticsProvider } from '@emit/logger'
+import type { LoggerStrategy, AnalyticsProvider } from '@emit/core'
 
 export interface AnalyticsContextValue {
   client: LoggerStrategy

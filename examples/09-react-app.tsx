@@ -1,5 +1,5 @@
 import React from 'react'
-import { LoggerStrategy, type AnalyticsProvider } from '@emit/logger'
+import { LoggerStrategy, type AnalyticsProvider } from '@emit/core'
 import {
   AnalyticsProvider as AnalyticsContext,
   useAnalytics,

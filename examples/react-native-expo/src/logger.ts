@@ -1,4 +1,4 @@
-import { LoggerStrategy, ConsoleProvider, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, ConsoleProvider, LogLevelEnum } from '@emit/core'
 
 export const logger = new LoggerStrategy({
   providers: [

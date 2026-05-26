@@ -1,6 +1,6 @@
 # @emit/codegen
 
-CLI code generator for [@emit/logger](https://github.com/Emit-logger/emit) — define analytics events in YAML, get a typed TypeScript tracker, drift detection, and JSON Schema / Avro export.
+CLI code generator for [@emit/core](https://github.com/Emit-logger/emit) — define analytics events in YAML, get a typed TypeScript tracker, drift detection, and JSON Schema / Avro export.
 
 ## Install
 
@@ -48,7 +48,7 @@ Outputs:
 
 ```typescript
 import { createAnalyticsTracker } from './analytics/analytics-tracker'
-import { LoggerStrategy } from '@emit/logger'
+import { LoggerStrategy } from '@emit/core'
 
 const logger = new LoggerStrategy({ /* ... */ })
 const tracker = createAnalyticsTracker(logger)

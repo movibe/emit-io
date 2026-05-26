@@ -6,7 +6,7 @@
 |---|---|---|
 | Analytics error call | `logger.error(feature, name, critical, err, extra)` | `logger.captureError(feature, name, critical, err, extra)` |
 | Analytics info call | `logger.info(feature, name, properties)` | `logger.logFeature(feature, name, properties)` |
-| Typed event registry | `declare global { interface EVENT_TAGS { ... } }` | `declare module '@emit/logger' { interface EventRegistry { ... } }` |
+| Typed event registry | `declare global { interface EVENT_TAGS { ... } }` | `declare module '@emit/core' { interface EventRegistry { ... } }` |
 | Config format | `LoggerStrategyConstructor[]` | `LoggerConfig` with `AnalyticsProvider` instances |
 
 Log-level calls `logger.error('message')` and `logger.info('message')` are **unchanged**.
@@ -18,13 +18,13 @@ Log-level calls `logger.error('message')` and `logger.info('message')` are **unc
 ### 1. Update package
 
 ```bash
-npm install @emit/logger@^1.0.0
+npm install @emit/core@^1.0.0
 ```
 
 Or with bun:
 
 ```bash
-bun add @emit/logger@^1.0.0
+bun add @emit/core@^1.0.0
 ```
 
 ### 2. Rename analytics calls
@@ -75,7 +75,7 @@ declare global {
 v3:
 
 ```typescript
-declare module '@emit/logger' {
+declare module '@emit/core' {
   interface EventRegistry {
     'my-event': { foo: string }
     'purchase': { orderId: string; total: number }
@@ -92,7 +92,7 @@ The `LoggerStrategyConstructor[]` array config still works in v3 but emits a dep
 v2:
 
 ```typescript
-import { LoggerStrategy, LoggerStrategyType } from '@emit/logger'
+import { LoggerStrategy, LoggerStrategyType } from '@emit/core'
 
 class MyStrategy extends LoggerStrategyType {
   init() {}
@@ -121,7 +121,7 @@ const logger = new LoggerStrategy([
 v3:
 
 ```typescript
-import { LoggerStrategy, type AnalyticsProvider } from '@emit/logger'
+import { LoggerStrategy, type AnalyticsProvider } from '@emit/core'
 
 const myProvider: AnalyticsProvider = {
   name: 'my-provider',
@@ -154,7 +154,7 @@ reqLog.info('handling request')  // context includes requestId
 **AsyncLocalStorage context** — propagate context across async boundaries without passing it manually:
 
 ```typescript
-import { runWithContext } from '@emit/logger'
+import { runWithContext } from '@emit/core'
 
 await runWithContext({ traceId: 'abc' }, async () => {
   await doWork()  // all logger calls here automatically include traceId
@@ -164,7 +164,7 @@ await runWithContext({ traceId: 'abc' }, async () => {
 **Plugins** — transform or filter log entries in the pipeline:
 
 ```typescript
-import { redact, sample, rateLimit, normalizeStack } from '@emit/logger'
+import { redact, sample, rateLimit, normalizeStack } from '@emit/core'
 
 const logger = new LoggerStrategy({
   plugins: [
@@ -177,7 +177,7 @@ const logger = new LoggerStrategy({
 **New transports** — structured output and remote ingestion:
 
 ```typescript
-import { JSONTransport, HTTPTransport, DevToolsTransport } from '@emit/logger'
+import { JSONTransport, HTTPTransport, DevToolsTransport } from '@emit/core'
 ```
 
 **Consent gate** — GDPR-compliant analytics opt-out:
@@ -208,7 +208,7 @@ logger.init()
 **Circuit breaker** — protect against flaky providers:
 
 ```typescript
-import { circuitBreaker } from '@emit/logger'
+import { circuitBreaker } from '@emit/core'
 
 const safeProvider = circuitBreaker(myProvider, {
   failureThreshold: 5,

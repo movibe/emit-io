@@ -1,18 +1,18 @@
 # @emit/next
 
-Next.js bindings for [@emit/logger](https://github.com/Emit-logger/emit) — middleware logging and App Router route handler instrumentation.
+Next.js bindings for [@emit/core](https://github.com/Emit-logger/emit) — middleware logging and App Router route handler instrumentation.
 
 ## Install
 
 ```bash
-npm install @emit/logger @emit/next
+npm install @emit/core @emit/next
 ```
 
 ## Quick Start
 
 ```typescript
 // lib/logger.ts
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/core'
 
 export const logger = new LoggerStrategy({
   transports: [new JSONTransport({ minLevel: LogLevelEnum.INFO })],
@@ -102,7 +102,7 @@ logger.info('processing order', { orderId: '123' })
 
 | Package | Version |
 |---|---|
-| `@emit/logger` | `^1.0.0` |
+| `@emit/core` | `^1.0.0` |
 | `next` | `^14.0.0 \|\| ^15.0.0` |
 
 ## License

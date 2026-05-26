@@ -1,6 +1,6 @@
 import { test, expect, describe, vi } from 'vitest'
 import { withAnalytics } from '../server.js'
-import type { LoggerStrategy } from '@emit/logger'
+import type { LoggerStrategy } from '@emit/core'
 
 describe('withAnalytics', () => {
   test('calls the action and returns the result', async () => {

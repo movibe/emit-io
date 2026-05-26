@@ -10,7 +10,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@emit/logger": "^1.0.0",
+    "@emit/core": "^1.0.0",
     "@emit/react-native": "^1.0.0",
     "@react-navigation/native": "^7.0.0",
     "expo": "~52.0.0",

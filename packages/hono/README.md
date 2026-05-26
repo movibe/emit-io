@@ -1,18 +1,18 @@
 # @emit/hono
 
-Hono middleware for [@emit/logger](https://github.com/Emit-logger/emit) — request ID, child logger, timings, and ALS context propagation.
+Hono middleware for [@emit/core](https://github.com/Emit-logger/emit) — request ID, child logger, timings, and ALS context propagation.
 
 ## Install
 
 ```bash
-npm install @emit/logger @emit/hono
+npm install @emit/core @emit/hono
 ```
 
 ## Quick Start
 
 ```typescript
 import { Hono } from 'hono'
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/core'
 import { loggerMiddleware } from '@emit/hono'
 
 const logger = new LoggerStrategy({
@@ -92,7 +92,7 @@ async function processOrder() {
 
 | Package | Version |
 |---|---|
-| `@emit/logger` | `^1.0.0` |
+| `@emit/core` | `^1.0.0` |
 | `hono` | `^4.0.0` |
 
 ## License

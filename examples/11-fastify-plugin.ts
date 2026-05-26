@@ -1,6 +1,6 @@
 import Fastify from 'fastify'
 import { loggerPlugin } from '@emit/fastify'
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/core'
 
 const app = Fastify({ disableRequestLogging: true })
 

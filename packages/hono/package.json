@@ -1,7 +1,7 @@
 {
   "name": "@emit/hono",
   "version": "1.0.0",
-  "description": "Hono middleware for @emit/logger — request id, child logger, timings",
+  "description": "Hono middleware for @emit/core — request id, child logger, timings",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -14,18 +14,18 @@
   },
   "files": ["dist", "README.md"],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=hono --external=@emit/logger && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=hono --external=@emit/logger",
-    "build:types": "npx tsc --emitDeclarationOnly",
+    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=hono --external=@emit/core && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=hono --external=@emit/core",
+    "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "vitest run",
     "prepack": "bun run build:all"
   },
   "peerDependencies": {
-    "@emit/logger": "^1.0.0",
+    "@emit/core": "^1.0.0",
     "hono": "^4.0.0"
   },
   "devDependencies": {
-    "@emit/logger": "workspace:*",
+    "@emit/core": "workspace:*",
     "@types/node": "^20.11.19",
     "hono": "^4.0.0",
     "typescript": "^5.3.3"

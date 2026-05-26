@@ -1,5 +1,5 @@
 {
-  "name": "@emit/logger",
+  "name": "@emit/core",
   "version": "1.0.0",
   "description": "A flexible and type-safe logging system for JavaScript/TypeScript applications",
   "type": "module",
@@ -47,7 +47,7 @@
   ],
   "scripts": {
     "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs && bun build ./src/index.ts --target=browser --format=esm --outfile=dist/index.browser.js && bun build ./src/index.ts --target=browser --format=esm --outfile=dist/index.worker.js && bun build ./src/test-utils.ts --outdir=dist --target=node --format=esm && bun build ./src/test-utils.ts --target=node --format=cjs --outfile=dist/test-utils.cjs",
-    "build:types": "npx tsc --emitDeclarationOnly",
+    "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "vitest run",
     "lint": "eslint src --ext .ts",

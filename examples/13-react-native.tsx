@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, View } from 'react-native'
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native'
-import { LoggerStrategy, type AnalyticsProvider } from '@emit/logger'
+import { LoggerStrategy, type AnalyticsProvider } from '@emit/core'
 import {
   AnalyticsProvider as AnalyticsContext,
   useAnalytics,

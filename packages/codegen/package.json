@@ -1,7 +1,7 @@
 {
   "name": "@emit/codegen",
   "version": "1.0.0",
-  "description": "CLI code generator for @emit/logger — define events in YAML, get typed TypeScript tracker",
+  "description": "CLI code generator for @emit/core — define events in YAML, get typed TypeScript tracker",
   "type": "module",
   "bin": {
     "logger-codegen": "./dist/index.js"
@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm",
-    "build:types": "npx tsc --emitDeclarationOnly",
+    "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "bun test",
     "prepare": "bun run build:all"

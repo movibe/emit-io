@@ -1,7 +1,7 @@
 # @emit/react · Vite Example
 
 Minimal **React 19 + Vite 5** app demonstrating
-[`@emit/logger`](../../packages/core) and
+[`@emit/core`](../../packages/core) and
 [`@emit/react`](../../packages/react) in the browser.
 
 ## What it shows

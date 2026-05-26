@@ -1,4 +1,4 @@
-import { LoggerStrategy, JSONTransport, LogLevelEnum, redact } from '@emit/logger'
+import { LoggerStrategy, JSONTransport, LogLevelEnum, redact } from '@emit/core'
 
 export const logger = new LoggerStrategy({
   transports: [

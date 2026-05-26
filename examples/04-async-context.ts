@@ -1,4 +1,4 @@
-import { LoggerStrategy, ConsoleTransport, runWithContext, LogLevelEnum } from '@emit/logger'
+import { LoggerStrategy, ConsoleTransport, runWithContext, LogLevelEnum } from '@emit/core'
 
 // runWithContext uses AsyncLocalStorage to propagate context across await
 // boundaries without passing it manually through every function signature.
