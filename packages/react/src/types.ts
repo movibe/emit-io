@@ -10,8 +10,10 @@ export interface AnalyticsContextValue {
   screen: (name: string, params?: Record<string, unknown>) => void
   /** Identify a user */
   identify: (user: { id: string; [key: string]: unknown }) => void
-  /** Track an error */
-  error: (feature: string, name: string, critical: boolean, error: unknown, extra?: Record<string, unknown>) => void
+  /** Track an analytics error with provider dispatch */
+  captureError: (feature: string, name: string, critical: boolean, err: Error, extra?: Record<string, unknown>) => void
+  /** @deprecated use captureError */
+  error: (feature: string, name: string, critical: boolean, err: Error, extra?: Record<string, unknown>) => void
 }
 
 export interface AnalyticsProviderProps {

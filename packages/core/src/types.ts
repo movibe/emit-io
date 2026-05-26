@@ -87,15 +87,7 @@ export type LOG_TAGS =
   | 'purchase'
   | string;
 
-export type EVENT_TAGS = {
-  'app-open': Record<string, never>
-  'user-login': { method: string }
-  'user-register': { method: string }
-  'add-to-cart': { product_id: string; quantity: number }
-  'remove-from-cart': { product_id: string; quantity: number }
-  'begin-checkout': { total: number; items: number }
-  'purchase-complete': { order_id: string; total: number }
-}
+export type EVENT_TAGS = Record<string, Record<string, unknown>>
 
 export type NETWORK_ANALYTICS_TAGS =
   | 'GraphqlQuery_error_graphql'

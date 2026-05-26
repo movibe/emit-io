@@ -1,6 +1,6 @@
 {
   "name": "@movibe/logger-fastify",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Fastify plugin for @movibe/logger — per-request logging, request id, hook timings",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -21,7 +21,7 @@
     "prepack": "bun run build:all"
   },
   "peerDependencies": {
-    "@movibe/logger": "^2.0.0",
+    "@movibe/logger": "^3.0.0",
     "fastify": "^4.0.0 || ^5.0.0"
   },
   "dependencies": {

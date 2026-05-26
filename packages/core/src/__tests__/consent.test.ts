@@ -155,7 +155,7 @@ describe('consent — analytics=false', () => {
 })
 
 describe('consent — errors=false', () => {
-  test('analytics error() (3+ args) does NOT call providers when errors=false', () => {
+  test('captureError() does NOT call providers when errors=false', () => {
     const provider = makeProvider()
     const logger = new LoggerStrategy({
       providers: [provider],
@@ -163,11 +163,11 @@ describe('consent — errors=false', () => {
       consent: { errors: false },
     })
 
-    logger.error('feat', 'something', true, new Error('oops'))
+    logger.captureError('feat', 'something', true, new Error('oops'))
     expect(provider.error).not.toHaveBeenCalled()
   })
 
-  test('analytics error() (3+ args) DOES emit to transport when errors=false', () => {
+  test('captureError() DOES emit to transport when errors=false', () => {
     const transport = makeTransport()
     const logger = new LoggerStrategy({
       transports: [transport],
@@ -175,7 +175,7 @@ describe('consent — errors=false', () => {
       consent: { errors: false },
     })
 
-    logger.error('feat', 'something', true, new Error('oops'))
+    logger.captureError('feat', 'something', true, new Error('oops'))
     expect(transport.log).toHaveBeenCalledTimes(1)
     expect(transport.log.mock.calls[0][0].level).toBe(LogLevel.ERROR)
   })
@@ -226,7 +226,7 @@ describe('consent — setConsent', () => {
 })
 
 describe('consent — combinations', () => {
-  test('analytics=false + errors=true: events blocked, analytics error() calls providers', () => {
+  test('analytics=false + errors=true: events blocked, captureError calls providers', () => {
     const provider = makeProvider()
     const logger = new LoggerStrategy({
       providers: [provider],
@@ -237,11 +237,11 @@ describe('consent — combinations', () => {
     logger.event('app-open' as any, {})
     expect(provider.event).not.toHaveBeenCalled()
 
-    logger.error('feat', 'something', true, new Error('oops'))
+    logger.captureError('feat', 'something', true, new Error('oops'))
     expect(provider.error).toHaveBeenCalledTimes(1)
   })
 
-  test('analytics=false + errors=false: both events and errors blocked for providers, transport still gets error', () => {
+  test('analytics=false + errors=false: both events and captureError blocked for providers, transport still gets error', () => {
     const provider = makeProvider()
     const transport = makeTransport()
     const logger = new LoggerStrategy({
@@ -254,7 +254,7 @@ describe('consent — combinations', () => {
     logger.event('app-open' as any, {})
     expect(provider.event).not.toHaveBeenCalled()
 
-    logger.error('feat', 'something', true, new Error('oops'))
+    logger.captureError('feat', 'something', true, new Error('oops'))
     expect(provider.error).not.toHaveBeenCalled()
     // Transport still receives the error entry
     expect(transport.log).toHaveBeenCalledTimes(1)

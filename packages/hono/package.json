@@ -1,6 +1,6 @@
 {
   "name": "@movibe/logger-hono",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Hono middleware for @movibe/logger — request id, child logger, timings",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -21,7 +21,7 @@
     "prepack": "bun run build:all"
   },
   "peerDependencies": {
-    "@movibe/logger": "^2.0.0",
+    "@movibe/logger": "^3.0.0",
     "hono": "^4.0.0"
   },
   "devDependencies": {

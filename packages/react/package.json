@@ -1,6 +1,6 @@
 {
   "name": "@movibe/logger-react",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "React bindings for @movibe/logger — hooks, context provider, and error boundary",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -41,7 +41,7 @@
     "prepack": "bun run build:all"
   },
   "peerDependencies": {
-    "@movibe/logger": "^2.0.0",
+    "@movibe/logger": "^3.0.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },

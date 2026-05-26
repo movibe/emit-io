@@ -42,6 +42,7 @@ export class LoggerStrategy<
     if (!config) return
 
     if (Array.isArray(config)) {
+      console.warn('[LoggerStrategy] LoggerStrategyConstructor array is deprecated; pass LoggerConfig with AnalyticsProvider instances. Will be removed in v4.')
       for (const injector of config) {
         if (injector.enabled) {
           this.legacyStrategies.push(injector.class)
@@ -227,27 +228,28 @@ export class LoggerStrategy<
   }
 
   // ============================================================
-  // error() — overloaded: LogLevel vs analytics
+  // error() — log-level only (v3 API)
   // ============================================================
 
-  error(message: string, context?: Record<string, unknown>): void
-  error(feature: string, name: string, critical: boolean, error: unknown, extra?: Record<string, unknown>): void
-  error(feature: string, name?: any, critical?: any, error?: any, extra?: any): void {
-    const isLogLevelCall = arguments.length <= 2
-    if (isLogLevelCall) {
-      this.emitToTransports(createLogEntry(LogLevelEnum.ERROR, feature, name as Record<string, unknown> | undefined))
-    } else {
-      // Always emit to transport (structural log) regardless of consent
-      this.emitToTransports(
-        createLogEntry(LogLevelEnum.ERROR, `[${feature}] ${name as string}`, { ...extra, critical }, error as Error)
-      )
-      // Analytics error gate: only call providers if errors consent is granted
-      if (this.consent.errors === false) return
-      this.executeOnAll('error',
-        (s) => s.error?.(feature, name as string, critical as boolean, error as Error, extra as Record<string, unknown>),
-        (p) => p.error?.(feature, name as string, critical as boolean, error as Error, extra as Record<string, unknown>)
-      )
-    }
+  error(message: string, context?: Record<string, unknown>): void {
+    this.emitToTransports(createLogEntry(LogLevelEnum.ERROR, message, context))
+  }
+
+  // ============================================================
+  // captureError() — analytics error (v3 API, replaces error overload)
+  // ============================================================
+
+  captureError(feature: string, name: string, critical: boolean, err: Error, extra?: Record<string, unknown>): void {
+    // Always emit to transport (structural log) regardless of consent
+    this.emitToTransports(
+      createLogEntry(LogLevelEnum.ERROR, `[${feature}] ${name}`, { ...extra, critical }, err)
+    )
+    // Analytics error gate: only call providers if errors consent is granted
+    if (this.consent.errors === false) return
+    this.executeOnAll('captureError',
+      (s) => s.error?.(feature, name, critical, err, extra),
+      (p) => p.error?.(feature, name, critical, err, extra)
+    )
   }
 
   // ============================================================
@@ -304,19 +306,26 @@ export class LoggerStrategy<
     })
   }
 
-  info(message: string, context?: Record<string, unknown>): void
-  info(feature: string, name: string, properties?: Record<string, any> | string | boolean): void
-  info(feature: string, name?: any, properties?: any): void {
-    if (arguments.length <= 2) {
-      this.emitToTransports(createLogEntry(LogLevelEnum.INFO, feature, name as Record<string, unknown> | undefined))
-    } else {
-      this.bufferOrRun(() => {
-        this.executeOnLegacy('info', (s) => {
-          s.info?.(feature, name as string, properties)
-        })
-        this.emitToTransports(createLogEntry(LogLevelEnum.INFO, `[${feature}] ${name as string}`, { properties }))
+  // ============================================================
+  // info() — log-level only (v3 API)
+  // ============================================================
+
+  info(message: string, context?: Record<string, unknown>): void {
+    this.emitToTransports(createLogEntry(LogLevelEnum.INFO, message, context))
+  }
+
+  // ============================================================
+  // logFeature() — analytics info (v3 API, replaces info overload)
+  // ============================================================
+
+  logFeature(feature: string, name: string, properties?: Record<string, any> | string | boolean): void {
+    if (this.consent.analytics === false) return
+    this.bufferOrRun(() => {
+      this.executeOnLegacy('info', (s) => {
+        s.info?.(feature, name, properties)
       })
-    }
+      this.emitToTransports(createLogEntry(LogLevelEnum.INFO, `[${feature}] ${name}`, { properties }))
+    })
   }
 
   logScreen(screenName: string, params?: Record<string, any>): void {

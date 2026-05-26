@@ -50,8 +50,10 @@ class MockLoggerStrategy implements LoggerStrategyType<
 describe('LoggerStrategy — Legacy API (backward compat)', () => {
   let mockStrategy: MockLoggerStrategy;
   let logger: LoggerStrategy;
+  let warnSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
+    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     mockStrategy = new MockLoggerStrategy();
     logger = new LoggerStrategy([
       { class: mockStrategy, enabled: true }
@@ -60,6 +62,7 @@ describe('LoggerStrategy — Legacy API (backward compat)', () => {
 
   afterEach(() => {
     mockStrategy.clearMocks();
+    warnSpy.mockRestore();
   });
 
   test('should initialize correctly', () => {
@@ -99,10 +102,10 @@ describe('LoggerStrategy — Legacy API (backward compat)', () => {
     expect(mockStrategy.network).toHaveBeenCalledWith('RestApi_request', properties);
   });
 
-  test('should handle errors', () => {
+  test('should handle errors via captureError', () => {
     const error = new Error('Test error');
     const extra = { context: 'test' };
-    logger.error('TestFeature', 'TestError', true, error, extra);
+    logger.captureError('TestFeature', 'TestError', true, error, extra);
     expect(mockStrategy.error).toHaveBeenCalledWith('TestFeature', 'TestError', true, error, extra);
   });
 
@@ -166,11 +169,11 @@ describe('LoggerStrategy — Legacy API (backward compat)', () => {
     expect(mockStrategy.flush).toHaveBeenCalled();
   });
 
-  test('should handle info method', () => {
+  test('should handle logFeature method', () => {
     const feature = 'TestFeature';
     const name = 'TestInfo';
     const properties = { test: 'value' };
-    logger.info(feature, name, properties);
+    logger.logFeature(feature, name, properties);
     expect(mockStrategy.info).toHaveBeenCalledWith(feature, name, properties);
   });
 
@@ -401,7 +404,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
     expect(entry.level).toBe(LogLevelEnum.ERROR);
   });
 
-  test('error overload: analytics call', () => {
+  test('captureError: dispatches to analytics provider', () => {
     const providerError = vi.fn();
     const provider: AnalyticsProvider = {
       name: 'test-provider',
@@ -415,7 +418,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
     });
 
     const err = new Error('test');
-    logger.error('Feature', 'fail', true, err, { extra: 1 });
+    logger.captureError('Feature', 'fail', true, err, { extra: 1 });
     expect(providerError).toHaveBeenCalledWith('Feature', 'fail', true, err, { extra: 1 });
   });
 

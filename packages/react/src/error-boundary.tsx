@@ -30,7 +30,7 @@ export class AnalyticsErrorBoundary extends Component<ErrorBoundaryProps, ErrorB
     this.props.onError?.(error, errorInfo)
 
     if (this.props.analytics) {
-      this.props.analytics.error(
+      this.props.analytics.captureError(
         'ReactErrorBoundary',
         error.name,
         true,

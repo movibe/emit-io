@@ -1,6 +1,6 @@
 {
   "name": "@movibe/logger-codegen",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "CLI code generator for @movibe/logger — define events in YAML, get typed TypeScript tracker",
   "type": "module",
   "bin": {

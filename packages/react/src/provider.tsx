@@ -14,8 +14,10 @@ export function AnalyticsProvider({ client, children, autoTrack }: AnalyticsProv
       event: (name, properties) => client.event?.(name as any, properties as any),
       screen: (name, params) => client.logScreen?.(name, params),
       identify: (user) => client.setUser?.(user as any),
+      captureError: (feature, name, critical, err, extra) =>
+        client.captureError?.(feature, name, critical, err, extra),
       error: (feature, name, critical, err, extra) =>
-        client.error?.(feature, name, critical, err, extra),
+        client.captureError?.(feature, name, critical, err, extra),
     }
   }, [client])
 

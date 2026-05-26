@@ -24,7 +24,7 @@ describe('createMockTransport', () => {
     const transport = createMockTransport()
     const logger = new LoggerStrategy({ transports: [transport] })
     const err = new Error('boom')
-    logger.error('feature', 'err-name', true, err)
+    logger.captureError('feature', 'err-name', true, err)
     expect(transport.entries[0].error).toBe(err)
   })
 
@@ -97,11 +97,11 @@ describe('createMockProvider', () => {
     expect(provider.screens[0].params).toEqual({ from: 'nav' })
   })
 
-  test('errors array populated by error() analytics call', () => {
+  test('errors array populated by captureError() call', () => {
     const provider = createMockProvider()
     const logger = new LoggerStrategy({ providers: [provider], emitAppOpenOnInit: false })
     const err = new Error('oops')
-    logger.error('feature', 'err-name', true, err, { extra: 'data' })
+    logger.captureError('feature', 'err-name', true, err, { extra: 'data' })
     expect(provider.errors).toHaveLength(1)
     expect(provider.errors[0].feature).toBe('feature')
     expect(provider.errors[0].name).toBe('err-name')
