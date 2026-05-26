@@ -1,7 +1,7 @@
 {
-  "name": "@emit-io/next",
+  "name": "emit-io-next",
   "version": "1.0.0",
-  "description": "Next.js bindings for @emit-io/core — middleware, route handlers, RSC support",
+  "description": "Next.js bindings for emit-io — middleware, route handlers, RSC support",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -12,20 +12,21 @@
       "require": { "types": "./dist/index.d.ts", "default": "./dist/index.cjs" }
     }
   },
+  "sideEffects": false,
   "files": ["dist", "README.md"],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=next --external=@emit-io/core && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=next --external=@emit-io/core",
+    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=next --external=emit-io-core --minify && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=next --external=emit-io-core --minify",
     "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "vitest run",
     "prepack": "bun run build:all"
   },
   "peerDependencies": {
-    "@emit-io/core": "^1.0.0",
+    "emit-io-core": "^1.0.0",
     "next": "^14.0.0 || ^15.0.0"
   },
   "devDependencies": {
-    "@emit-io/core": "workspace:*",
+    "emit-io-core": "workspace:*",
     "@types/node": "^20.11.19",
     "next": "^15.0.0",
     "typescript": "^5.3.3"

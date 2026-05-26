@@ -1,42 +1,28 @@
 import type { LogEntry, Transport, AnalyticsProvider } from './types.js'
 import { LogLevel } from './types.js'
 
-const ICONS: Record<LogLevel, string> = {
-  [LogLevel.DEBUG]: '\x1b[90m⚫\x1b[0m',
-  [LogLevel.INFO]: '\x1b[34m🔵\x1b[0m',
-  [LogLevel.WARN]: '\x1b[33m🟡\x1b[0m',
-  [LogLevel.ERROR]: '\x1b[31m🔴\x1b[0m',
-  [LogLevel.FATAL]: '\x1b[41;97m⛔\x1b[0m',
+const RESET = '\x1b[0m'
+const LEVEL_COLORS: Record<LogLevel, string> = {
+  [LogLevel.DEBUG]: '\x1b[90m',
+  [LogLevel.INFO]:  '\x1b[34m',
+  [LogLevel.WARN]:  '\x1b[33m',
+  [LogLevel.ERROR]: '\x1b[31m',
+  [LogLevel.FATAL]: '\x1b[41;97m',
 }
-
 const LEVEL_LABELS: Record<LogLevel, string> = {
   [LogLevel.DEBUG]: 'DEBUG',
-  [LogLevel.INFO]: 'INFO',
-  [LogLevel.WARN]: 'WARN',
+  [LogLevel.INFO]:  'INFO',
+  [LogLevel.WARN]:  'WARN',
   [LogLevel.ERROR]: 'ERROR',
   [LogLevel.FATAL]: 'FATAL',
 }
 
-const LEVEL_COLORS: Record<LogLevel, string> = {
-  [LogLevel.DEBUG]: '\x1b[90m',
-  [LogLevel.INFO]: '\x1b[34m',
-  [LogLevel.WARN]: '\x1b[33m',
-  [LogLevel.ERROR]: '\x1b[31m',
-  [LogLevel.FATAL]: '\x1b[41;97m',
-}
-
-const RESET = '\x1b[0m'
-
-function formatTimestamp(date: Date): string {
-  return date.toISOString()
-}
-
 function formatEntry(entry: LogEntry): string {
-  const timestamp = formatTimestamp(entry.timestamp)
-  const level = LEVEL_COLORS[entry.level] + LEVEL_LABELS[entry.level] + RESET
-  const contextStr = entry.context ? ` ${JSON.stringify(entry.context)}` : ''
-  const errorStr = entry.error ? `\n  ${entry.error.stack ?? entry.error.message}` : ''
-  return `${timestamp} ${level} ${entry.message}${contextStr}${errorStr}`
+  const color = LEVEL_COLORS[entry.level]
+  const label = LEVEL_LABELS[entry.level]
+  const ctx = entry.context ? ` ${JSON.stringify(entry.context)}` : ''
+  const err = entry.error ? `\n  ${entry.error.stack ?? entry.error.message}` : ''
+  return `${entry.timestamp.toISOString()} ${color}${label}${RESET} ${entry.message}${ctx}${err}`
 }
 
 export interface ConsoleTransportOptions {

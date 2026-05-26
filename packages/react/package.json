@@ -1,7 +1,7 @@
 {
-  "name": "@emit-io/react",
+  "name": "emit-io-react",
   "version": "1.0.0",
-  "description": "React bindings for @emit-io/core — hooks, context provider, and server action wrapper",
+  "description": "React bindings for emit-io — hooks, context provider, and server action wrapper",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -28,25 +28,26 @@
       }
     }
   },
+  "sideEffects": false,
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=react --external=react-dom --external=@emit-io/core && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=react --external=react-dom --external=@emit-io/core && bun build ./src/server.ts --outdir=dist --target=node --format=esm --external=@emit-io/core && bun build ./src/server.ts --target=node --format=cjs --outfile=dist/server.cjs --external=@emit-io/core",
+    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=react --external=react-dom --external=emit-io-core --minify && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=react --external=react-dom --external=emit-io-core --minify && bun build ./src/server.ts --outdir=dist --target=node --format=esm --external=emit-io-core --minify && bun build ./src/server.ts --target=node --format=cjs --outfile=dist/server.cjs --external=emit-io-core --minify",
     "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "bun test",
     "prepack": "bun run build:all"
   },
   "peerDependencies": {
-    "@emit-io/core": "^1.0.0",
+    "emit-io-core": "^1.0.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
-    "@emit-io/core": "workspace:*",
+    "emit-io-core": "workspace:*",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "react": "^18.2.0",

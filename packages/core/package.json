@@ -1,5 +1,5 @@
 {
-  "name": "@emit-io/core",
+  "name": "emit-io-core",
   "version": "1.0.0",
   "description": "A flexible and type-safe logging system for JavaScript/TypeScript applications",
   "type": "module",
@@ -40,13 +40,14 @@
       }
     }
   },
+  "sideEffects": false,
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs && bun build ./src/index.ts --target=browser --format=esm --outfile=dist/index.browser.js && bun build ./src/index.ts --target=browser --format=esm --outfile=dist/index.worker.js && bun build ./src/test-utils.ts --outdir=dist --target=node --format=esm && bun build ./src/test-utils.ts --target=node --format=cjs --outfile=dist/test-utils.cjs",
+    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --minify && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --minify && bun build ./src/index.ts --target=browser --format=esm --outfile=dist/index.browser.js --minify && cp dist/index.browser.js dist/index.worker.js && bun build ./src/test-utils.ts --outdir=dist --target=node --format=esm --minify && bun build ./src/test-utils.ts --target=node --format=cjs --outfile=dist/test-utils.cjs --minify",
     "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "vitest run",
@@ -75,8 +76,7 @@
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
     "eslint": "^8.56.0",
-    "typescript": "^5.3.3",
-    "cursor-tools": "latest"
+    "typescript": "^5.3.3"
   },
   "publishConfig": {
     "access": "public"

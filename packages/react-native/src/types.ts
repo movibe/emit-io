@@ -1,4 +1,4 @@
-import type { LoggerStrategy, AnalyticsProvider } from '@emit-io/core'
+import type { LoggerStrategy, AnalyticsProvider } from 'emit-io-core'
 import type { ReactNode } from 'react'
 
 export interface AnalyticsContextValue {

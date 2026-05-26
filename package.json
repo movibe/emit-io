@@ -11,13 +11,13 @@
     "packages/otel"
   ],
   "scripts": {
-    "build": "bun run --filter @emit-io/core build:all && bun run --filter @emit-io/react build:all && bun run --filter @emit-io/react-native build:all && bun run --filter @emit-io/next build:all && bun run --filter @emit-io/fastify build:all && bun run --filter @emit-io/hono build:all && bun run --filter @emit-io/otel build:all && bun run --filter @emit-io/codegen build",
+    "build": "bun run --filter emit-io-core build:all && bun run --filter emit-io-react build:all && bun run --filter emit-io-react-native build:all && bun run --filter emit-io-next build:all && bun run --filter emit-io-fastify build:all && bun run --filter emit-io-hono build:all && bun run --filter emit-io-otel build:all && bun run --filter emit-io-codegen build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "bench": "tsx packages/core/bench/index.ts",
     "bench:compare": "tsx packages/core/bench/compare.ts",
-    "lint": "bun run --filter @emit-io/core lint",
+    "lint": "bun run --filter emit-io-core lint",
     "changeset": "changeset",
     "version": "changeset version",
     "release": "bun run build && changeset publish"

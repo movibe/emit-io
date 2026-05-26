@@ -1,5 +1,5 @@
 import { trace, type Tracer } from '@opentelemetry/api'
-import type { AnalyticsProvider } from '@emit-io/core'
+import type { AnalyticsProvider } from 'emit-io-core'
 
 export interface OTelProviderOptions {
   name?: string

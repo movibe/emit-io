@@ -1,17 +1,18 @@
 {
-  "name": "@emit-io/codegen",
+  "name": "emit-io-codegen",
   "version": "1.0.0",
-  "description": "CLI code generator for @emit-io/core — define events in YAML, get typed TypeScript tracker",
+  "description": "CLI code generator for emit-io — define events in YAML, get typed TypeScript tracker",
   "type": "module",
   "bin": {
     "logger-codegen": "./dist/index.js"
   },
+  "sideEffects": false,
   "files": [
     "dist",
     "README.md"
   ],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm",
+    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --minify",
     "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "bun test",
