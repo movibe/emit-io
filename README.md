@@ -208,7 +208,7 @@ new LoggerStrategy({
   plugins: [
     redact({ paths: ['password', 'user.token', '*.secret'] }),
     sample({ rate: 0.05, levels: [LogLevelEnum.DEBUG] }),
-    rateLimit({ maxPerSecond: 100 }),
+    rateLimit({ max: 100, windowMs: 1000 }),
     normalizeStack({ maxFrames: 10 }),
   ],
 })
@@ -275,13 +275,28 @@ const safePostHog = circuitBreaker(new PostHogProvider(), {
 new LoggerStrategy({ providers: [safePostHog] })
 ```
 
+## Examples
+
+Runnable apps per integration in [`examples/`](./examples):
+
+| App | Stack |
+|---|---|
+| [next-app](./examples/next-app) | Next.js 15 App Router + `@movibe/logger-next` (middleware + instrumentRoute) |
+| [fastify-server](./examples/fastify-server) | Fastify 5 + `@movibe/logger-fastify` (plugin + per-request child logger) |
+| [hono-worker](./examples/hono-worker) | Cloudflare Worker (Hono 4) + `HTTPTransport` remote ingest |
+| [otel-bridge](./examples/otel-bridge) | Node + NodeSDK + OTLP exporters + `OTelProvider`/`OTelTransport` |
+| [react-vite](./examples/react-vite) | Vite + React 19 SPA + `@movibe/logger-react` hooks + boundary |
+| [react-native-expo](./examples/react-native-expo) | Expo SDK 52 + expo-router + `@movibe/logger-react-native` |
+
+Single-concept snippets in [`examples/`](./examples) (files `01-`...`15-`): redact, child loggers, ALS context, HTTP transport, consent, circuit breaker, event registry, codegen workflow.
+
 ## Benchmarks
 
 ~1.2M ops/s on Node v22 arm64 (simple `info()` with JSONTransport to `/dev/null`). Faster than winston in context-heavy scenarios, ~2× behind pino in raw throughput. See [BENCHMARKS.md](./BENCHMARKS.md) for full results.
 
 ## Migration v2 → v3
 
-See [CHANGELOG.md](./CHANGELOG.md) for the complete list. Key changes:
+See [CHANGELOG.md](./CHANGELOG.md) and [docs/MIGRATION_v2_to_v3.md](./docs/MIGRATION_v2_to_v3.md) for the complete list. Key changes:
 
 ```diff
 - logger.error('Auth', 'login_failed', true, err)
