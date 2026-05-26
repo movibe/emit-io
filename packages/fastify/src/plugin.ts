@@ -23,7 +23,7 @@ const pluginImpl: FastifyPluginAsync<LoggerPluginOptions> = async (fastify, opts
   const autoLog = opts.autoLog ?? true
   const baseLogger = opts.logger
 
-  fastify.decorateRequest('log_', null)
+  fastify.decorateRequest('log_', null as any)
   fastify.decorateRequest('requestId', '')
 
   fastify.addHook('onRequest', async (req, reply) => {

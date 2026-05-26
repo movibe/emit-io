@@ -1,6 +1,15 @@
 {
   "private": true,
-  "workspaces": ["packages/core", "packages/react", "packages/react-native", "packages/codegen", "packages/fastify", "packages/next", "packages/hono", "packages/otel"],
+  "workspaces": [
+    "packages/core",
+    "packages/react",
+    "packages/react-native",
+    "packages/codegen",
+    "packages/fastify",
+    "packages/next",
+    "packages/hono",
+    "packages/otel"
+  ],
   "scripts": {
     "build": "bun run --filter @emit/core build:all && bun run --filter @emit/react build:all && bun run --filter @emit/react-native build:all && bun run --filter @emit/next build:all && bun run --filter @emit/fastify build:all && bun run --filter @emit/hono build:all && bun run --filter @emit/otel build:all && bun run --filter @emit/codegen build",
     "test": "vitest run",
@@ -23,5 +32,7 @@
     "typescript": "^5.3.3",
     "vitest": "^2.1.0",
     "winston": "^3.13.0"
-  }
+  },
+  "name": "",
+  "version": ""
 }
