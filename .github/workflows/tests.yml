@@ -22,16 +22,10 @@ jobs:
         run: bun install
 
       - name: Run tests with coverage
-        run: bun test --coverage
+        run: bun run test:coverage
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: Emit-logger/emit
-
-      - name: Generate coverage badges
-        uses: jpb06/jest-badges-action@latest
-        with:
-          branches: main,develop
-          commit-message: "chore: atualiza badges de cobertura"

@@ -1,53 +1,32 @@
 # Changelog
 
-## [3.0.0] - 2026-05-26
+## [1.0.0] - 2026-05-26
 
-### Breaking Changes
+First release under the `@emit` scope.
 
-- `error(feature, name, critical, err, extra)` overload **removed**. Use `captureError(feature, name, critical, err, extra)` instead. Log-level `error(msg, ctx?)` is unchanged.
-- `info(feature, name, properties)` overload **removed**. Use `logFeature(feature, name, properties)` instead. Log-level `info(msg, ctx?)` is unchanged.
-- `EVENT_TAGS` type is now `Record<string, Record<string, unknown>>` (was hardcoded event keys). Use `EventRegistry` module augmentation for typed events.
-- `LoggerStrategyConstructor[]` config now emits a `console.warn` deprecation notice. Migrate to `LoggerConfig` with `AnalyticsProvider` instances.
+### Packages
 
-### Migration
+| Package | Description |
+|---|---|
+| `@emit/core` | LoggerStrategy, transports (Console, JSON, HTTP, DevTools), plugins (redact, sample, rateLimit, normalizeStack), context, circuit breaker, consent gate |
+| `@emit/react` | React hooks, AnalyticsProvider, server action wrapper (`withAnalytics`) |
+| `@emit/react-native` | React Native hooks, AnalyticsProvider, AppState tracking, navigation integration |
+| `@emit/next` | Next.js middleware + route handler instrumentation |
+| `@emit/fastify` | Fastify plugin — per-request child logger, request ID, hook timings |
+| `@emit/hono` | Hono middleware — request ID, child logger, ALS context propagation |
+| `@emit/otel` | OpenTelemetry bridge — logs → LogRecords, events → spans |
+| `@emit/codegen` | CLI codegen — YAML schema → TypeScript, drift detection, JSON Schema/Avro export |
 
-```diff
-- logger.error('Auth', 'login_failed', true, err)
-+ logger.captureError('Auth', 'login_failed', true, err)
+### Features
 
-- logger.info('Auth', 'login_success', { method: 'oauth' })
-+ logger.logFeature('Auth', 'login_success', { method: 'oauth' })
-
-- declare global { interface EVENT_TAGS { ... } }
-+ declare module '@emit/core' { interface EventRegistry { ... } }
-```
-
-React package — `AnalyticsContextValue` now exposes `captureError`; `error` is kept as a deprecated alias:
-
-```diff
-- analytics.error('ReactErrorBoundary', error.name, true, error, extra)
-+ analytics.captureError('ReactErrorBoundary', error.name, true, error, extra)
-```
-
-### Added (v2.x feature parity, recap)
-
-- Child loggers, AsyncLocalStorage context propagation
-- Built-in plugins: redact, sample, rateLimit, normalizeStack
-- Transports: JSONTransport, HTTPTransport, DevToolsTransport
-- `circuitBreaker` provider wrapper
-- Consent gate (GDPR) — `setConsent` / `getConsent`
+- Zero runtime dependencies on `@emit/core`
+- Multi-runtime: Node, browser, edge (Workerd), React Native
+- Dual-purpose: analytics events + structured logging through the same API
+- Type-safe event registry via module augmentation
+- Child loggers with context binding
+- AsyncLocalStorage context propagation (`runWithContext`)
+- GDPR consent gate (`setConsent`/`getConsent`)
+- Circuit breaker for analytics providers
 - Pre-init event buffer
-- Test helpers (`@emit/core/test`)
-- React 19 support (`useFormAnalytics`, `withAnalytics` server action)
-- Codegen drift detection + JSON Schema / Avro export
-- New packages: `@emit/next`, `@emit/fastify`, `@emit/hono`, `@emit/otel`
-
-### Package versions bumped to 3.0.0
-
-- `@emit/core`
-- `@emit/react`
-- `@emit/next`
-- `@emit/fastify`
-- `@emit/hono`
-- `@emit/otel`
-- `@emit/codegen`
+- Plugin pipeline (transform/drop log entries)
+- Per-transport log level filtering
