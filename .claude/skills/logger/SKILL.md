@@ -47,12 +47,12 @@ import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/core'
 const logger = new LoggerStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
 })
-logger.info('started', { port: 3000 })
+emit.info('started', { port: 3000 })
 ```
 
 **Next.js App Router:**
 ```typescript
-// lib/logger.ts
+// lib/emit.ts
 import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/core'
 export const logger = new LoggerStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
@@ -113,7 +113,7 @@ new LoggerStrategy({
 - **Analytics layer** — `event()`, `logScreen()`, `setUser()`, `captureError()` dispatched to `AnalyticsProvider[]` (PostHog, Amplitude, GA4, Sentry)
 - **Observability layer** — `debug/info/warn/error/fatal()` piped through `Transport[]` (Console, JSON, HTTP, OTel)
 
-Both layers run on every call. `logger.error()` writes to all transports AND fires analytics providers. `OTelTransport` bridges logs to OTLP LogRecords; `OTelProvider` bridges events to OTLP Spans (Grafana, Tempo, Jaeger, Honeycomb).
+Both layers run on every call. `emit.error()` writes to all transports AND fires analytics providers. `OTelTransport` bridges logs to OTLP LogRecords; `OTelProvider` bridges events to OTLP Spans (Grafana, Tempo, Jaeger, Honeycomb).
 
 ## Project Structure (Monorepo)
 

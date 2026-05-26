@@ -15,7 +15,7 @@ import { Hono } from 'hono'
 import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/core'
 import { loggerMiddleware } from '@emit/hono'
 
-const logger = new LoggerStrategy({
+const emit = new LoggerStrategy({
   transports: [new JSONTransport({ minLevel: LogLevelEnum.INFO })],
 })
 
@@ -83,8 +83,8 @@ app.get('/checkout', async (c) => {
 })
 
 async function processOrder() {
-  // logger.info here also picks up requestId from ALS context
-  logger.info('order processed')
+  // emit.info here also picks up requestId from ALS context
+  emit.info('order processed')
 }
 ```
 

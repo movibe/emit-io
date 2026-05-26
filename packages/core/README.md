@@ -21,7 +21,7 @@ import {
   LogLevelEnum,
 } from '@emit/core'
 
-const logger = new LoggerStrategy({
+const emit = new LoggerStrategy({
   transports: [
     new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG, pretty: true }),
     new JSONTransport({ minLevel: LogLevelEnum.INFO }),
@@ -34,20 +34,20 @@ const logger = new LoggerStrategy({
 })
 
 // Structured log levels
-logger.debug('query executed', { sql: 'SELECT 1', ms: 3 })
-logger.info('server started', { port: 3000 })
-logger.warn('slow response', { ms: 1200 })
-logger.error('db connection lost', { host: 'pg-primary' })
-logger.fatal('out of memory')
+emit.debug('query executed', { sql: 'SELECT 1', ms: 3 })
+emit.info('server started', { port: 3000 })
+emit.warn('slow response', { ms: 1200 })
+emit.error('db connection lost', { host: 'pg-primary' })
+emit.fatal('out of memory')
 
 // Analytics error — writes to transport AND dispatches to providers
-logger.captureError('Auth', 'login_failed', true, new Error('bad token'), { userId: 'u-1' })
+emit.captureError('Auth', 'login_failed', true, new Error('bad token'), { userId: 'u-1' })
 
 // Analytics event
-logger.event('purchase', { orderId: 'x', total: 99 })
+emit.event('purchase', { orderId: 'x', total: 99 })
 
 // Feature info (analytics + transport)
-logger.logFeature('Checkout', 'step_completed', { step: 2 })
+emit.logFeature('Checkout', 'step_completed', { step: 2 })
 ```
 
 ## API
@@ -166,14 +166,14 @@ declare module '@emit/core' {
   }
 }
 
-logger.event('purchase', { orderId: 'x', total: 99 })  // typed
-logger.event('unknown', {})  // TS error
+emit.event('purchase', { orderId: 'x', total: 99 })  // typed
+emit.event('unknown', {})  // TS error
 ```
 
 ## Child Loggers + ALS Context
 
 ```typescript
-const reqLog = logger.child({ requestId: 'abc-123' })
+const reqLog = emit.child({ requestId: 'abc-123' })
 reqLog.info('request received')  // logs include requestId
 
 import { runWithContext } from '@emit/core'
@@ -187,8 +187,8 @@ await runWithContext({ traceId: 'tx-1' }, async () => {
 ## Consent Gate
 
 ```typescript
-logger.setConsent({ analytics: false })   // block events/identify/screen
-logger.setConsent({ analytics: true })    // re-enable after user consent
+emit.setConsent({ analytics: false })   // block events/identify/screen
+emit.setConsent({ analytics: true })    // re-enable after user consent
 // errors: false → transport still receives the entry; providers do not
 ```
 
@@ -200,7 +200,7 @@ import { circuitBreaker } from '@emit/core'
 const safe = circuitBreaker(myProvider, {
   failureThreshold: 5,
   cooldownMs: 30_000,
-  onStateChange: (state, name) => logger.warn('circuit', { state, name }),
+  onStateChange: (state, name) => emit.warn('circuit', { state, name }),
 })
 new LoggerStrategy({ providers: [safe] })
 ```
@@ -208,14 +208,14 @@ new LoggerStrategy({ providers: [safe] })
 ## Pre-Init Buffer
 
 ```typescript
-const logger = new LoggerStrategy({
+const emit = new LoggerStrategy({
   preInitBuffer: { size: 100 },
 })
 
-logger.event('app-open')   // buffered
+emit.event('app-open')   // buffered
 
 // Later, after async config is loaded:
-logger.init()              // flushes buffer → providers
+emit.init()              // flushes buffer → providers
 ```
 
 ## Test Helpers
@@ -224,7 +224,7 @@ logger.init()              // flushes buffer → providers
 import { createTestLogger } from '@emit/core/test'
 
 const { logger, entries } = createTestLogger()
-logger.info('hello', { x: 1 })
+emit.info('hello', { x: 1 })
 // entries() returns all LogEntry objects captured so far
 ```
 

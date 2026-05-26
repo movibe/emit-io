@@ -11,10 +11,10 @@ npm install @emit/core @emit/next
 ## Quick Start
 
 ```typescript
-// lib/logger.ts
+// lib/emit.ts
 import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/core'
 
-export const logger = new LoggerStrategy({
+export const emit = new LoggerStrategy({
   transports: [new JSONTransport({ minLevel: LogLevelEnum.INFO })],
 })
 ```
@@ -51,7 +51,7 @@ export const GET = instrumentRoute(
 Wraps a Next.js middleware function. Adds:
 - `requestId` from `x-request-id` header (or generates a UUID)
 - ALS context with `{ requestId, path }` for the duration of the request
-- Auto-logs request start, completion, and errors via `logger.info` / `logger.error`
+- Auto-logs request start, completion, and errors via `emit.info` / `emit.error`
 - Propagates `x-request-id` header in the response
 - Optional `pageview` analytics event on GET requests
 
@@ -94,7 +94,7 @@ Both `withLogger` and `instrumentRoute` use `runWithContext` internally. Any log
 
 ```typescript
 // Inside a route wrapped with instrumentRoute:
-logger.info('processing order', { orderId: '123' })
+emit.info('processing order', { orderId: '123' })
 // → { msg: 'processing order', context: { requestId: 'uuid', path: '/api/orders', method: 'POST', orderId: '123' } }
 ```
 

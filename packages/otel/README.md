@@ -9,7 +9,7 @@ npm install @emit/core @emit/otel \
   @opentelemetry/api @opentelemetry/api-logs
 ```
 
-You are responsible for initialising the OTel SDK (NodeSDK, etc.) before constructing the logger.
+You are responsible for initialising the OTel SDK (NodeSDK, etc.) before constructing the emit instance.
 
 ## Quick Start
 
@@ -34,7 +34,7 @@ loggerProvider.addLogRecordProcessor(
 )
 
 // 2. Wire into @emit/core
-const logger = new LoggerStrategy({
+const emit = new LoggerStrategy({
   transports: [
     new OTelTransport({
       minLevel: LogLevelEnum.INFO,
@@ -50,12 +50,12 @@ const logger = new LoggerStrategy({
 })
 
 // Logs → OTel Logs API
-logger.info('order created', { orderId: 'x' })
-logger.error('payment failed', { code: 'card_declined' })
+emit.info('order created', { orderId: 'x' })
+emit.error('payment failed', { code: 'card_declined' })
 
 // Analytics events → OTel spans
-logger.event('purchase', { orderId: 'x', total: 99 })
-logger.captureError('Payments', 'charge_failed', true, new Error('declined'))
+emit.event('purchase', { orderId: 'x', total: 99 })
+emit.captureError('Payments', 'charge_failed', true, new Error('declined'))
 ```
 
 ## API

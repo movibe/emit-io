@@ -9,7 +9,7 @@ Universal logging + analytics for TypeScript — Node, browser, edge, React Nati
 ```typescript
 import { LoggerStrategy, JSONTransport, ConsoleTransport, redact, sample, LogLevelEnum } from '@emit/core'
 
-const logger = new LoggerStrategy({
+const emit = new LoggerStrategy({
   transports: [
     new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG, pretty: true }),
     new JSONTransport({ minLevel: LogLevelEnum.INFO }),
@@ -21,11 +21,11 @@ const logger = new LoggerStrategy({
   consent: { analytics: true, errors: true },
 })
 
-logger.info('Server started', { port: 3000 })
-logger.warn('Slow query', { ms: 1200 })
-logger.captureError('Auth', 'login_failed', false, new Error('bad token'))
+emit.info('Server started', { port: 3000 })
+emit.warn('Slow query', { ms: 1200 })
+emit.captureError('Auth', 'login_failed', false, new Error('bad token'))
 
-const reqLog = logger.child({ requestId: 'abc-123' })
+const reqLog = emit.child({ requestId: 'abc-123' })
 reqLog.info('handling request')
 
 import { runWithContext } from '@emit/core'
@@ -54,7 +54,7 @@ await runWithContext({ traceId: 'tx' }, async () => {
 - **Plugin pipeline** — transform or drop entries before transport (redact, sample, rateLimit, normalizeStack)
 - **Analytics providers** — unified interface for GA4, PostHog, Sentry, etc. via `AnalyticsProvider`
 - **Type-safe events** — `EventRegistry` module augmentation for compile-time event names + payloads
-- **Child loggers** — `logger.child({ requestId })` inherits transports, merges bindings
+- **Child loggers** — `emit.child({ requestId })` inherits transports, merges bindings
 - **AsyncLocalStorage context** — `runWithContext` propagates trace data automatically (Node + edge)
 - **Consent gate** — `setConsent({ analytics, errors })` for GDPR compliance
 - **Pre-init buffer** — queue events before providers are ready, flush on `init()`
@@ -76,27 +76,27 @@ See [npm package page](https://www.npmjs.com/package/@emit/core) for versions an
 ```typescript
 import { LoggerStrategy, ConsoleTransport, JSONTransport, LogLevelEnum } from '@emit/core'
 
-const logger = new LoggerStrategy({
+const emit = new LoggerStrategy({
   transports: [
     new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG }),
     new JSONTransport({ minLevel: LogLevelEnum.INFO }),
   ],
 })
 
-logger.debug('query', { sql: 'SELECT 1' })
-logger.info('started', { port: 3000 })
-logger.warn('retrying', { attempt: 2 })
-logger.error('db down', { host: 'pg-primary' })
-logger.fatal('out of memory')
+emit.debug('query', { sql: 'SELECT 1' })
+emit.info('started', { port: 3000 })
+emit.warn('retrying', { attempt: 2 })
+emit.error('db down', { host: 'pg-primary' })
+emit.fatal('out of memory')
 
 // Analytics error (fires providers + writes to transport)
-logger.captureError('Payments', 'charge_failed', true, err, { orderId: 'x' })
+emit.captureError('Payments', 'charge_failed', true, err, { orderId: 'x' })
 
 // Analytics event
-logger.event('purchase', { total: 99 })
+emit.event('purchase', { total: 99 })
 
 // Feature info (analytics)
-logger.logFeature('Auth', 'login_success', { method: 'oauth' })
+emit.logFeature('Auth', 'login_success', { method: 'oauth' })
 ```
 
 ### React
@@ -109,11 +109,11 @@ npm install @emit/core @emit/react
 import { AnalyticsProvider, useAnalytics, usePageTracking } from '@emit/react'
 import { LoggerStrategy } from '@emit/core'
 
-const logger = new LoggerStrategy({ /* ... */ })
+const emit = new LoggerStrategy({ /* ... */ })
 
 function App() {
   return (
-    <AnalyticsProvider client={logger} autoTrack>
+    <AnalyticsProvider client={emit} autoTrack>
       <Routes />
     </AnalyticsProvider>
   )
@@ -136,20 +136,20 @@ npm install @emit/core @emit/next
 // middleware.ts
 import { withLogger } from '@emit/next'
 import { NextResponse } from 'next/server'
-import { logger } from './lib/logger'
+import { emit } from './lib/emit'
 
 export default withLogger(
   async (req) => NextResponse.next(),
-  { logger, trackPageviews: true }
+  { logger: emit, trackPageviews: true }
 )
 
 // app/api/orders/route.ts
 import { instrumentRoute } from '@emit/next'
-import { logger } from '@/lib/logger'
+import { emit } from './lib/emit'
 
 export const GET = instrumentRoute(
   async (req) => Response.json({ ok: true }),
-  { logger, eventName: 'get-orders' }
+  { logger: emit, eventName: 'get-orders' }
 )
 ```
 
@@ -163,11 +163,11 @@ npm install @emit/core @emit/react-native
 import { AnalyticsProvider, useAnalytics, useScreenTracking } from '@emit/react-native'
 import { LoggerStrategy } from '@emit/core'
 
-const logger = new LoggerStrategy({ /* ... */ })
+const emit = new LoggerStrategy({ /* ... */ })
 
 export default function App() {
   return (
-    <AnalyticsProvider client={logger} trackAppState>
+    <AnalyticsProvider client={emit} trackAppState>
       <RootStack />
     </AnalyticsProvider>
   )
@@ -227,7 +227,7 @@ Two complementary paths — use one or both:
 import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/core'
 import { OTelTransport, OTelProvider } from '@emit/otel'
 
-const logger = new LoggerStrategy({
+const emit = new LoggerStrategy({
   transports: [
     new ConsoleTransport({ minLevel: LogLevelEnum.INFO }),
     new OTelTransport({ loggerProvider }),   // logs → OTel LogRecords
@@ -238,13 +238,13 @@ const logger = new LoggerStrategy({
 })
 
 // These go to both ConsoleTransport and OTelTransport (as LogRecords)
-logger.info('request processed', { status: 200 })
-logger.error('db timeout', { host: 'pg-1' })
+emit.info('request processed', { status: 200 })
+emit.error('db timeout', { host: 'pg-1' })
 
 // These go ONLY to OTelProvider (as spans)
-logger.event('purchase', { total: 99 })
-logger.logScreen('/checkout')
-logger.captureError('Payments', 'charge', true, err)
+emit.event('purchase', { total: 99 })
+emit.logScreen('/checkout')
+emit.captureError('Payments', 'charge', true, err)
 ```
 
 | Export | What | For |
@@ -262,15 +262,15 @@ declare module '@emit/core' {
   }
 }
 
-logger.event('purchase', { orderId: 'x', total: 99 })  // typed
-logger.event('unknown', {})  // TS error
+emit.event('purchase', { orderId: 'x', total: 99 })  // typed
+emit.event('unknown', {})  // TS error
 ```
 
 ## Child Loggers + ALS Context
 
 ```typescript
 // Child logger — inherits all transports and providers, adds bindings
-const reqLog = logger.child({ requestId: 'abc-123', userId: 'u-1' })
+const reqLog = emit.child({ requestId: 'abc-123', userId: 'u-1' })
 reqLog.info('request received')  // context: { requestId, userId }
 
 // AsyncLocalStorage — auto-merges into every log call in scope
@@ -284,13 +284,13 @@ await runWithContext({ traceId: 'trace-abc' }, async () => {
 ## Consent Gate
 
 ```typescript
-const logger = new LoggerStrategy({
+const emit = new LoggerStrategy({
   consent: { analytics: false, errors: true },
 })
 
 // Later, after user consent:
-logger.setConsent({ analytics: true })
-logger.getConsent() // { analytics: true, errors: true }
+emit.setConsent({ analytics: true })
+emit.getConsent() // { analytics: true, errors: true }
 ```
 
 `analytics: false` blocks `event()`, `logFeature()`, `logScreen()`, `setUser()`.
@@ -335,11 +335,11 @@ Single-concept snippets in [`examples/`](./examples) (files `01-`...`15-`): reda
 See [CHANGELOG.md](./CHANGELOG.md) and [docs/MIGRATION_v2_to_v3.md](./docs/MIGRATION_v2_to_v3.md) for the complete list. Key changes:
 
 ```diff
-- logger.error('Auth', 'login_failed', true, err)
-+ logger.captureError('Auth', 'login_failed', true, err)
+- emit.error('Auth', 'login_failed', true, err)
++ emit.captureError('Auth', 'login_failed', true, err)
 
-- logger.info('Auth', 'login_success', { method: 'oauth' })
-+ logger.logFeature('Auth', 'login_success', { method: 'oauth' })
+- emit.info('Auth', 'login_success', { method: 'oauth' })
++ emit.logFeature('Auth', 'login_success', { method: 'oauth' })
 
 - declare global { interface EVENT_TAGS { ... } }
 + declare module '@emit/core' { interface EventRegistry { ... } }
