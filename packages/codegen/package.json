@@ -1,0 +1,34 @@
+{
+  "name": "@movibe/logger-codegen",
+  "version": "2.0.0",
+  "description": "CLI code generator for @movibe/logger — define events in YAML, get typed TypeScript tracker",
+  "type": "module",
+  "bin": {
+    "logger-codegen": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm",
+    "build:types": "npx tsc --emitDeclarationOnly",
+    "build:all": "bun run build && bun run build:types",
+    "test": "bun test",
+    "prepare": "bun run build:all"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.11.19",
+    "typescript": "^5.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/movibe/logger.git"
+  },
+  "author": "Movibe",
+  "license": "MIT"
+}

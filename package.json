@@ -1,46 +1,22 @@
 {
-  "name": "@movibe/logger",
-  "version": "1.1.0",
-  "description": "A flexible and type-safe logging system for JavaScript/TypeScript applications",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
+  "private": true,
+  "workspaces": ["packages/core", "packages/react", "packages/codegen", "packages/fastify", "packages/next"],
   "scripts": {
-    "build": "tsc && bun build ./src/index.ts --outdir=dist",
-    "test": "bun test",
-    "lint": "eslint src --ext .ts",
-    "prepare": "bun run build"
+    "build": "npm -w packages/core run build:all && npm -w packages/core run build:types",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "bench": "tsx packages/core/bench/index.ts",
+    "bench:compare": "tsx packages/core/bench/compare.ts",
+    "lint": "npm -w packages/core run lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/movibe/logger.git"
-  },
-  "keywords": [
-    "logger",
-    "analytics",
-    "typescript",
-    "logging",
-    "events"
-  ],
-  "author": "Movibe",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/movibe/logger/issues"
-  },
-  "homepage": "https://github.com/movibe/logger#readme",
   "devDependencies": {
-    "@types/node": "^20.11.19",
-    "@typescript-eslint/eslint-plugin": "^7.0.1",
-    "@typescript-eslint/parser": "^7.0.1",
-    "eslint": "^8.56.0",
     "typescript": "^5.3.3",
-    "cursor-tools": "latest"
-  },
-  "publishConfig": {
-    "access": "public"
+    "vitest": "^2.1.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    "tinybench": "^3.0.0",
+    "tsx": "^4.19.0",
+    "pino": "^9.0.0",
+    "winston": "^3.13.0"
   }
 }

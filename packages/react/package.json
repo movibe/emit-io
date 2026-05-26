@@ -1,0 +1,62 @@
+{
+  "name": "@movibe/logger-react",
+  "version": "2.0.0",
+  "description": "React bindings for @movibe/logger — hooks, context provider, and error boundary",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./server": {
+      "import": {
+        "types": "./dist/server.d.ts",
+        "default": "./dist/server.js"
+      },
+      "require": {
+        "types": "./dist/server.d.ts",
+        "default": "./dist/server.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=react --external=react-dom --external=@movibe/logger && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=react --external=react-dom --external=@movibe/logger && bun build ./src/server.ts --outdir=dist --target=node --format=esm --external=@movibe/logger && bun build ./src/server.ts --target=node --format=cjs --outfile=dist/server.cjs --external=@movibe/logger",
+    "build:types": "npx tsc --emitDeclarationOnly",
+    "build:all": "bun run build && bun run build:types",
+    "test": "bun test",
+    "prepack": "bun run build:all"
+  },
+  "peerDependencies": {
+    "@movibe/logger": "^2.0.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@movibe/logger": "workspace:*",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/movibe/logger.git"
+  },
+  "author": "Movibe",
+  "license": "MIT"
+}

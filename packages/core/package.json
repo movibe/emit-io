@@ -1,0 +1,84 @@
+{
+  "name": "@movibe/logger",
+  "version": "2.0.0",
+  "description": "A flexible and type-safe logging system for JavaScript/TypeScript applications",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "workerd": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.worker.js"
+      },
+      "edge-light": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.worker.js"
+      },
+      "browser": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.browser.js"
+      },
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./test": {
+      "import": {
+        "types": "./dist/test-utils.d.ts",
+        "default": "./dist/test-utils.js"
+      },
+      "require": {
+        "types": "./dist/test-utils.d.ts",
+        "default": "./dist/test-utils.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs && bun build ./src/index.ts --target=browser --format=esm --outfile=dist/index.browser.js && bun build ./src/index.ts --target=browser --format=esm --outfile=dist/index.worker.js && bun build ./src/test-utils.ts --outdir=dist --target=node --format=esm && bun build ./src/test-utils.ts --target=node --format=cjs --outfile=dist/test-utils.cjs",
+    "build:types": "npx tsc --emitDeclarationOnly",
+    "build:all": "bun run build && bun run build:types",
+    "test": "vitest run",
+    "lint": "eslint src --ext .ts",
+    "prepack": "bun run build:all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/movibe/logger.git"
+  },
+  "keywords": [
+    "logger",
+    "analytics",
+    "typescript",
+    "logging",
+    "events"
+  ],
+  "author": "Movibe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/movibe/logger/issues"
+  },
+  "homepage": "https://github.com/movibe/logger#readme",
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "@typescript-eslint/parser": "^7.0.1",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "cursor-tools": "latest"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

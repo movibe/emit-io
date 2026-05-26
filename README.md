@@ -2,32 +2,27 @@
 
 [![Tests & Coverage](https://github.com/movibe/logger/actions/workflows/tests.yml/badge.svg)](https://github.com/movibe/logger/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/movibe/logger/branch/main/graph/badge.svg)](https://codecov.io/gh/movibe/logger)
-[![Coverage Statements](https://img.shields.io/badge/Coverage%20Statements-100%25-brightgreen.svg?style=flat)](https://github.com/movibe/logger/actions)
-[![Coverage Functions](https://img.shields.io/badge/Coverage%20Functions-100%25-brightgreen.svg?style=flat)](https://github.com/movibe/logger/actions)
-[![Coverage Lines](https://img.shields.io/badge/Coverage%20Lines-100%25-brightgreen.svg?style=flat)](https://github.com/movibe/logger/actions)
 
 A TypeScript-based universal logging solution that provides consistent logging across different platforms and environments.
 
 ## Features
 
-- 🌟 **Universal Compatibility** - Works across Node.js, browsers, and other JavaScript runtimes
-- 🔒 **Type Safety** - Built with TypeScript for robust type checking
-- 📦 **Multiple Transports** - Support for console, file, and custom transport layers
-- 🎯 **Configurable Levels** - Flexible log level configuration
-- 🚀 **Performance Optimized** - Minimal overhead for production environments
-- 🔍 **Context Support** - Rich contextual logging capabilities
-- 📊 **Structured Logging** - JSON-based log format for better parsing
+- 🎯 **Log Levels** — Built-in DEBUG, INFO, WARN, ERROR, FATAL with min-level filtering
+- 🔌 **Plugin Pipeline** — Transform or filter log entries before they're sent
+- 📦 **Transport System** — Pluggable output destinations with per-transport level filtering
+- 🏢 **Analytics Providers** — Unified interface for GA4, PostHog, Sentry, etc.
+- 🔒 **Type Safety** — Full TypeScript generics with typed events and user properties
+- 🚀 **Zero Dependencies** — Core library has zero runtime dependencies
+- 🔄 **Backward Compatible** — v1 API fully supported (deprecated)
+- ⚛️ **React Integration** — Hooks, context provider, and error boundary (`@movibe/logger-react`)
 
 ## Table of Contents
 
 - [@movibe/logger](#movibelogger)
   - [Features](#features)
-  - [Table of Contents](#table-of-contents)
+  - [Quick Start (v2 API)](#quick-start-v2-api)
   - [Installation](#installation)
   - [Type Definitions](#type-definitions)
-  - [Basic Usage](#basic-usage)
-    - [Creating a Custom Logger](#creating-a-custom-logger)
-    - [Using the Custom Logger](#using-the-custom-logger)
   - [Advanced Features](#advanced-features)
     - [User Tracking](#user-tracking)
     - [Screen Tracking](#screen-tracking)
@@ -40,6 +35,47 @@ A TypeScript-based universal logging solution that provides consistent logging a
     - [E-commerce Methods](#e-commerce-methods)
   - [Contributing](#contributing)
   - [License](#license)
+
+## Quick Start (v2 API)
+
+```typescript
+import { LoggerStrategy, ConsoleTransport, ConsoleProvider, LogLevelEnum } from '@movibe/logger'
+
+const logger = new LoggerStrategy({
+  // Log output destinations (console, file, HTTP, ...)
+  transports: [
+    new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG }),
+  ],
+  // Analytics providers (GA4, PostHog, Sentry, ...)
+  providers: [
+    new ConsoleProvider(),
+  ],
+  // Transform or filter entries before transport
+  plugins: [
+    (entry) => entry.context?.password
+      ? { ...entry, context: { ...entry.context, password: '***' } }
+      : entry,
+  ],
+  emitAppOpenOnInit: true,
+})
+
+// Log Level-based logging
+logger.info('Server started', { port: 3000 })
+logger.warn('Deprecated route', { path: '/api/v1' })
+logger.error('Connection failed', { retries: 3 })
+logger.fatal('Database unreachable')
+
+// Analytics events
+logger.event('user-login', { method: 'google' })
+logger.setUser({ id: 'user-1', name: 'John' })
+logger.logScreen('Dashboard')
+
+// React (with @movibe/logger-react)
+// import { AnalyticsProvider, useAnalytics } from '@movibe/logger-react'
+// <AnalyticsProvider client={logger}><App /></AnalyticsProvider>
+// const analytics = useAnalytics()
+// analytics.event('purchase', { value: 99 })
+```
 
 ## Installation
 

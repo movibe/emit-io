@@ -1,0 +1,17 @@
+events:
+  page_viewed:
+    description: Fired when a user views a page
+    page_name: string
+    referrer?: string
+  button_clicked:
+    description: Fired when a user clicks a button
+    button_id: string
+    label: string
+  user_signed_up:
+    description: Fired when a new user completes registration
+    method: string
+  purchase:
+    order_id: string
+    total: number
+    currency: string
+    items?: number
