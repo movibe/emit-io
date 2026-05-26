@@ -2,21 +2,26 @@
   "private": true,
   "workspaces": ["packages/core", "packages/react", "packages/react-native", "packages/codegen", "packages/fastify", "packages/next", "packages/hono", "packages/otel"],
   "scripts": {
-    "build": "npm -w packages/core run build:all && npm -w packages/core run build:types",
+    "build": "npm -w packages/core run build:all && npm -w packages/react run build:all && npm -w packages/react-native run build:all && npm -w packages/next run build:all && npm -w packages/fastify run build:all && npm -w packages/hono run build:all && npm -w packages/otel run build:all && npm -w packages/codegen run build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "bench": "tsx packages/core/bench/index.ts",
     "bench:compare": "tsx packages/core/bench/compare.ts",
-    "lint": "npm -w packages/core run lint"
+    "lint": "npm -w packages/core run lint",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "bun run build && changeset publish"
   },
   "devDependencies": {
-    "typescript": "^5.3.3",
-    "vitest": "^2.1.0",
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.0",
     "@vitest/coverage-v8": "^2.1.0",
+    "pino": "^9.0.0",
     "tinybench": "^3.0.0",
     "tsx": "^4.19.0",
-    "pino": "^9.0.0",
+    "typescript": "^5.3.3",
+    "vitest": "^2.1.0",
     "winston": "^3.13.0"
   }
 }

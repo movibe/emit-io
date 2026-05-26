@@ -3,494 +3,301 @@
 [![Tests & Coverage](https://github.com/movibe/logger/actions/workflows/tests.yml/badge.svg)](https://github.com/movibe/logger/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/movibe/logger/branch/main/graph/badge.svg)](https://codecov.io/gh/movibe/logger)
 
-A TypeScript-based universal logging solution that provides consistent logging across different platforms and environments.
+Universal logging + analytics for TypeScript — Node, browser, edge, React Native.
+
+```typescript
+import { LoggerStrategy, JSONTransport, ConsoleTransport, redact, sample, LogLevelEnum } from '@movibe/logger'
+
+const logger = new LoggerStrategy({
+  transports: [
+    new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG, pretty: true }),
+    new JSONTransport({ minLevel: LogLevelEnum.INFO }),
+  ],
+  plugins: [
+    redact({ paths: ['password', 'user.token', '*.secret'] }),
+    sample({ rate: 0.1, levels: [LogLevelEnum.DEBUG] }),
+  ],
+  consent: { analytics: true, errors: true },
+})
+
+logger.info('Server started', { port: 3000 })
+logger.warn('Slow query', { ms: 1200 })
+logger.captureError('Auth', 'login_failed', false, new Error('bad token'))
+
+const reqLog = logger.child({ requestId: 'abc-123' })
+reqLog.info('handling request')
+
+import { runWithContext } from '@movibe/logger'
+await runWithContext({ traceId: 'tx' }, async () => {
+  reqLog.info('inside trace')  // context auto-merged
+})
+```
+
+## Packages
+
+| Package | Use |
+|---|---|
+| `@movibe/logger` | Core: logs, transports, plugins, providers |
+| `@movibe/logger-react` | React (DOM/RSC): hooks, provider, error boundary, server actions |
+| `@movibe/logger-react-native` | React Native: AppState, navigation, error boundary |
+| `@movibe/logger-next` | Next.js: middleware, route handler instrumentation |
+| `@movibe/logger-fastify` | Fastify: plugin, request id, child logger per request |
+| `@movibe/logger-hono` | Hono: middleware with context propagation |
+| `@movibe/logger-otel` | OpenTelemetry: spans + logs bridge |
+| `@movibe/logger-codegen` | Codegen: YAML schema → TS types, drift detection, JSON Schema/Avro |
 
 ## Features
 
-- 🎯 **Log Levels** — Built-in DEBUG, INFO, WARN, ERROR, FATAL with min-level filtering
-- 🔌 **Plugin Pipeline** — Transform or filter log entries before they're sent
-- 📦 **Transport System** — Pluggable output destinations with per-transport level filtering
-- 🏢 **Analytics Providers** — Unified interface for GA4, PostHog, Sentry, etc.
-- 🔒 **Type Safety** — Full TypeScript generics with typed events and user properties
-- 🚀 **Zero Dependencies** — Core library has zero runtime dependencies
-- 🔄 **Backward Compatible** — v1 API fully supported (deprecated)
-- ⚛️ **React Integration** — Hooks, context provider, and error boundary (`@movibe/logger-react`)
+- **Log levels** — DEBUG, INFO, WARN, ERROR, FATAL with per-transport `minLevel` filtering
+- **Transport system** — ConsoleTransport, JSONTransport, HTTPTransport, DevToolsTransport; pluggable
+- **Plugin pipeline** — transform or drop entries before transport (redact, sample, rateLimit, normalizeStack)
+- **Analytics providers** — unified interface for GA4, PostHog, Sentry, etc. via `AnalyticsProvider`
+- **Type-safe events** — `EventRegistry` module augmentation for compile-time event names + payloads
+- **Child loggers** — `logger.child({ requestId })` inherits transports, merges bindings
+- **AsyncLocalStorage context** — `runWithContext` propagates trace data automatically (Node + edge)
+- **Consent gate** — `setConsent({ analytics, errors })` for GDPR compliance
+- **Pre-init buffer** — queue events before providers are ready, flush on `init()`
+- **Circuit breaker** — wraps any provider to open on repeated failures
+- **Zero runtime dependencies** in core
 
-## Table of Contents
+## Quick Start
 
-- [@movibe/logger](#movibelogger)
-  - [Features](#features)
-  - [Quick Start (v2 API)](#quick-start-v2-api)
-  - [Installation](#installation)
-  - [Type Definitions](#type-definitions)
-  - [Advanced Features](#advanced-features)
-    - [User Tracking](#user-tracking)
-    - [Screen Tracking](#screen-tracking)
-    - [Error Handling](#error-handling)
-    - [E-commerce Tracking](#e-commerce-tracking)
-    - [Custom Events](#custom-events)
-  - [API Reference](#api-reference)
-    - [Core Methods](#core-methods)
-    - [User Methods](#user-methods)
-    - [E-commerce Methods](#e-commerce-methods)
-  - [Contributing](#contributing)
-  - [License](#license)
-
-## Quick Start (v2 API)
-
-```typescript
-import { LoggerStrategy, ConsoleTransport, ConsoleProvider, LogLevelEnum } from '@movibe/logger'
-
-const logger = new LoggerStrategy({
-  // Log output destinations (console, file, HTTP, ...)
-  transports: [
-    new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG }),
-  ],
-  // Analytics providers (GA4, PostHog, Sentry, ...)
-  providers: [
-    new ConsoleProvider(),
-  ],
-  // Transform or filter entries before transport
-  plugins: [
-    (entry) => entry.context?.password
-      ? { ...entry, context: { ...entry.context, password: '***' } }
-      : entry,
-  ],
-  emitAppOpenOnInit: true,
-})
-
-// Log Level-based logging
-logger.info('Server started', { port: 3000 })
-logger.warn('Deprecated route', { path: '/api/v1' })
-logger.error('Connection failed', { retries: 3 })
-logger.fatal('Database unreachable')
-
-// Analytics events
-logger.event('user-login', { method: 'google' })
-logger.setUser({ id: 'user-1', name: 'John' })
-logger.logScreen('Dashboard')
-
-// React (with @movibe/logger-react)
-// import { AnalyticsProvider, useAnalytics } from '@movibe/logger-react'
-// <AnalyticsProvider client={logger}><App /></AnalyticsProvider>
-// const analytics = useAnalytics()
-// analytics.event('purchase', { value: 99 })
-```
-
-## Installation
+### Install
 
 ```bash
 npm install @movibe/logger
-# or
-yarn add @movibe/logger
-# or
-bun add @movibe/logger
 ```
 
-## Type Definitions
-
-Define your custom types for type-safe logging:
+### Core
 
 ```typescript
-// Log tags for different types of logs
-type CustomLogTags = "custom_start" | "custom_end";
+import { LoggerStrategy, ConsoleTransport, JSONTransport, LogLevelEnum } from '@movibe/logger'
 
-// Network tags for API and GraphQL operations
-type CustomNetworkTags =
-  | "GraphqlQuery_error_graphql"
-  | "RestApi_error"
-  | "api_call"
-  | "websocket";
+const logger = new LoggerStrategy({
+  transports: [
+    new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG }),
+    new JSONTransport({ minLevel: LogLevelEnum.INFO }),
+  ],
+})
 
-// User properties interface
-interface CustomUser {
-  id: string;
-  role: string;
-  email?: string;
-  name?: string;
-  phone?: string;
-  status?: string;
-}
+logger.debug('query', { sql: 'SELECT 1' })
+logger.info('started', { port: 3000 })
+logger.warn('retrying', { attempt: 2 })
+logger.error('db down', { host: 'pg-primary' })
+logger.fatal('out of memory')
 
-// E-commerce checkout interface
-interface CustomCheckout {
-  currency?: string;
-  value?: number;
-  customField: string;
-}
+// Analytics error (fires providers + writes to transport)
+logger.captureError('Payments', 'charge_failed', true, err, { orderId: 'x' })
 
-// Purchase information interface
-interface CustomPurchase {
-  type: "credit_card";
-  customStatus: string;
-  affiliation?: string;
-  coupon?: string;
-  currency?: string;
-}
+// Analytics event
+logger.event('purchase', { total: 99 })
 
-// Custom events with their respective payloads
-type CustomEvent = {
-  "app-open": Record<string, never>;
-  "user-login": { method: string };
-  "user-register": { method: string };
-  "add-to-cart": { product_id: string; quantity: number };
-  "remove-from-cart": { product_id: string; quantity: number };
-};
+// Feature info (analytics)
+logger.logFeature('Auth', 'login_success', { method: 'oauth' })
 ```
 
-## Basic Usage
+### React
 
-### Creating a Custom Logger
+```bash
+npm install @movibe/logger @movibe/logger-react
+```
 
-Primeiro, crie sua classe customizada implementando a interface `LoggerStrategyType`:
+```tsx
+import { AnalyticsProvider, useAnalytics, usePageTracking } from '@movibe/logger-react'
+import { LoggerStrategy } from '@movibe/logger'
+
+const logger = new LoggerStrategy({ /* ... */ })
+
+function App() {
+  return (
+    <AnalyticsProvider client={logger} autoTrack>
+      <Routes />
+    </AnalyticsProvider>
+  )
+}
+
+function ProductPage() {
+  usePageTracking('/products')
+  const { event } = useAnalytics()
+  return <button onClick={() => event('add-to-cart', { id: '1' })}>Add</button>
+}
+```
+
+### Next.js
+
+```bash
+npm install @movibe/logger @movibe/logger-next
+```
 
 ```typescript
-import { LoggerStrategyType } from "@movibe/logger";
+// middleware.ts
+import { withLogger } from '@movibe/logger-next'
+import { NextResponse } from 'next/server'
+import { logger } from './lib/logger'
 
-const TAG = "DEBUG";
+export default withLogger(
+  async (req) => NextResponse.next(),
+  { logger, trackPageviews: true }
+)
 
-// Define your custom types
-type CustomLogTags = "custom_start" | "custom_end";
-type CustomNetworkTags =
-  | "GraphqlQuery_error_graphql"
-  | "RestApi_error"
-  | "api_call"
-  | "websocket";
-interface CustomUser {
-  id: string;
-  role: string;
-  email?: string;
-  name?: string;
-  phone?: string;
-  status?: string;
+// app/api/orders/route.ts
+import { instrumentRoute } from '@movibe/logger-next'
+import { logger } from '@/lib/logger'
+
+export const GET = instrumentRoute(
+  async (req) => Response.json({ ok: true }),
+  { logger, eventName: 'get-orders' }
+)
+```
+
+### React Native
+
+```bash
+npm install @movibe/logger @movibe/logger-react-native
+```
+
+```tsx
+import { AnalyticsProvider, useAnalytics, useScreenTracking } from '@movibe/logger-react-native'
+import { LoggerStrategy } from '@movibe/logger'
+
+const logger = new LoggerStrategy({ /* ... */ })
+
+export default function App() {
+  return (
+    <AnalyticsProvider client={logger} trackAppState>
+      <RootStack />
+    </AnalyticsProvider>
+  )
 }
-interface CustomCheckout {
-  currency?: string;
-  value?: number;
-  customField: string;
-}
-interface CustomPurchase {
-  type: "credit_card";
-  customStatus: string;
-  affiliation?: string;
-  coupon?: string;
-  currency?: string;
-}
 
-type CustomEvent = {
-  "app-open": Record<string, never>;
-  "user-login": { method: string };
-  "user-register": { method: string };
-  "add-to-cart": { product_id: string; quantity: number };
-  "remove-from-cart": { product_id: string; quantity: number };
-};
-
-// Implement your custom logger
-export class DebugLogger
-  implements
-    LoggerStrategyType<
-      CustomLogTags,
-      CustomNetworkTags,
-      CustomUser,
-      CustomCheckout,
-      CustomPurchase,
-      CustomEvent
-    >
-{
-  init(): void {
-    console.log(`${TAG}.init`);
-  }
-
-  info(feature: string, name: string, properties?: any): void {
-    console.log(`${TAG}.info: `, feature, name, properties);
-  }
-
-  error(
-    feature: string,
-    name: string,
-    critical = false,
-    error: Error,
-    extra: Record<string, unknown> = {}
-  ): void {
-    console.error(`${TAG}.error: `, { critical, error, extra, feature, name });
-  }
-
-  event(name: string, properties?: Record<string, any>): void {
-    if (properties) {
-      console.log(`${TAG}.event: `, name, properties);
-    } else {
-      console.log(`${TAG}.event: `, name);
-    }
-  }
-
-  network(name: CustomNetworkTags, properties?: Record<string, any>): void {
-    if (properties) {
-      console.log(
-        `${TAG}.network: ${properties.operationName} | `,
-        name,
-        properties
-      );
-    } else {
-      console.log(`${TAG}.network:`, name);
-    }
-  }
-
-  logScreen(screenName: string, properties?: Record<string, any>): void {
-    console.log(`${TAG}.logScreen: `, { screenName, ...properties });
-  }
-
-  setUser(user: CustomUser): void {
-    const userProperties = {
-      email: user.email ?? "",
-      id: user.id,
-      name: user.name ?? "",
-      phone: user.phone,
-      status: user.status,
-    };
-
-    console.log(`${TAG}.setUser: `, userProperties);
-    this.setUserId(user.id);
-  }
-
-  setUserId(userId: string): void {
-    console.log(`${TAG}.setUserId: `, userId);
-  }
-
-  setUserProperty(name: string, value: any): void {
-    console.log(`${TAG}.setUserProperty: `, name, value);
-  }
-
-  setUserProperties(properties: CustomUser): void {
-    console.log(`${TAG}.setUserProperties: `, properties);
-  }
-
-  logBeginCheckout(checkoutId: string, properties: CustomCheckout): void {
-    console.log(`${TAG}.logBeginCheckout: `, checkoutId, properties);
-  }
-
-  logPaymentSuccess(checkoutId: string, properties: CustomPurchase): void {
-    console.log(`${TAG}.logPaymentSuccess: `, checkoutId, properties);
-  }
-
-  reset(): void {
-    console.log(`${TAG}.reset`);
-  }
-
-  flush(): void {
-    console.log(`${TAG}.flush`);
-  }
-
-  getId(): string {
-    return "DebugLogger";
-  }
+function HomeScreen() {
+  const { event } = useAnalytics()
+  useScreenTracking('Home')
+  return <Button onPress={() => event('cta-click')} title="Go" />
 }
 ```
 
-### Using the Custom Logger
+## Transports
 
-Depois de criar sua classe customizada, você pode usá-la em qualquer parte da aplicação:
+| Transport | Description |
+|---|---|
+| `ConsoleTransport` | Pretty or plain console output |
+| `JSONTransport` | NDJSON to stdout (or custom `write`) |
+| `HTTPTransport` | Batched POST with retry + exponential backoff |
+| `DevToolsTransport` | WebSocket to devtools panel; buffers while disconnected |
 
 ```typescript
-import { LoggerStrategy } from "@movibe/logger";
-import { DebugLogger } from "./debug-logger";
+import { HTTPTransport } from '@movibe/logger'
 
-// Initialize with custom logger
-const logger = new LoggerStrategy<
-  CustomLogTags,
-  CustomNetworkTags,
-  CustomUser,
-  CustomCheckout,
-  CustomPurchase,
-  CustomEvent
->([
-  {
-    class: new DebugLogger(),
-    enabled: true,
-  },
-]);
+new HTTPTransport({
+  url: 'https://logs.example.com/ingest',
+  minLevel: LogLevelEnum.WARN,
+  batchSize: 50,
+  flushIntervalMs: 5000,
+  maxRetries: 3,
+  headers: { Authorization: 'Bearer token' },
+})
+```
 
-// Initialize logger
-logger.init();
+## Plugins
 
-// Log events with type safety
-logger.event("app-open");
+```typescript
+import { redact, sample, rateLimit, normalizeStack } from '@movibe/logger'
 
-// User tracking with custom fields
-logger.setUser({
-  id: "123",
-  role: "user",
-  name: "John Doe",
-  email: "john@example.com",
-  phone: "+1234567890",
-  status: "active",
-});
+new LoggerStrategy({
+  plugins: [
+    redact({ paths: ['password', 'user.token', '*.secret'] }),
+    sample({ rate: 0.05, levels: [LogLevelEnum.DEBUG] }),
+    rateLimit({ maxPerSecond: 100 }),
+    normalizeStack({ maxFrames: 10 }),
+  ],
+})
+```
 
-// Screen tracking with custom properties
-logger.logScreen("HomeScreen", {
-  referrer: "DeepLink",
-  customData: "test",
-});
+Plugins are plain functions `(entry: LogEntry) => LogEntry | null`. Return `null` to drop the entry.
 
-// Error tracking with context
-try {
-  throw new Error("Test error");
-} catch (error) {
-  logger.error("Authentication", "login-failed", true, error as Error, {
-    userId: "123",
-  });
+## Type-Safe Events
+
+```typescript
+declare module '@movibe/logger' {
+  interface EventRegistry {
+    'purchase': { orderId: string; total: number }
+    'page-view': { path: string }
+  }
 }
 
-// E-commerce tracking with custom fields
-logger.logBeginCheckout("checkout-123", {
-  currency: "USD",
-  value: 99.99,
-  customField: "test-checkout",
-});
-
-logger.logPaymentSuccess("checkout-123", {
-  type: "credit_card",
-  customStatus: "completed",
-  currency: "USD",
-  affiliation: "web-store",
-  coupon: "DISCOUNT10",
-});
-
-// Reset and flush
-logger.reset();
-logger.flush();
+logger.event('purchase', { orderId: 'x', total: 99 })  // typed
+logger.event('unknown', {})  // TS error
 ```
 
-## Advanced Features
-
-### User Tracking
-
-Track user information and properties:
+## Child Loggers + ALS Context
 
 ```typescript
-// Set complete user object
-logger.setUser({
-  id: "123",
-  role: "user",
-  name: "John Doe",
-  email: "john@example.com",
-});
+// Child logger — inherits all transports and providers, adds bindings
+const reqLog = logger.child({ requestId: 'abc-123', userId: 'u-1' })
+reqLog.info('request received')  // context: { requestId, userId }
 
-// Set individual user property
-logger.setUserProperty("plan", "premium");
+// AsyncLocalStorage — auto-merges into every log call in scope
+import { runWithContext } from '@movibe/logger'
 
-// Set user ID only
-logger.setUserId("123");
+await runWithContext({ traceId: 'trace-abc' }, async () => {
+  await processOrder()  // all logs inside get traceId automatically
+})
 ```
 
-### Screen Tracking
-
-Track screen views and navigation:
+## Consent Gate
 
 ```typescript
-// Basic screen view
-logger.logScreen("HomeScreen");
+const logger = new LoggerStrategy({
+  consent: { analytics: false, errors: true },
+})
 
-// Screen view with context
-logger.logScreen("ProductScreen", {
-  referrer: "HomeScreen",
-  productId: "123",
-});
+// Later, after user consent:
+logger.setConsent({ analytics: true })
+logger.getConsent() // { analytics: true, errors: true }
 ```
 
-### Error Handling
+`analytics: false` blocks `event()`, `logFeature()`, `logScreen()`, `setUser()`.
+`errors: false` still writes the error to transports but skips analytics providers.
 
-Comprehensive error tracking:
+## Circuit Breaker
 
 ```typescript
-try {
-  throw new Error("API Request Failed");
-} catch (error) {
-  logger.error(
-    "API", // Feature/component
-    "request-failed", // Error type
-    true, // Is critical error
-    error as Error, // Error object
-    {
-      // Additional context
-      endpoint: "/users",
-      method: "GET",
-      statusCode: 500,
-    }
-  );
-}
+import { circuitBreaker } from '@movibe/logger'
+import { PostHogProvider } from './providers/posthog'
+
+const safePostHog = circuitBreaker(new PostHogProvider(), {
+  failureThreshold: 5,
+  cooldownMs: 30_000,
+  onStateChange: (state, name) => console.warn(`[circuit] ${name}: ${state}`),
+})
+
+new LoggerStrategy({ providers: [safePostHog] })
 ```
 
-### E-commerce Tracking
+## Benchmarks
 
-Track e-commerce events and transactions:
+~1.2M ops/s on Node v22 arm64 (simple `info()` with JSONTransport to `/dev/null`). Faster than winston in context-heavy scenarios, ~2× behind pino in raw throughput. See [BENCHMARKS.md](./BENCHMARKS.md) for full results.
 
-```typescript
-// Begin checkout process
-logger.logBeginCheckout("checkout-123", {
-  currency: "USD",
-  value: 99.99,
-  customField: "premium-plan",
-});
+## Migration v2 → v3
 
-// Track successful payment
-logger.logPaymentSuccess("checkout-123", {
-  type: "credit_card",
-  customStatus: "completed",
-  currency: "USD",
-  affiliation: "web-store",
-});
+See [CHANGELOG.md](./CHANGELOG.md) for the complete list. Key changes:
+
+```diff
+- logger.error('Auth', 'login_failed', true, err)
++ logger.captureError('Auth', 'login_failed', true, err)
+
+- logger.info('Auth', 'login_success', { method: 'oauth' })
++ logger.logFeature('Auth', 'login_success', { method: 'oauth' })
+
+- declare global { interface EVENT_TAGS { ... } }
++ declare module '@movibe/logger' { interface EventRegistry { ... } }
 ```
-
-### Custom Events
-
-Track custom events with type safety:
-
-```typescript
-// Track login event
-logger.event("user-login", {
-  method: "email",
-});
-
-// Track cart action
-logger.event("add-to-cart", {
-  product_id: "prod_123",
-  quantity: 1,
-});
-```
-
-## API Reference
-
-### Core Methods
-
-- `init()` - Initialize the logger
-- `event(name, properties?)` - Log custom events
-- `error(feature, name, critical, error, extra?)` - Log errors
-- `logScreen(name, properties?)` - Track screen views
-- `setUser(user)` - Set user information
-- `reset()` - Reset all user data
-- `flush()` - Flush pending logs
-
-### User Methods
-
-- `setUserId(id)` - Set user ID
-- `setUserProperty(name, value)` - Set single user property
-- `setUserProperties(properties)` - Set multiple user properties
-
-### E-commerce Methods
-
-- `logBeginCheckout(checkoutId, properties)` - Track checkout initiation
-- `logPaymentSuccess(checkoutId, properties)` - Track successful payments
-
-For more detailed documentation, please visit our [docs](./docs) directory.
 
 ## Contributing
 
-Contributions are welcome! Please read our [Contributing Guide](./docs/CONTRIBUTING.md) for details.
+PRs welcome. Run `bun install && bun test` from the repo root.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-```
-
-```
+MIT
