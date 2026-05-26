@@ -1,7 +1,7 @@
 # otel-bridge example
 
-End-to-end Node.js example wiring [`@movibe/logger`](../../packages/core) into
-the OpenTelemetry SDK via [`@movibe/logger-otel`](../../packages/otel).
+End-to-end Node.js example wiring [`@emit/logger`](../../packages/core) into
+the OpenTelemetry SDK via [`@emit/otel`](../../packages/otel).
 
 It demonstrates:
 
@@ -24,13 +24,13 @@ src/
 
 ## Install + build
 
-From the monorepo root (uses the workspace versions of `@movibe/logger` and
-`@movibe/logger-otel`):
+From the monorepo root (uses the workspace versions of `@emit/logger` and
+`@emit/otel`):
 
 ```bash
 bun install
-bun run --filter @movibe/logger build
-bun run --filter @movibe/logger-otel build:all
+bun run --filter @emit/logger build
+bun run --filter @emit/otel build:all
 cd examples/otel-bridge
 bun run build
 ```

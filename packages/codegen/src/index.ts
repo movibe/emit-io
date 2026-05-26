@@ -14,12 +14,12 @@ function main() {
 
   if (!command || command === '--help' || command === '-h') {
     console.log(`
-@movibe/logger-codegen — Generate typed analytics tracker from YAML schema
+@emit/codegen — Generate typed analytics tracker from YAML schema
 
 USAGE
-  npx @movibe/logger-codegen generate <schema.yaml> [options]
-  npx @movibe/logger-codegen check <schema.yaml> [options]
-  npx @movibe/logger-codegen export <schema.yaml> --format=<fmt> [options]
+  npx @emit/codegen generate <schema.yaml> [options]
+  npx @emit/codegen check <schema.yaml> [options]
+  npx @emit/codegen export <schema.yaml> --format=<fmt> [options]
 
 GENERATE OPTIONS
   --out <dir>     Output directory (default: same as schema file)
@@ -37,13 +37,13 @@ EXPORT OPTIONS
   --out <dir>     Output directory (default: same as schema file)
 
 EXAMPLES
-  npx @movibe/logger-codegen generate analytics-schema.yaml
-  npx @movibe/logger-codegen generate schema.yaml --out src/analytics --detect-pii
-  npx @movibe/logger-codegen check schema.yaml
-  npx @movibe/logger-codegen check schema.yaml --strict
-  npx @movibe/logger-codegen check schema.yaml --update
-  npx @movibe/logger-codegen export schema.yaml --format json-schema --out schemas/
-  npx @movibe/logger-codegen export schema.yaml --format avro --out schemas/
+  npx @emit/codegen generate analytics-schema.yaml
+  npx @emit/codegen generate schema.yaml --out src/analytics --detect-pii
+  npx @emit/codegen check schema.yaml
+  npx @emit/codegen check schema.yaml --strict
+  npx @emit/codegen check schema.yaml --update
+  npx @emit/codegen export schema.yaml --format json-schema --out schemas/
+  npx @emit/codegen export schema.yaml --format avro --out schemas/
 `)
     process.exit(0)
   }

@@ -1,4 +1,4 @@
-import { LoggerStrategy, HTTPTransport, ConsoleTransport, LogLevelEnum } from '@movibe/logger'
+import { LoggerStrategy, HTTPTransport, ConsoleTransport, LogLevelEnum } from '@emit/logger'
 
 // HTTPTransport batches entries and flushes them on an interval or when
 // the batch size is reached. On process shutdown, call close() to drain.

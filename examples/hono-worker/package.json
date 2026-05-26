@@ -9,8 +9,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@movibe/logger": "workspace:*",
-    "@movibe/logger-hono": "workspace:*",
+    "@emit/logger": "workspace:*",
+    "@emit/hono": "workspace:*",
     "hono": "^4.6.0"
   },
   "devDependencies": {

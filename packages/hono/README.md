@@ -1,19 +1,19 @@
-# @movibe/logger-hono
+# @emit/hono
 
-Hono middleware for [@movibe/logger](https://github.com/movibe/logger) — request ID, child logger, timings, and ALS context propagation.
+Hono middleware for [@emit/logger](https://github.com/Emit-logger/emit) — request ID, child logger, timings, and ALS context propagation.
 
 ## Install
 
 ```bash
-npm install @movibe/logger @movibe/logger-hono
+npm install @emit/logger @emit/hono
 ```
 
 ## Quick Start
 
 ```typescript
 import { Hono } from 'hono'
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@movibe/logger'
-import { loggerMiddleware } from '@movibe/logger-hono'
+import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/logger'
+import { loggerMiddleware } from '@emit/hono'
 
 const logger = new LoggerStrategy({
   transports: [new JSONTransport({ minLevel: LogLevelEnum.INFO })],
@@ -39,8 +39,8 @@ export default app
 ### `loggerMiddleware(options)`
 
 ```typescript
-import { loggerMiddleware } from '@movibe/logger-hono'
-import type { LoggerMiddlewareOptions } from '@movibe/logger-hono'
+import { loggerMiddleware } from '@emit/hono'
+import type { LoggerMiddlewareOptions } from '@emit/hono'
 
 const options: LoggerMiddlewareOptions = {
   logger,                          // required: LoggerStrategy instance
@@ -92,7 +92,7 @@ async function processOrder() {
 
 | Package | Version |
 |---|---|
-| `@movibe/logger` | `^3.0.0` |
+| `@emit/logger` | `^1.0.0` |
 | `hono` | `^4.0.0` |
 
 ## License

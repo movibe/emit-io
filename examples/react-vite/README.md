@@ -1,8 +1,8 @@
-# @movibe/logger-react · Vite Example
+# @emit/react · Vite Example
 
 Minimal **React 19 + Vite 5** app demonstrating
-[`@movibe/logger`](../../packages/core) and
-[`@movibe/logger-react`](../../packages/react) in the browser.
+[`@emit/logger`](../../packages/core) and
+[`@emit/react`](../../packages/react) in the browser.
 
 ## What it shows
 

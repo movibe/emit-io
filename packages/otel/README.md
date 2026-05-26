@@ -1,11 +1,11 @@
-# @movibe/logger-otel
+# @emit/otel
 
-OpenTelemetry bridge for [@movibe/logger](https://github.com/movibe/logger) — emit OTel spans for analytics events and bridge structured logs into the OTel Logs API.
+OpenTelemetry bridge for [@emit/logger](https://github.com/Emit-logger/emit) — emit OTel spans for analytics events and bridge structured logs into the OTel Logs API.
 
 ## Install
 
 ```bash
-npm install @movibe/logger @movibe/logger-otel \
+npm install @emit/logger @emit/otel \
   @opentelemetry/api @opentelemetry/api-logs
 ```
 
@@ -19,8 +19,8 @@ import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
 import { LoggerProvider, SimpleLogRecordProcessor } from '@opentelemetry/sdk-logs'
 
-import { LoggerStrategy, LogLevelEnum } from '@movibe/logger'
-import { OTelProvider, OTelTransport } from '@movibe/logger-otel'
+import { LoggerStrategy, LogLevelEnum } from '@emit/logger'
+import { OTelProvider, OTelTransport } from '@emit/otel'
 
 // 1. Init OTel SDK externally
 const sdk = new NodeSDK({
@@ -33,7 +33,7 @@ loggerProvider.addLogRecordProcessor(
   new SimpleLogRecordProcessor(new OTLPLogExporter({ url: 'http://collector:4318/v1/logs' }))
 )
 
-// 2. Wire into @movibe/logger
+// 2. Wire into @emit/logger
 const logger = new LoggerStrategy({
   transports: [
     new OTelTransport({
@@ -44,7 +44,7 @@ const logger = new LoggerStrategy({
   ],
   providers: [
     new OTelProvider({
-      tracerName: 'my-service', // optional: defaults to '@movibe/logger-otel'
+      tracerName: 'my-service', // optional: defaults to '@emit/otel'
     }),
   ],
 })
@@ -68,14 +68,14 @@ Implements `Transport`. Bridges `LogEntry` objects into the OTel Logs API (`@ope
 new OTelTransport({
   name?: string           // transport name (default: 'otel')
   minLevel?: LogLevel     // default: DEBUG
-  loggerName?: string     // OTel logger name (default: '@movibe/logger-otel')
+  loggerName?: string     // OTel logger name (default: '@emit/otel')
   loggerProvider?: LoggerProvider  // default: logs.getLoggerProvider()
 })
 ```
 
 Log level mapping:
 
-| @movibe/logger | OTel SeverityNumber |
+| @emit/logger | OTel SeverityNumber |
 |---|---|
 | DEBUG | DEBUG |
 | INFO | INFO |
@@ -93,7 +93,7 @@ Implements `AnalyticsProvider`. Creates OTel spans for analytics events, identif
 new OTelProvider({
   name?: string       // provider name (default: 'otel')
   enabled?: boolean   // default: true
-  tracerName?: string // OTel tracer name (default: '@movibe/logger-otel')
+  tracerName?: string // OTel tracer name (default: '@emit/otel')
 })
 ```
 
@@ -110,7 +110,7 @@ The OTel SDK must be started **before** constructing `OTelProvider` or `OTelTran
 
 | Package | Version |
 |---|---|
-| `@movibe/logger` | `^3.0.0` |
+| `@emit/logger` | `^1.0.0` |
 | `@opentelemetry/api` | `^1.7.0` |
 | `@opentelemetry/api-logs` | `^0.50.0` |
 

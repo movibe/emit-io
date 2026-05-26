@@ -1,6 +1,6 @@
 import { logs, type LoggerProvider, SeverityNumber } from '@opentelemetry/api-logs'
-import type { LogEntry, Transport, LogLevel } from '@movibe/logger'
-import { LogLevelEnum } from '@movibe/logger'
+import type { LogEntry, Transport, LogLevel } from '@emit/logger'
+import { LogLevelEnum } from '@emit/logger'
 
 function getSeverityMap(): Record<number, SeverityNumber> {
   return {
@@ -28,7 +28,7 @@ export class OTelTransport implements Transport {
     this.name = opts?.name ?? 'otel'
     this.minLevel = (opts?.minLevel ?? LogLevelEnum.DEBUG) as LogLevel
     const provider = opts?.loggerProvider ?? logs.getLoggerProvider()
-    this.otelLogger = provider.getLogger(opts?.loggerName ?? '@movibe/logger-otel', '1.0.0')
+    this.otelLogger = provider.getLogger(opts?.loggerName ?? '@emit/otel', '1.0.0')
   }
 
   log(entry: LogEntry): void {

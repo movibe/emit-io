@@ -4,7 +4,7 @@ import {
   useScreenTracking,
   useAnalytics,
   useTrackEvent,
-} from '@movibe/logger-react-native'
+} from '@emit/react-native'
 
 export default function HomeScreen() {
   useScreenTracking('Home')
@@ -20,7 +20,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>@movibe/logger-react-native</Text>
+      <Text style={styles.title}>@emit/react-native</Text>
       <Text style={styles.subtitle}>
         Open the dev console to see analytics events.
       </Text>

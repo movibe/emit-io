@@ -1,10 +1,10 @@
-import { LoggerStrategy, type AnalyticsProvider } from '@movibe/logger'
+import { LoggerStrategy, type AnalyticsProvider } from '@emit/logger'
 
 // EventRegistry module augmentation gives logger.event() full TypeScript types.
 // Each key is an event name; its value type is the shape of the properties object.
 // Place this augmentation in a .d.ts file or any file included by tsconfig.
 
-declare module '@movibe/logger' {
+declare module '@emit/logger' {
   interface EventRegistry {
     'purchase': { orderId: string; total: number; currency: 'USD' | 'EUR' }
     'pageview': { path: string; referrer?: string }

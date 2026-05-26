@@ -1,7 +1,7 @@
 // Assumes OTel SDK is initialized by your application before this module loads.
 // See https://opentelemetry.io/docs/instrumentation/js/getting-started/nodejs/
-import { LoggerStrategy } from '@movibe/logger'
-import { OTelProvider, OTelTransport } from '@movibe/logger-otel'
+import { LoggerStrategy } from '@emit/logger'
+import { OTelProvider, OTelTransport } from '@emit/otel'
 
 // OTelProvider maps analytics calls to OTel spans.
 // OTelTransport maps log-level entries to OTel logs.

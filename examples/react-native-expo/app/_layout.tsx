@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet } from 'react-native'
 import {
   AnalyticsProvider,
   AnalyticsErrorBoundary,
-} from '@movibe/logger-react-native'
+} from '@emit/react-native'
 import { logger } from '../src/logger'
 
 export default function RootLayout() {

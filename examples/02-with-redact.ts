@@ -1,4 +1,4 @@
-import { LoggerStrategy, JSONTransport, redact, LogLevelEnum } from '@movibe/logger'
+import { LoggerStrategy, JSONTransport, redact, LogLevelEnum } from '@emit/logger'
 
 // Redact plugin runs in the pipeline before any transport receives the entry.
 // Patterns support exact paths, dot-notation, and wildcards.

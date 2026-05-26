@@ -1,5 +1,4 @@
 export { AnalyticsProvider } from './provider.js'
 export { useAnalytics, useEventTracking, usePageTracking, useIdentify, useTrackEvent, useFormAnalytics } from './hooks.js'
-export { AnalyticsErrorBoundary, withAnalyticsErrorBoundary } from './error-boundary.js'
 export { withAnalytics } from './server.js'
-export type { AnalyticsContextValue, AnalyticsProviderProps, AnalyticsErrorBoundaryProps } from './types.js'
+export type { AnalyticsContextValue, AnalyticsProviderProps } from './types.js'

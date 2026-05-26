@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { instrumentRoute } from '@movibe/logger-next'
+import { instrumentRoute } from '@emit/next'
 import { logger } from '../../../lib/logger.js'
 
 export const GET = instrumentRoute(

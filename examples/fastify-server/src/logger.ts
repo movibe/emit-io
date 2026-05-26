@@ -1,4 +1,4 @@
-import { LoggerStrategy, JSONTransport, LogLevelEnum, redact } from '@movibe/logger'
+import { LoggerStrategy, JSONTransport, LogLevelEnum, redact } from '@emit/logger'
 
 export const logger = new LoggerStrategy({
   transports: [

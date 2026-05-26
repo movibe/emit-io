@@ -1,4 +1,4 @@
-import type { LoggerStrategy, AnalyticsProvider } from '@movibe/logger'
+import type { LoggerStrategy, AnalyticsProvider } from '@emit/logger'
 import type { ReactNode } from 'react'
 
 export interface AnalyticsContextValue {
@@ -17,9 +17,4 @@ export interface AnalyticsProviderProps {
   trackAppState?: boolean
 }
 
-export interface AnalyticsErrorBoundaryProps {
-  children?: ReactNode
-  fallback?: ReactNode | ((err: Error, reset: () => void) => ReactNode)
-  onError?: (error: Error, errorInfo: { componentStack: string }) => void
-  analytics?: AnalyticsContextValue
-}
+

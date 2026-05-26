@@ -1,4 +1,4 @@
-import { LoggerStrategy, ConsoleTransport, type AnalyticsProvider, LogLevelEnum } from '@movibe/logger'
+import { LoggerStrategy, ConsoleTransport, type AnalyticsProvider, LogLevelEnum } from '@emit/logger'
 
 // The consent gate blocks analytics calls when analytics: false.
 // Structural log output (transports) is never blocked.

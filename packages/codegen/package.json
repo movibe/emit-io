@@ -1,7 +1,7 @@
 {
-  "name": "@movibe/logger-codegen",
-  "version": "3.0.0",
-  "description": "CLI code generator for @movibe/logger — define events in YAML, get typed TypeScript tracker",
+  "name": "@emit/codegen",
+  "version": "1.0.0",
+  "description": "CLI code generator for @emit/logger — define events in YAML, get typed TypeScript tracker",
   "type": "module",
   "bin": {
     "logger-codegen": "./dist/index.js"
@@ -30,7 +30,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/movibe/logger.git"
+    "url": "git+https://github.com/Emit-logger/emit.git"
   },
   "author": "Movibe",
   "license": "MIT"

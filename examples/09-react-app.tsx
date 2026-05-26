@@ -1,11 +1,11 @@
 import React from 'react'
-import { LoggerStrategy, type AnalyticsProvider } from '@movibe/logger'
+import { LoggerStrategy, type AnalyticsProvider } from '@emit/logger'
 import {
   AnalyticsProvider as AnalyticsContext,
   useAnalytics,
   useEventTracking,
   AnalyticsErrorBoundary,
-} from '@movibe/logger-react'
+} from '@emit/react'
 
 // Create the logger once at module level — share via context
 const consoleProvider: AnalyticsProvider = {

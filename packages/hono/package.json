@@ -1,7 +1,7 @@
 {
-  "name": "@movibe/logger-hono",
-  "version": "3.0.0",
-  "description": "Hono middleware for @movibe/logger — request id, child logger, timings",
+  "name": "@emit/hono",
+  "version": "1.0.0",
+  "description": "Hono middleware for @emit/logger — request id, child logger, timings",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -14,18 +14,18 @@
   },
   "files": ["dist", "README.md"],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=hono --external=@movibe/logger && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=hono --external=@movibe/logger",
+    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=hono --external=@emit/logger && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=hono --external=@emit/logger",
     "build:types": "npx tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "vitest run",
     "prepack": "bun run build:all"
   },
   "peerDependencies": {
-    "@movibe/logger": "^3.0.0",
+    "@emit/logger": "^1.0.0",
     "hono": "^4.0.0"
   },
   "devDependencies": {
-    "@movibe/logger": "workspace:*",
+    "@emit/logger": "workspace:*",
     "@types/node": "^20.11.19",
     "hono": "^4.0.0",
     "typescript": "^5.3.3"
@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/movibe/logger.git"
+    "url": "git+https://github.com/Emit-logger/emit.git"
   },
   "author": "Movibe",
   "license": "MIT"

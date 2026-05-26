@@ -1,12 +1,13 @@
-# @movibe/logger
+# @emit/logger
 
-[![Tests & Coverage](https://github.com/movibe/logger/actions/workflows/tests.yml/badge.svg)](https://github.com/movibe/logger/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/movibe/logger/branch/main/graph/badge.svg)](https://codecov.io/gh/movibe/logger)
+[![npm version](https://img.shields.io/npm/v/@emit/logger)](https://www.npmjs.com/package/@emit/logger)
+[![Tests & Coverage](https://github.com/Emit-logger/emit/actions/workflows/tests.yml/badge.svg)](https://github.com/Emit-logger/emit/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/Emit-logger/emit/branch/main/graph/badge.svg)](https://codecov.io/gh/Emit-logger/emit)
 
 Universal logging + analytics for TypeScript — Node, browser, edge, React Native.
 
 ```typescript
-import { LoggerStrategy, JSONTransport, ConsoleTransport, redact, sample, LogLevelEnum } from '@movibe/logger'
+import { LoggerStrategy, JSONTransport, ConsoleTransport, redact, sample, LogLevelEnum } from '@emit/logger'
 
 const logger = new LoggerStrategy({
   transports: [
@@ -27,7 +28,7 @@ logger.captureError('Auth', 'login_failed', false, new Error('bad token'))
 const reqLog = logger.child({ requestId: 'abc-123' })
 reqLog.info('handling request')
 
-import { runWithContext } from '@movibe/logger'
+import { runWithContext } from '@emit/logger'
 await runWithContext({ traceId: 'tx' }, async () => {
   reqLog.info('inside trace')  // context auto-merged
 })
@@ -35,16 +36,16 @@ await runWithContext({ traceId: 'tx' }, async () => {
 
 ## Packages
 
-| Package | Use |
-|---|---|
-| `@movibe/logger` | Core: logs, transports, plugins, providers |
-| `@movibe/logger-react` | React (DOM/RSC): hooks, provider, error boundary, server actions |
-| `@movibe/logger-react-native` | React Native: AppState, navigation, error boundary |
-| `@movibe/logger-next` | Next.js: middleware, route handler instrumentation |
-| `@movibe/logger-fastify` | Fastify: plugin, request id, child logger per request |
-| `@movibe/logger-hono` | Hono: middleware with context propagation |
-| `@movibe/logger-otel` | OpenTelemetry: spans + logs bridge |
-| `@movibe/logger-codegen` | Codegen: YAML schema → TS types, drift detection, JSON Schema/Avro |
+| Package | Use | npm |
+|---|---|---|
+| `@emit/logger` | Core: logs, transports, plugins, providers | [![npm](https://img.shields.io/npm/v/@emit/logger)](https://www.npmjs.com/package/@emit/logger) |
+| `@emit/react` | React (DOM/RSC): hooks, provider, server actions | [![npm](https://img.shields.io/npm/v/@emit/react)](https://www.npmjs.com/package/@emit/react) |
+| `@emit/react-native` | React Native: AppState, navigation, hooks | [![npm](https://img.shields.io/npm/v/@emit/react-native)](https://www.npmjs.com/package/@emit/react-native) |
+| `@emit/next` | Next.js: middleware, route handler instrumentation | [![npm](https://img.shields.io/npm/v/@emit/next)](https://www.npmjs.com/package/@emit/next) |
+| `@emit/fastify` | Fastify: plugin, request id, child logger per request | [![npm](https://img.shields.io/npm/v/@emit/fastify)](https://www.npmjs.com/package/@emit/fastify) |
+| `@emit/hono` | Hono: middleware with context propagation | [![npm](https://img.shields.io/npm/v/@emit/hono)](https://www.npmjs.com/package/@emit/hono) |
+| `@emit/otel` | OpenTelemetry: spans + logs bridge | [![npm](https://img.shields.io/npm/v/@emit/otel)](https://www.npmjs.com/package/@emit/otel) |
+| `@emit/codegen` | Codegen: YAML schema → TS types, drift detection, JSON Schema/Avro | [![npm](https://img.shields.io/npm/v/@emit/codegen)](https://www.npmjs.com/package/@emit/codegen) |
 
 ## Features
 
@@ -65,13 +66,15 @@ await runWithContext({ traceId: 'tx' }, async () => {
 ### Install
 
 ```bash
-npm install @movibe/logger
+npm install @emit/logger
 ```
+
+See [npm package page](https://www.npmjs.com/package/@emit/logger) for versions and stats.
 
 ### Core
 
 ```typescript
-import { LoggerStrategy, ConsoleTransport, JSONTransport, LogLevelEnum } from '@movibe/logger'
+import { LoggerStrategy, ConsoleTransport, JSONTransport, LogLevelEnum } from '@emit/logger'
 
 const logger = new LoggerStrategy({
   transports: [
@@ -99,12 +102,12 @@ logger.logFeature('Auth', 'login_success', { method: 'oauth' })
 ### React
 
 ```bash
-npm install @movibe/logger @movibe/logger-react
+npm install @emit/logger @emit/react
 ```
 
 ```tsx
-import { AnalyticsProvider, useAnalytics, usePageTracking } from '@movibe/logger-react'
-import { LoggerStrategy } from '@movibe/logger'
+import { AnalyticsProvider, useAnalytics, usePageTracking } from '@emit/react'
+import { LoggerStrategy } from '@emit/logger'
 
 const logger = new LoggerStrategy({ /* ... */ })
 
@@ -126,12 +129,12 @@ function ProductPage() {
 ### Next.js
 
 ```bash
-npm install @movibe/logger @movibe/logger-next
+npm install @emit/logger @emit/next
 ```
 
 ```typescript
 // middleware.ts
-import { withLogger } from '@movibe/logger-next'
+import { withLogger } from '@emit/next'
 import { NextResponse } from 'next/server'
 import { logger } from './lib/logger'
 
@@ -141,7 +144,7 @@ export default withLogger(
 )
 
 // app/api/orders/route.ts
-import { instrumentRoute } from '@movibe/logger-next'
+import { instrumentRoute } from '@emit/next'
 import { logger } from '@/lib/logger'
 
 export const GET = instrumentRoute(
@@ -153,12 +156,12 @@ export const GET = instrumentRoute(
 ### React Native
 
 ```bash
-npm install @movibe/logger @movibe/logger-react-native
+npm install @emit/logger @emit/react-native
 ```
 
 ```tsx
-import { AnalyticsProvider, useAnalytics, useScreenTracking } from '@movibe/logger-react-native'
-import { LoggerStrategy } from '@movibe/logger'
+import { AnalyticsProvider, useAnalytics, useScreenTracking } from '@emit/react-native'
+import { LoggerStrategy } from '@emit/logger'
 
 const logger = new LoggerStrategy({ /* ... */ })
 
@@ -187,7 +190,7 @@ function HomeScreen() {
 | `DevToolsTransport` | WebSocket to devtools panel; buffers while disconnected |
 
 ```typescript
-import { HTTPTransport } from '@movibe/logger'
+import { HTTPTransport } from '@emit/logger'
 
 new HTTPTransport({
   url: 'https://logs.example.com/ingest',
@@ -202,7 +205,7 @@ new HTTPTransport({
 ## Plugins
 
 ```typescript
-import { redact, sample, rateLimit, normalizeStack } from '@movibe/logger'
+import { redact, sample, rateLimit, normalizeStack } from '@emit/logger'
 
 new LoggerStrategy({
   plugins: [
@@ -216,10 +219,43 @@ new LoggerStrategy({
 
 Plugins are plain functions `(entry: LogEntry) => LogEntry | null`. Return `null` to drop the entry.
 
+## OpenTelemetry
+
+Two complementary paths — use one or both:
+
+```typescript
+import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/logger'
+import { OTelTransport, OTelProvider } from '@emit/otel'
+
+const logger = new LoggerStrategy({
+  transports: [
+    new ConsoleTransport({ minLevel: LogLevelEnum.INFO }),
+    new OTelTransport({ loggerProvider }),   // logs → OTel LogRecords
+  ],
+  providers: [
+    new OTelProvider(),                       // events → OTel spans
+  ],
+})
+
+// These go to both ConsoleTransport and OTelTransport (as LogRecords)
+logger.info('request processed', { status: 200 })
+logger.error('db timeout', { host: 'pg-1' })
+
+// These go ONLY to OTelProvider (as spans)
+logger.event('purchase', { total: 99 })
+logger.logScreen('/checkout')
+logger.captureError('Payments', 'charge', true, err)
+```
+
+| Export | What | For |
+|---|---|---|
+| `OTelTransport` | Each log call → `otelLogger.emit()` (LogRecord) | Grafana Loki, Elastic, any OTLP log backend |
+| `OTelProvider` | Each event/screen/error → `tracer.startSpan()` (Span) | Grafana Tempo, Jaeger, Honeycomb |
+
 ## Type-Safe Events
 
 ```typescript
-declare module '@movibe/logger' {
+declare module '@emit/logger' {
   interface EventRegistry {
     'purchase': { orderId: string; total: number }
     'page-view': { path: string }
@@ -238,7 +274,7 @@ const reqLog = logger.child({ requestId: 'abc-123', userId: 'u-1' })
 reqLog.info('request received')  // context: { requestId, userId }
 
 // AsyncLocalStorage — auto-merges into every log call in scope
-import { runWithContext } from '@movibe/logger'
+import { runWithContext } from '@emit/logger'
 
 await runWithContext({ traceId: 'trace-abc' }, async () => {
   await processOrder()  // all logs inside get traceId automatically
@@ -263,7 +299,7 @@ logger.getConsent() // { analytics: true, errors: true }
 ## Circuit Breaker
 
 ```typescript
-import { circuitBreaker } from '@movibe/logger'
+import { circuitBreaker } from '@emit/logger'
 import { PostHogProvider } from './providers/posthog'
 
 const safePostHog = circuitBreaker(new PostHogProvider(), {
@@ -281,12 +317,12 @@ Runnable apps per integration in [`examples/`](./examples):
 
 | App | Stack |
 |---|---|
-| [next-app](./examples/next-app) | Next.js 15 App Router + `@movibe/logger-next` (middleware + instrumentRoute) |
-| [fastify-server](./examples/fastify-server) | Fastify 5 + `@movibe/logger-fastify` (plugin + per-request child logger) |
+| [next-app](./examples/next-app) | Next.js 15 App Router + `@emit/next` (middleware + instrumentRoute) |
+| [fastify-server](./examples/fastify-server) | Fastify 5 + `@emit/fastify` (plugin + per-request child logger) |
 | [hono-worker](./examples/hono-worker) | Cloudflare Worker (Hono 4) + `HTTPTransport` remote ingest |
 | [otel-bridge](./examples/otel-bridge) | Node + NodeSDK + OTLP exporters + `OTelProvider`/`OTelTransport` |
-| [react-vite](./examples/react-vite) | Vite + React 19 SPA + `@movibe/logger-react` hooks + boundary |
-| [react-native-expo](./examples/react-native-expo) | Expo SDK 52 + expo-router + `@movibe/logger-react-native` |
+| [react-vite](./examples/react-vite) | Vite + React 19 SPA + `@emit/react` hooks + provider |
+| [react-native-expo](./examples/react-native-expo) | Expo SDK 52 + expo-router + `@emit/react-native` |
 
 Single-concept snippets in [`examples/`](./examples) (files `01-`...`15-`): redact, child loggers, ALS context, HTTP transport, consent, circuit breaker, event registry, codegen workflow.
 
@@ -306,12 +342,16 @@ See [CHANGELOG.md](./CHANGELOG.md) and [docs/MIGRATION_v2_to_v3.md](./docs/MIGRA
 + logger.logFeature('Auth', 'login_success', { method: 'oauth' })
 
 - declare global { interface EVENT_TAGS { ... } }
-+ declare module '@movibe/logger' { interface EventRegistry { ... } }
++ declare module '@emit/logger' { interface EventRegistry { ... } }
 ```
 
 ## Contributing
 
-PRs welcome. Run `bun install && bun test` from the repo root.
+PRs welcome. Run `bun install && npm test` from the repo root.
+
+### AI-Assisted Development
+
+This repo includes a [Claude Code skill](./.claude/skills/logger/SKILL.md) with project conventions, build patterns, and common workflows. It's auto-discovered when working in this directory — no setup needed. Just clone and open.
 
 ## License
 

@@ -1,12 +1,12 @@
 # hono-worker example
 
-Cloudflare Worker example using [Hono](https://hono.dev) and `@movibe/logger-hono`.
+Cloudflare Worker example using [Hono](https://hono.dev) and `@emit/hono`.
 
 The Worker:
 
 - Builds a `LoggerStrategy` per request with an `HTTPTransport` that POSTs
   batched log entries to a remote ingest endpoint.
-- Uses `loggerMiddleware` from `@movibe/logger-hono` to attach a request-scoped
+- Uses `loggerMiddleware` from `@emit/hono` to attach a request-scoped
   child logger (with `requestId`, `method`, `path`) to every Hono context.
 - Defers the final batch flush with
   `c.executionCtx.waitUntil(logger.close())` so the response returns
@@ -60,7 +60,7 @@ the token to `wrangler.toml`.
   runtime — `HTTPTransport` relies on `globalThis.fetch`, `setInterval`, and
   `AbortController`, all available on Workers.
 - `nodejs_compat` is enabled in `wrangler.toml` only to keep TypeScript types
-  permissive across `@movibe/logger`'s shared core; runtime code paths used
+  permissive across `@emit/logger`'s shared core; runtime code paths used
   here do not require it.
 - Each request constructs its own logger so that `waitUntil(logger.close())`
   has a well-defined lifecycle. For higher throughput you can hoist the logger

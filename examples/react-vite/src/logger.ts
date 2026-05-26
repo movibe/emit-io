@@ -3,7 +3,7 @@ import {
   ConsoleTransport,
   ConsoleProvider,
   LogLevelEnum,
-} from '@movibe/logger'
+} from '@emit/logger'
 
 /**
  * Browser-safe LoggerStrategy.

@@ -5,7 +5,7 @@ import {
   useEventTracking,
   useTrackEvent,
   useCaptureError,
-} from '@movibe/logger-react-native'
+} from '@emit/react-native'
 
 export default function ProfileScreen() {
   useScreenTracking('Profile', { source: 'home-cta' })

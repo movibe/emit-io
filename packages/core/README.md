@@ -1,11 +1,11 @@
-# @movibe/logger
+# @emit/logger
 
 Core logging + analytics library for TypeScript — Node, browser, edge, React Native.
 
 ## Install
 
 ```bash
-npm install @movibe/logger
+npm install @emit/logger
 ```
 
 ## Quick Start
@@ -19,7 +19,7 @@ import {
   redact,
   sample,
   LogLevelEnum,
-} from '@movibe/logger'
+} from '@emit/logger'
 
 const logger = new LoggerStrategy({
   transports: [
@@ -148,7 +148,7 @@ Connects via WebSocket to a devtools panel. Buffers entries while disconnected a
 Built-in plugins are plain `(entry: LogEntry) => LogEntry | null` functions.
 
 ```typescript
-import { redact, sample, rateLimit, normalizeStack } from '@movibe/logger'
+import { redact, sample, rateLimit, normalizeStack } from '@emit/logger'
 
 redact({ paths: ['password', 'user.token', '*.secret'] })
 sample({ rate: 0.05, levels: [LogLevelEnum.DEBUG] })
@@ -159,7 +159,7 @@ normalizeStack({ maxFrames: 10 })
 ## Type-Safe Events
 
 ```typescript
-declare module '@movibe/logger' {
+declare module '@emit/logger' {
   interface EventRegistry {
     'purchase': { orderId: string; total: number }
     'page-view': { path: string }
@@ -176,7 +176,7 @@ logger.event('unknown', {})  // TS error
 const reqLog = logger.child({ requestId: 'abc-123' })
 reqLog.info('request received')  // logs include requestId
 
-import { runWithContext } from '@movibe/logger'
+import { runWithContext } from '@emit/logger'
 await runWithContext({ traceId: 'tx-1' }, async () => {
   reqLog.info('in trace')  // merges traceId from ALS + requestId from binding
 })
@@ -195,7 +195,7 @@ logger.setConsent({ analytics: true })    // re-enable after user consent
 ## Circuit Breaker
 
 ```typescript
-import { circuitBreaker } from '@movibe/logger'
+import { circuitBreaker } from '@emit/logger'
 
 const safe = circuitBreaker(myProvider, {
   failureThreshold: 5,
@@ -221,7 +221,7 @@ logger.init()              // flushes buffer → providers
 ## Test Helpers
 
 ```typescript
-import { createTestLogger } from '@movibe/logger/test'
+import { createTestLogger } from '@emit/logger/test'
 
 const { logger, entries } = createTestLogger()
 logger.info('hello', { x: 1 })

@@ -1,18 +1,18 @@
-# @movibe/logger-react
+# @emit/react
 
-React bindings for [@movibe/logger](https://github.com/movibe/logger) — hooks, context provider, error boundary, and server action wrapper.
+React bindings for [@emit/logger](https://github.com/Emit-logger/emit) — hooks, context provider, and server action wrapper.
 
 ## Install
 
 ```bash
-npm install @movibe/logger @movibe/logger-react
+npm install @emit/logger @emit/react
 ```
 
 ## Quick Start
 
 ```tsx
-import { AnalyticsProvider, useAnalytics, usePageTracking, useTrackEvent } from '@movibe/logger-react'
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@movibe/logger'
+import { AnalyticsProvider, useAnalytics, usePageTracking, useTrackEvent } from '@emit/react'
+import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit/logger'
 
 const logger = new LoggerStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
@@ -85,30 +85,12 @@ function SubmitButton({ formName }: { formName: string }) {
 
 Fires `form-submit-start` and `form-submit-complete` events automatically.
 
-## Error Boundary
-
-```tsx
-import { AnalyticsErrorBoundary } from '@movibe/logger-react'
-
-function App() {
-  return (
-    <AnalyticsErrorBoundary fallback={<p>Something went wrong.</p>}>
-      <Main />
-    </AnalyticsErrorBoundary>
-  )
-}
-```
-
-`onError` is called automatically via `captureError` on the logger if the boundary is inside an `<AnalyticsProvider>`.
-
-**Props:** `children`, `fallback?: ReactNode`, `onError?: (error, errorInfo) => void`
-
 ## Server Action Wrapper (`./server` subpath)
 
 Safe to import in server components and server actions — no `'use client'` directive.
 
 ```typescript
-import { withAnalytics } from '@movibe/logger-react/server'
+import { withAnalytics } from '@emit/react/server'
 import { logger } from '@/lib/logger'
 
 export const submitForm = withAnalytics(
@@ -142,7 +124,7 @@ interface AnalyticsContextValue {
 
 | Package | Version |
 |---|---|
-| `@movibe/logger` | `^3.0.0` |
+| `@emit/logger` | `^1.0.0` |
 | `react` | `^18.0.0 \|\| ^19.0.0` |
 | `react-dom` | `^18.0.0 \|\| ^19.0.0` |
 

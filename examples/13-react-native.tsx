@@ -1,13 +1,13 @@
 import React from 'react'
 import { Button, View } from 'react-native'
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native'
-import { LoggerStrategy, type AnalyticsProvider } from '@movibe/logger'
+import { LoggerStrategy, type AnalyticsProvider } from '@emit/logger'
 import {
   AnalyticsProvider as AnalyticsContext,
   useAnalytics,
   useScreenTracking,
   useNavigationAnalytics,
-} from '@movibe/logger-react-native'
+} from '@emit/react-native'
 
 const provider: AnalyticsProvider = {
   name: 'console',

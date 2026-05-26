@@ -28,7 +28,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: movibe/logger
+          slug: Emit-logger/emit
 
       - name: Generate coverage badges
         uses: jpb06/jest-badges-action@latest

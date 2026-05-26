@@ -1,6 +1,6 @@
 import Fastify from 'fastify'
-import { loggerPlugin } from '@movibe/logger-fastify'
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@movibe/logger'
+import { loggerPlugin } from '@emit/fastify'
+import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/logger'
 
 const app = Fastify({ disableRequestLogging: true })
 

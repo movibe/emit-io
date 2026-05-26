@@ -9,10 +9,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.movibe.loggerrnexample"
+      "bundleIdentifier": "com.emit.loggerrnexample"
     },
     "android": {
-      "package": "com.movibe.loggerrnexample"
+      "package": "com.emit.loggerrnexample"
     },
     "web": {
       "bundler": "metro"

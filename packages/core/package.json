@@ -1,6 +1,6 @@
 {
-  "name": "@movibe/logger",
-  "version": "3.0.0",
+  "name": "@emit/logger",
+  "version": "1.0.0",
   "description": "A flexible and type-safe logging system for JavaScript/TypeScript applications",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -55,7 +55,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/movibe/logger.git"
+    "url": "git+https://github.com/Emit-logger/emit.git"
   },
   "keywords": [
     "logger",
@@ -67,9 +67,9 @@
   "author": "Movibe",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/movibe/logger/issues"
+    "url": "https://github.com/Emit-logger/emit/issues"
   },
-  "homepage": "https://github.com/movibe/logger#readme",
+  "homepage": "https://github.com/Emit-logger/emit#readme",
   "devDependencies": {
     "@types/node": "^20.11.19",
     "@typescript-eslint/eslint-plugin": "^7.0.1",

@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server'
-import { runWithContext, type LoggerStrategy } from '@movibe/logger'
+import { runWithContext, type LoggerStrategy } from '@emit/logger'
 
 export interface MiddlewareOptions {
   logger: LoggerStrategy

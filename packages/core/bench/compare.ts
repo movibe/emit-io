@@ -7,7 +7,7 @@ import { devNull } from 'node:os'
 
 const devNullStream = createWriteStream(devNull)
 
-const movibeLogger = new LoggerStrategy({
+const emitLogger = new LoggerStrategy({
   transports: [new JSONTransport({
     minLevel: LogLevelEnum.INFO,
     write: (line) => devNullStream.write(line),
@@ -26,8 +26,8 @@ const winstonLogger = winston.createLogger({
 async function main() {
   const benchSimple = new Bench({ time: 1000 })
   benchSimple
-    .add('@movibe/logger info', () => {
-      movibeLogger.info('hello world')
+    .add('@emit/logger info', () => {
+      emitLogger.info('hello world')
     })
     .add('pino info', () => {
       pinoLogger.info('hello world')
@@ -42,8 +42,8 @@ async function main() {
 
   const benchCtx = new Bench({ time: 1000 })
   benchCtx
-    .add('@movibe/logger info+ctx', () => {
-      movibeLogger.info('hello', { userId: 'abc', requestId: 'xyz', count: 42 })
+    .add('@emit/logger info+ctx', () => {
+      emitLogger.info('hello', { userId: 'abc', requestId: 'xyz', count: 42 })
     })
     .add('pino info+ctx', () => {
       pinoLogger.info({ userId: 'abc', requestId: 'xyz', count: 42 }, 'hello')
@@ -57,13 +57,13 @@ async function main() {
   console.table(benchCtx.table())
 
   const benchChild = new Bench({ time: 1000 })
-  const movibeChild = movibeLogger.child({ requestId: 'abc' })
+  const emitChild = emitLogger.child({ requestId: 'abc' })
   const pinoChild = pinoLogger.child({ requestId: 'abc' })
   const winstonChild = winstonLogger.child({ requestId: 'abc' })
 
   benchChild
-    .add('@movibe/logger child info', () => {
-      movibeChild.info('hello')
+    .add('@emit/logger child info', () => {
+      emitChild.info('hello')
     })
     .add('pino child info', () => {
       pinoChild.info('hello')

@@ -19,7 +19,7 @@
 + logger.logFeature('Auth', 'login_success', { method: 'oauth' })
 
 - declare global { interface EVENT_TAGS { ... } }
-+ declare module '@movibe/logger' { interface EventRegistry { ... } }
++ declare module '@emit/logger' { interface EventRegistry { ... } }
 ```
 
 React package — `AnalyticsContextValue` now exposes `captureError`; `error` is kept as a deprecated alias:
@@ -37,17 +37,17 @@ React package — `AnalyticsContextValue` now exposes `captureError`; `error` is
 - `circuitBreaker` provider wrapper
 - Consent gate (GDPR) — `setConsent` / `getConsent`
 - Pre-init event buffer
-- Test helpers (`@movibe/logger/test`)
+- Test helpers (`@emit/logger/test`)
 - React 19 support (`useFormAnalytics`, `withAnalytics` server action)
 - Codegen drift detection + JSON Schema / Avro export
-- New packages: `@movibe/logger-next`, `@movibe/logger-fastify`, `@movibe/logger-hono`, `@movibe/logger-otel`
+- New packages: `@emit/next`, `@emit/fastify`, `@emit/hono`, `@emit/otel`
 
 ### Package versions bumped to 3.0.0
 
-- `@movibe/logger`
-- `@movibe/logger-react`
-- `@movibe/logger-next`
-- `@movibe/logger-fastify`
-- `@movibe/logger-hono`
-- `@movibe/logger-otel`
-- `@movibe/logger-codegen`
+- `@emit/logger`
+- `@emit/react`
+- `@emit/next`
+- `@emit/fastify`
+- `@emit/hono`
+- `@emit/otel`
+- `@emit/codegen`

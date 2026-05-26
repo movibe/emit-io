@@ -1,6 +1,6 @@
 # next-app example
 
-Next.js 15 App Router with `@movibe/logger-next`.
+Next.js 15 App Router with `@emit/next`.
 
 ## What it shows
 

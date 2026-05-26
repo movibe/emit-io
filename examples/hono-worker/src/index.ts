@@ -1,5 +1,5 @@
 /**
- * Cloudflare Worker example using Hono + @movibe/logger-hono.
+ * Cloudflare Worker example using Hono + @emit/hono.
  *
  * - LoggerStrategy with HTTPTransport ships log batches to a remote ingest URL.
  * - loggerMiddleware attaches a request-scoped child logger to each request.
@@ -12,8 +12,8 @@ import {
   LoggerStrategy,
   HTTPTransport,
   LogLevelEnum,
-} from '@movibe/logger'
-import { loggerMiddleware } from '@movibe/logger-hono'
+} from '@emit/logger'
+import { loggerMiddleware } from '@emit/hono'
 
 export interface Env {
   LOG_INGEST_URL: string
@@ -64,7 +64,7 @@ app.get('/', (c) => {
   log.info('hello-handler')
   return c.json({
     ok: true,
-    message: 'Hello from Hono on Cloudflare Workers with @movibe/logger',
+    message: 'Hello from Hono on Cloudflare Workers with @emit/logger',
     requestId: c.get('requestId'),
   })
 })

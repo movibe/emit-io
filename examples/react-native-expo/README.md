@@ -1,6 +1,6 @@
 # logger-rn-example
 
-Expo (React Native) example using `@movibe/logger` + `@movibe/logger-react-native`.
+Expo (React Native) example using `@emit/logger` + `@emit/react-native`.
 
 ## Features
 

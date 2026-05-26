@@ -1,18 +1,18 @@
-# @movibe/logger-next
+# @emit/next
 
-Next.js bindings for [@movibe/logger](https://github.com/movibe/logger) — middleware logging and App Router route handler instrumentation.
+Next.js bindings for [@emit/logger](https://github.com/Emit-logger/emit) — middleware logging and App Router route handler instrumentation.
 
 ## Install
 
 ```bash
-npm install @movibe/logger @movibe/logger-next
+npm install @emit/logger @emit/next
 ```
 
 ## Quick Start
 
 ```typescript
 // lib/logger.ts
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@movibe/logger'
+import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/logger'
 
 export const logger = new LoggerStrategy({
   transports: [new JSONTransport({ minLevel: LogLevelEnum.INFO })],
@@ -21,7 +21,7 @@ export const logger = new LoggerStrategy({
 
 ```typescript
 // middleware.ts
-import { withLogger } from '@movibe/logger-next'
+import { withLogger } from '@emit/next'
 import { NextResponse } from 'next/server'
 import { logger } from './lib/logger'
 
@@ -35,7 +35,7 @@ export const config = { matcher: ['/((?!_next|favicon).*)'] }
 
 ```typescript
 // app/api/orders/route.ts
-import { instrumentRoute } from '@movibe/logger-next'
+import { instrumentRoute } from '@emit/next'
 import { logger } from '@/lib/logger'
 
 export const GET = instrumentRoute(
@@ -56,8 +56,8 @@ Wraps a Next.js middleware function. Adds:
 - Optional `pageview` analytics event on GET requests
 
 ```typescript
-import { withLogger } from '@movibe/logger-next'
-import type { MiddlewareOptions } from '@movibe/logger-next'
+import { withLogger } from '@emit/next'
+import type { MiddlewareOptions } from '@emit/next'
 
 const options: MiddlewareOptions = {
   logger,
@@ -76,8 +76,8 @@ Wraps an App Router route handler (`GET`, `POST`, etc.). Adds:
 - Catches errors and logs them before re-throwing
 
 ```typescript
-import { instrumentRoute } from '@movibe/logger-next'
-import type { RouteHandlerOptions } from '@movibe/logger-next'
+import { instrumentRoute } from '@emit/next'
+import type { RouteHandlerOptions } from '@emit/next'
 
 export const POST = instrumentRoute(
   async (req, ctx) => {
@@ -102,7 +102,7 @@ logger.info('processing order', { orderId: '123' })
 
 | Package | Version |
 |---|---|
-| `@movibe/logger` | `^3.0.0` |
+| `@emit/logger` | `^1.0.0` |
 | `next` | `^14.0.0 \|\| ^15.0.0` |
 
 ## License

@@ -1,5 +1,5 @@
 {
-  "name": "@movibe/logger-example-react-vite",
+  "name": "@emit/logger-example-react-vite",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@movibe/logger": "workspace:*",
-    "@movibe/logger-react": "workspace:*",
+    "@emit/logger": "workspace:*",
+    "@emit/react": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

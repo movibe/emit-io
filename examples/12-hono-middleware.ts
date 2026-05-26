@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
-import { loggerMiddleware } from '@movibe/logger-hono'
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@movibe/logger'
+import { loggerMiddleware } from '@emit/hono'
+import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit/logger'
 
 const logger = new LoggerStrategy({
   transports: [

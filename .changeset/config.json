@@ -2,20 +2,20 @@
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
   "changelog": [
     "@changesets/changelog-github",
-    { "repo": "movibe/logger" }
+    { "repo": "Emit-logger/emit" }
   ],
   "commit": false,
   "fixed": [],
   "linked": [
     [
-      "@movibe/logger",
-      "@movibe/logger-react",
-      "@movibe/logger-react-native",
-      "@movibe/logger-next",
-      "@movibe/logger-fastify",
-      "@movibe/logger-hono",
-      "@movibe/logger-otel",
-      "@movibe/logger-codegen"
+      "@emit/logger",
+      "@emit/react",
+      "@emit/react-native",
+      "@emit/next",
+      "@emit/fastify",
+      "@emit/hono",
+      "@emit/otel",
+      "@emit/codegen"
     ]
   ],
   "access": "public",

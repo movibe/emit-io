@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { AnalyticsProvider } from '@movibe/logger-react'
+import { AnalyticsProvider } from '@emit/react'
 import { logger } from './logger'
 import { App } from './App'
 

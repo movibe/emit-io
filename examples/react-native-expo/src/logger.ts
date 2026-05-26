@@ -1,4 +1,4 @@
-import { LoggerStrategy, ConsoleProvider, LogLevelEnum } from '@movibe/logger'
+import { LoggerStrategy, ConsoleProvider, LogLevelEnum } from '@emit/logger'
 
 export const logger = new LoggerStrategy({
   providers: [

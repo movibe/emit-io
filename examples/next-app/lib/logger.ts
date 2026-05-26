@@ -4,7 +4,7 @@ import {
   ConsoleTransport,
   LogLevelEnum,
   redact,
-} from '@movibe/logger'
+} from '@emit/logger'
 
 export const logger = new LoggerStrategy({
   transports: [
