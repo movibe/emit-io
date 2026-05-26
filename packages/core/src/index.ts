@@ -485,3 +485,6 @@ export type { CircuitBreakerOptions, CircuitState } from './circuit-breaker.js'
 
 export { HTTPTransport } from './http-transport.js'
 export type { HTTPTransportOptions } from './http-transport.js'
+
+export { DevToolsTransport } from './devtools-transport.js'
+export type { DevToolsTransportOptions } from './devtools-transport.js'

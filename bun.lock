@@ -14,6 +14,21 @@
         "winston": "^3.13.0",
       },
     },
+    "packages/codegen": {
+      "name": "@movibe/logger-codegen",
+      "version": "2.0.0",
+      "bin": {
+        "logger-codegen": "./dist/index.js",
+      },
+      "dependencies": {
+        "js-yaml": "^4.1.0",
+      },
+      "devDependencies": {
+        "@types/js-yaml": "^4.0.9",
+        "@types/node": "^20.11.19",
+        "typescript": "^5.3.3",
+      },
+    },
     "packages/core": {
       "name": "@movibe/logger",
       "version": "2.0.0",
@@ -43,6 +58,20 @@
         "fastify": "^4.0.0 || ^5.0.0",
       },
     },
+    "packages/hono": {
+      "name": "@movibe/logger-hono",
+      "version": "2.0.0",
+      "devDependencies": {
+        "@movibe/logger": "workspace:*",
+        "@types/node": "^20.11.19",
+        "hono": "^4.0.0",
+        "typescript": "^5.3.3",
+      },
+      "peerDependencies": {
+        "@movibe/logger": "^2.0.0",
+        "hono": "^4.0.0",
+      },
+    },
     "packages/next": {
       "name": "@movibe/logger-next",
       "version": "2.0.0",
@@ -55,6 +84,22 @@
       "peerDependencies": {
         "@movibe/logger": "^2.0.0",
         "next": "^14.0.0 || ^15.0.0",
+      },
+    },
+    "packages/otel": {
+      "name": "@movibe/logger-otel",
+      "version": "2.0.0",
+      "devDependencies": {
+        "@movibe/logger": "workspace:*",
+        "@opentelemetry/api": "^1.9.0",
+        "@opentelemetry/api-logs": "^0.50.0",
+        "@types/node": "^20.11.19",
+        "typescript": "^5.3.3",
+      },
+      "peerDependencies": {
+        "@movibe/logger": "^2.0.0",
+        "@opentelemetry/api": "^1.7.0",
+        "@opentelemetry/api-logs": "^0.50.0",
       },
     },
     "packages/react": {
@@ -250,9 +295,15 @@
 
     "@movibe/logger": ["@movibe/logger@workspace:packages/core"],
 
+    "@movibe/logger-codegen": ["@movibe/logger-codegen@workspace:packages/codegen"],
+
     "@movibe/logger-fastify": ["@movibe/logger-fastify@workspace:packages/fastify"],
 
+    "@movibe/logger-hono": ["@movibe/logger-hono@workspace:packages/hono"],
+
     "@movibe/logger-next": ["@movibe/logger-next@workspace:packages/next"],
+
+    "@movibe/logger-otel": ["@movibe/logger-otel@workspace:packages/otel"],
 
     "@movibe/logger-react": ["@movibe/logger-react@workspace:packages/react"],
 
@@ -315,6 +366,10 @@
     "@nodelib/fs.stat": ["@nodelib/fs.stat@2.0.5", "", {}, "sha512-RkhPPp2zrqDAQA/2jNhnztcPAlv64XdhIp7a7454A5ovI7Bukxgt7MX7udwAu3zg1DcpPU0rz3VV1SeaqvY4+A=="],
 
     "@nodelib/fs.walk": ["@nodelib/fs.walk@1.2.8", "", { "dependencies": { "@nodelib/fs.scandir": "2.1.5", "fastq": "^1.6.0" } }, "sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg=="],
+
+    "@opentelemetry/api": ["@opentelemetry/api@1.9.1", "", {}, "sha512-gLyJlPHPZYdAk1JENA9LeHejZe1Ti77/pTeFm/nMXmQH/HFZlcS/O2XJB+L8fkbrNSqhdtlvjBVjxwUYanNH5Q=="],
+
+    "@opentelemetry/api-logs": ["@opentelemetry/api-logs@0.50.0", "", { "dependencies": { "@opentelemetry/api": "^1.0.0" } }, "sha512-JdZuKrhOYggqOpUljAq4WWNi5nB10PmgoF0y2CvedLGXd0kSawb/UBnWT8gg1ND3bHCNHStAIVT0ELlxJJRqrA=="],
 
     "@pinojs/redact": ["@pinojs/redact@0.4.0", "", {}, "sha512-k2ENnmBugE/rzQfEcdWHcCY+/FM3VLzH9cYEsbdsoqrvzAKRhUZeRNhAZvB8OitQJ1TBed3yqWtdjzS6wJKBwg=="],
 
@@ -389,6 +444,8 @@
     "@types/estree": ["@types/estree@1.0.9", "", {}, "sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg=="],
 
     "@types/glob": ["@types/glob@8.1.0", "", { "dependencies": { "@types/minimatch": "^5.1.2", "@types/node": "*" } }, "sha512-IO+MJPVhoqz+28h1qLAcBEH2+xHMK6MTyHJc7MTnnYb6wsoLR29POVGJ7LycmVXIqyy/4/2ShP5sUwTXuOwb/w=="],
+
+    "@types/js-yaml": ["@types/js-yaml@4.0.9", "", {}, "sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg=="],
 
     "@types/minimatch": ["@types/minimatch@5.1.2", "", {}, "sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA=="],
 

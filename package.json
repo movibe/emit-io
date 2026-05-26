@@ -1,6 +1,6 @@
 {
   "private": true,
-  "workspaces": ["packages/core", "packages/react", "packages/codegen", "packages/fastify", "packages/next"],
+  "workspaces": ["packages/core", "packages/react", "packages/codegen", "packages/fastify", "packages/next", "packages/hono", "packages/otel"],
   "scripts": {
     "build": "npm -w packages/core run build:all && npm -w packages/core run build:types",
     "test": "vitest run",
