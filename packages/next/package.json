@@ -12,9 +12,10 @@
       "require": { "types": "./dist/index.d.ts", "default": "./dist/index.cjs" }
     }
   },
+  "sideEffects": false,
   "files": ["dist", "README.md"],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=next --external=@emit-io/core && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=next --external=@emit-io/core",
+    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=next --external=@emit-io/core --minify && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=next --external=@emit-io/core --minify",
     "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "vitest run",

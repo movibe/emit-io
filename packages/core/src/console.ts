@@ -1,42 +1,13 @@
 import type { LogEntry, Transport, AnalyticsProvider } from './types.js'
 import { LogLevel } from './types.js'
 
-const ICONS: Record<LogLevel, string> = {
-  [LogLevel.DEBUG]: '\x1b[90m⚫\x1b[0m',
-  [LogLevel.INFO]: '\x1b[34m🔵\x1b[0m',
-  [LogLevel.WARN]: '\x1b[33m🟡\x1b[0m',
-  [LogLevel.ERROR]: '\x1b[31m🔴\x1b[0m',
-  [LogLevel.FATAL]: '\x1b[41;97m⛔\x1b[0m',
-}
-
-const LEVEL_LABELS: Record<LogLevel, string> = {
-  [LogLevel.DEBUG]: 'DEBUG',
-  [LogLevel.INFO]: 'INFO',
-  [LogLevel.WARN]: 'WARN',
-  [LogLevel.ERROR]: 'ERROR',
-  [LogLevel.FATAL]: 'FATAL',
-}
-
-const LEVEL_COLORS: Record<LogLevel, string> = {
-  [LogLevel.DEBUG]: '\x1b[90m',
-  [LogLevel.INFO]: '\x1b[34m',
-  [LogLevel.WARN]: '\x1b[33m',
-  [LogLevel.ERROR]: '\x1b[31m',
-  [LogLevel.FATAL]: '\x1b[41;97m',
-}
-
-const RESET = '\x1b[0m'
-
-function formatTimestamp(date: Date): string {
-  return date.toISOString()
-}
-
+const D='\x1b[90m',I='\x1b[34m',W='\x1b[33m',E='\x1b[31m',F='\x1b[41;97m',R='\x1b[0m'
+const L=['DEBUG','INFO','WARN','ERROR','FATAL']
+const C=[D,I,W,E,F]
 function formatEntry(entry: LogEntry): string {
-  const timestamp = formatTimestamp(entry.timestamp)
-  const level = LEVEL_COLORS[entry.level] + LEVEL_LABELS[entry.level] + RESET
-  const contextStr = entry.context ? ` ${JSON.stringify(entry.context)}` : ''
-  const errorStr = entry.error ? `\n  ${entry.error.stack ?? entry.error.message}` : ''
-  return `${timestamp} ${level} ${entry.message}${contextStr}${errorStr}`
+  const ctx=entry.context?` ${JSON.stringify(entry.context)}`:''
+  const err=entry.error?`\n  ${entry.error.stack??entry.error.message}`:''
+  return `${entry.timestamp.toISOString()} ${C[entry.level]}${L[entry.level]}${R} ${entry.message}${ctx}${err}`
 }
 
 export interface ConsoleTransportOptions {
@@ -57,7 +28,7 @@ export class ConsoleTransport implements Transport {
   }
 
   log(entry: LogEntry): void {
-    const formatted = this.pretty ? formatEntry(entry) : `${entry.timestamp} [${LEVEL_LABELS[entry.level]}] ${entry.message}`
+    const formatted = this.pretty ? formatEntry(entry) : `${entry.timestamp} [${L[entry.level]}] ${entry.message}`
     const fn = entry.level >= LogLevel.ERROR ? console.error
       : entry.level === LogLevel.WARN ? console.warn
       : console.log

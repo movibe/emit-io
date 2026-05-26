@@ -28,13 +28,14 @@
       }
     }
   },
+  "sideEffects": false,
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=react --external=react-dom --external=@emit-io/core && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=react --external=react-dom --external=@emit-io/core && bun build ./src/server.ts --outdir=dist --target=node --format=esm --external=@emit-io/core && bun build ./src/server.ts --target=node --format=cjs --outfile=dist/server.cjs --external=@emit-io/core",
+    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=react --external=react-dom --external=@emit-io/core --minify && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=react --external=react-dom --external=@emit-io/core --minify && bun build ./src/server.ts --outdir=dist --target=node --format=esm --external=@emit-io/core --minify && bun build ./src/server.ts --target=node --format=cjs --outfile=dist/server.cjs --external=@emit-io/core --minify",
     "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "bun test",

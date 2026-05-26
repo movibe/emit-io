@@ -20,9 +20,10 @@
       }
     }
   },
+  "sideEffects": false,
   "files": ["dist", "README.md"],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=browser --format=esm --external=react --external=react-native --external=@react-navigation/native --external=@emit-io/core && bun build ./src/index.ts --target=browser --format=cjs --outfile=dist/index.cjs --external=react --external=react-native --external=@react-navigation/native --external=@emit-io/core",
+    "build": "bun build ./src/index.ts --outdir=dist --target=browser --format=esm --external=react --external=react-native --external=@react-navigation/native --external=@emit-io/core --minify && bun build ./src/index.ts --target=browser --format=cjs --outfile=dist/index.cjs --external=react --external=react-native --external=@react-navigation/native --external=@emit-io/core --minify",
     "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "vitest run",
