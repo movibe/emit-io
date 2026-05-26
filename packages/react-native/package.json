@@ -1,0 +1,57 @@
+{
+  "name": "@movibe/logger-react-native",
+  "version": "3.0.0",
+  "description": "React Native bindings for @movibe/logger — hooks, provider, error boundary, AppState + navigation tracking",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "react-native": "./dist/index.js",
+  "exports": {
+    ".": {
+      "react-native": "./dist/index.js",
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir=dist --target=browser --format=esm --external=react --external=react-native --external=@react-navigation/native --external=@movibe/logger && bun build ./src/index.ts --target=browser --format=cjs --outfile=dist/index.cjs --external=react --external=react-native --external=@react-navigation/native --external=@movibe/logger",
+    "build:types": "npx tsc --emitDeclarationOnly",
+    "build:all": "bun run build && bun run build:types",
+    "test": "vitest run",
+    "prepack": "bun run build:all"
+  },
+  "peerDependencies": {
+    "@movibe/logger": "^3.0.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-native": ">=0.72.0"
+  },
+  "peerDependenciesMeta": {
+    "@react-navigation/native": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@movibe/logger": "workspace:*",
+    "@types/react": "^18.2.0",
+    "react": "^18.2.0",
+    "react-native": "^0.74.0",
+    "@react-navigation/native": "^6.0.0",
+    "@testing-library/react": "^16.0.0",
+    "happy-dom": "^15.0.0",
+    "typescript": "^5.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/movibe/logger.git"
+  },
+  "author": "Movibe",
+  "license": "MIT"
+}
