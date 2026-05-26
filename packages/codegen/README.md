@@ -1,6 +1,6 @@
 # @emitio/codegen
 
-CLI code generator for [@emitio/core](https://github.com/Emit-logger/emit) — define analytics events in YAML, get a typed TypeScript tracker, drift detection, and JSON Schema / Avro export.
+CLI code generator for [@emitio/core](https://github.com/Emit-io/emit) — define analytics events in YAML, get a typed TypeScript tracker, drift detection, and JSON Schema / Avro export.
 
 ## Install
 

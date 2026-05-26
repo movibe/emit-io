@@ -1,6 +1,6 @@
 # @emitio/next
 
-Next.js bindings for [@emitio/core](https://github.com/Emit-logger/emit) — middleware logging and App Router route handler instrumentation.
+Next.js bindings for [@emitio/core](https://github.com/Emit-io/emit) — middleware logging and App Router route handler instrumentation.
 
 ## Install
 

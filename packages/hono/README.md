@@ -1,6 +1,6 @@
 # @emitio/hono
 
-Hono middleware for [@emitio/core](https://github.com/Emit-logger/emit) — request ID, child logger, timings, and ALS context propagation.
+Hono middleware for [@emitio/core](https://github.com/Emit-io/emit) — request ID, child logger, timings, and ALS context propagation.
 
 ## Install
 

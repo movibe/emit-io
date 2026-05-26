@@ -1,6 +1,6 @@
 # @emitio/fastify
 
-Fastify plugin for [@emitio/core](https://github.com/Emit-logger/emit) — per-request child logger, request ID, and automatic hook timings.
+Fastify plugin for [@emitio/core](https://github.com/Emit-io/emit) — per-request child logger, request ID, and automatic hook timings.
 
 ## Install
 

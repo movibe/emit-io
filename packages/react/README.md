@@ -1,6 +1,6 @@
 # @emitio/react
 
-React bindings for [@emitio/core](https://github.com/Emit-logger/emit) — hooks, context provider, and server action wrapper.
+React bindings for [@emitio/core](https://github.com/Emit-io/emit) — hooks, context provider, and server action wrapper.
 
 ## Install
 

@@ -55,7 +55,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Emit-logger/emit.git"
+    "url": "git+https://github.com/Emit-io/emit.git"
   },
   "keywords": [
     "logger",
@@ -67,9 +67,9 @@
   "author": "Movibe",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Emit-logger/emit/issues"
+    "url": "https://github.com/Emit-io/emit/issues"
   },
-  "homepage": "https://github.com/Emit-logger/emit#readme",
+  "homepage": "https://github.com/Emit-io/emit#readme",
   "devDependencies": {
     "@types/node": "^20.11.19",
     "@typescript-eslint/eslint-plugin": "^7.0.1",

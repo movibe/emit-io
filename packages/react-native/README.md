@@ -1,6 +1,6 @@
 # @emitio/react-native
 
-React Native bindings for [@emitio/core](https://github.com/Emit-logger/emit) — hooks, provider, AppState tracking, and React Navigation integration.
+React Native bindings for [@emitio/core](https://github.com/Emit-io/emit) — hooks, provider, AppState tracking, and React Navigation integration.
 
 ## Install
 
