@@ -1,8 +1,8 @@
 import { test, expect, describe, vi } from 'vitest'
 import { SeverityNumber } from '@opentelemetry/api-logs'
 import { OTelTransport } from '../otel-transport.js'
-import { LogLevelEnum } from '@emit-io/core'
-import type { LogLevel } from '@emit-io/core'
+import { LogLevelEnum } from 'emit-io-core'
+import type { LogLevel } from 'emit-io-core'
 
 function createMockOtelLogger() {
   return { emit: vi.fn() }

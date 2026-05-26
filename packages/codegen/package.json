@@ -1,7 +1,7 @@
 {
-  "name": "@emit-io/codegen",
+  "name": "emit-io-codegen",
   "version": "1.0.0",
-  "description": "CLI code generator for @emit-io/core — define events in YAML, get typed TypeScript tracker",
+  "description": "CLI code generator for emit-io — define events in YAML, get typed TypeScript tracker",
   "type": "module",
   "bin": {
     "logger-codegen": "./dist/index.js"

@@ -1,6 +1,6 @@
 import { logs, type LoggerProvider, SeverityNumber } from '@opentelemetry/api-logs'
-import type { LogEntry, Transport, LogLevel } from '@emit-io/core'
-import { LogLevelEnum } from '@emit-io/core'
+import type { LogEntry, Transport, LogLevel } from 'emit-io-core'
+import { LogLevelEnum } from 'emit-io-core'
 
 function getSeverityMap(): Record<number, SeverityNumber> {
   return {

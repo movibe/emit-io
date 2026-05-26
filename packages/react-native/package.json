@@ -1,7 +1,7 @@
 {
-  "name": "@emit-io/react-native",
+  "name": "emit-io-react-native",
   "version": "1.0.0",
-  "description": "React Native bindings for @emit-io/core — hooks, provider, AppState + navigation tracking",
+  "description": "React Native bindings for emit-io — hooks, provider, AppState + navigation tracking",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -23,14 +23,14 @@
   "sideEffects": false,
   "files": ["dist", "README.md"],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=browser --format=esm --external=react --external=react-native --external=@react-navigation/native --external=@emit-io/core --minify && bun build ./src/index.ts --target=browser --format=cjs --outfile=dist/index.cjs --external=react --external=react-native --external=@react-navigation/native --external=@emit-io/core --minify",
+    "build": "bun build ./src/index.ts --outdir=dist --target=browser --format=esm --external=react --external=react-native --external=@react-navigation/native --external=emit-io-core --minify && bun build ./src/index.ts --target=browser --format=cjs --outfile=dist/index.cjs --external=react --external=react-native --external=@react-navigation/native --external=emit-io-core --minify",
     "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "vitest run",
     "prepack": "bun run build:all"
   },
   "peerDependencies": {
-    "@emit-io/core": "^1.0.0",
+    "emit-io-core": "^1.0.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-native": ">=0.72.0"
   },
@@ -40,7 +40,7 @@
     }
   },
   "devDependencies": {
-    "@emit-io/core": "workspace:*",
+    "emit-io-core": "workspace:*",
     "@types/react": "^18.2.0",
     "react": "^18.2.0",
     "react-native": "^0.74.0",
