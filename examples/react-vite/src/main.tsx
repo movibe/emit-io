@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { AnalyticsProvider } from '@emitio/react'
+import { AnalyticsProvider } from '@emit-io/react'
 import { logger } from './logger'
 import { App } from './App'
 

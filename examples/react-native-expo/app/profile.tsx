@@ -5,7 +5,7 @@ import {
   useEventTracking,
   useTrackEvent,
   useCaptureError,
-} from '@emitio/react-native'
+} from '@emit-io/react-native'
 
 export default function ProfileScreen() {
   useScreenTracking('Profile', { source: 'home-cta' })

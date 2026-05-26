@@ -9,8 +9,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@emitio/core": "workspace:*",
-    "@emitio/hono": "workspace:*",
+    "@emit-io/core": "workspace:*",
+    "@emit-io/hono": "workspace:*",
     "hono": "^4.6.0"
   },
   "devDependencies": {

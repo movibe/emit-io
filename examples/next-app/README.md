@@ -1,6 +1,6 @@
 # next-app example
 
-Next.js 15 App Router with `@emitio/next`.
+Next.js 15 App Router with `@emit-io/next`.
 
 ## What it shows
 

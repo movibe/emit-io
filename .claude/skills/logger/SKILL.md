@@ -1,13 +1,13 @@
 ---
 name: emit-logger
-description: Use when a user asks about installing, configuring, or using @emitio/core in any project — Node, React, React Native, Next.js, Fastify, Hono, Cloudflare Workers. Also use when working on the monorepo itself (adding features, fixing bugs, running benchmarks, modifying any package under packages/)
+description: Use when a user asks about installing, configuring, or using @emit-io/core in any project — Node, React, React Native, Next.js, Fastify, Hono, Cloudflare Workers. Also use when working on the monorepo itself (adding features, fixing bugs, running benchmarks, modifying any package under packages/)
 ---
 
-# @emitio/core
+# @emit-io/core
 
 ## Overview
 
-Universal logging + analytics for TypeScript — Node, browser, edge, React Native. Published as [`@emitio/core`](https://www.npmjs.com/package/@emitio/core) on npm. Dual-purpose architecture: **analytics** (event/screen/identify dispatched to providers like PostHog) and **observability** (debug/info/warn/error/fatal piped through transports to console, JSON, HTTP, or OTel). Both layers run concurrently on every call.
+Universal logging + analytics for TypeScript — Node, browser, edge, React Native. Published as [`@emit-io/core`](https://www.npmjs.com/package/@emit-io/core) on npm. Dual-purpose architecture: **analytics** (event/screen/identify dispatched to providers like PostHog) and **observability** (debug/info/warn/error/fatal piped through transports to console, JSON, HTTP, or OTel). Both layers run concurrently on every call.
 
 ## Project Detection & Installation
 
@@ -17,16 +17,16 @@ When a user asks to install or use the logger, first identify the project type t
 
 | Signal | Project Type | Install |
 |---|---|---|
-| `package.json` has `next` | Next.js | `@emitio/core` + `@emitio/next` |
-| `package.json` has `next` + `react` | Next.js App Router | `@emitio/core` + `@emitio/next` + `@emitio/react` |
-| `package.json` has `react` + `react-dom`, no `next` | React SPA | `@emitio/core` + `@emitio/react` |
-| `package.json` has `react-native` | React Native | `@emitio/core` + `@emitio/react-native` |
-| `package.json` has `fastify` | Fastify | `@emitio/core` + `@emitio/fastify` |
-| `package.json` has `hono` | Hono | `@emitio/core` + `@emitio/hono` |
-| `package.json` has `wrangler` or `@cloudflare/workers` | Cloudflare Worker | `@emitio/core` + `@emitio/hono` (if using Hono) or just `@emitio/core` |
-| `package.json` has `@opentelemetry/api` | OTel-instrumented | `@emitio/core` + `@emitio/otel` |
-| `tsconfig.json` exists, no framework | Plain Node/TS | `@emitio/core` |
-| `package.json` has `vite`, `esbuild`, or `webpack` + `react` | React SPA (bundler) | `@emitio/core` + `@emitio/react` |
+| `package.json` has `next` | Next.js | `@emit-io/core` + `@emit-io/next` |
+| `package.json` has `next` + `react` | Next.js App Router | `@emit-io/core` + `@emit-io/next` + `@emit-io/react` |
+| `package.json` has `react` + `react-dom`, no `next` | React SPA | `@emit-io/core` + `@emit-io/react` |
+| `package.json` has `react-native` | React Native | `@emit-io/core` + `@emit-io/react-native` |
+| `package.json` has `fastify` | Fastify | `@emit-io/core` + `@emit-io/fastify` |
+| `package.json` has `hono` | Hono | `@emit-io/core` + `@emit-io/hono` |
+| `package.json` has `wrangler` or `@cloudflare/workers` | Cloudflare Worker | `@emit-io/core` + `@emit-io/hono` (if using Hono) or just `@emit-io/core` |
+| `package.json` has `@opentelemetry/api` | OTel-instrumented | `@emit-io/core` + `@emit-io/otel` |
+| `tsconfig.json` exists, no framework | Plain Node/TS | `@emit-io/core` |
+| `package.json` has `vite`, `esbuild`, or `webpack` + `react` | React SPA (bundler) | `@emit-io/core` + `@emit-io/react` |
 
 ### Detection Flow
 
@@ -34,7 +34,7 @@ When a user asks to install or use the logger, first identify the project type t
 1. Read user's package.json to identify framework
 2. Also check for tsconfig.json, vite.config.*, next.config.*
 3. Cross-reference with the heuristic table above
-4. Recommend install commands (always include @emitio/core as base)
+4. Recommend install commands (always include @emit-io/core as base)
 5. Show the minimal setup code snippet for that project type (see snippets below)
 6. If user also mentions analytics providers (PostHog, Sentry, etc.) or OTel, layer those on top
 ```
@@ -43,7 +43,7 @@ When a user asks to install or use the logger, first identify the project type t
 
 **Node / plain TypeScript:**
 ```typescript
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emitio/core'
+import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit-io/core'
 const logger = new LoggerStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
 })
@@ -53,25 +53,25 @@ emit.info('started', { port: 3000 })
 **Next.js App Router:**
 ```typescript
 // lib/emit.ts
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emitio/core'
+import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit-io/core'
 export const logger = new LoggerStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
 })
 
 // middleware.ts
-import { withLogger } from '@emitio/next'
+import { withLogger } from '@emit-io/next'
 export default withLogger(async (req) => NextResponse.next(), { logger, trackPageviews: true })
 ```
 
 **Next.js + React (hybrid — logger in middleware + context in client):**
 ```typescript
-// middleware.ts — server-side logging via @emitio/next
-// app/layout.tsx — wrap with <AnalyticsProvider client={logger}> from @emitio/react
+// middleware.ts — server-side logging via @emit-io/next
+// app/layout.tsx — wrap with <AnalyticsProvider client={logger}> from @emit-io/react
 ```
 
 **React SPA:**
 ```tsx
-import { AnalyticsProvider, useAnalytics, usePageTracking } from '@emitio/react'
+import { AnalyticsProvider, useAnalytics, usePageTracking } from '@emit-io/react'
 function App() {
   return <AnalyticsProvider client={logger} autoTrack><Routes /></AnalyticsProvider>
 }
@@ -79,7 +79,7 @@ function App() {
 
 **React Native:**
 ```tsx
-import { AnalyticsProvider, useAnalytics, useScreenTracking } from '@emitio/react-native'
+import { AnalyticsProvider, useAnalytics, useScreenTracking } from '@emit-io/react-native'
 export default function App() {
   return <AnalyticsProvider client={logger} trackAppState><RootStack /></AnalyticsProvider>
 }
@@ -87,21 +87,21 @@ export default function App() {
 
 **Fastify:**
 ```typescript
-import { loggerPlugin } from '@emitio/fastify'
+import { loggerPlugin } from '@emit-io/fastify'
 app.register(loggerPlugin, { logger })
 // request.log_.info('handling') — child logger with requestId auto-bound
 ```
 
 **Hono:**
 ```typescript
-import { loggerMiddleware } from '@emitio/hono'
+import { loggerMiddleware } from '@emit-io/hono'
 app.use('*', loggerMiddleware({ logger }))
 // c.get('log').info('handling')
 ```
 
 **OTel:**
 ```typescript
-import { OTelTransport, OTelProvider } from '@emitio/otel'
+import { OTelTransport, OTelProvider } from '@emit-io/otel'
 new LoggerStrategy({
   transports: [new OTelTransport()],  // logs → LogRecords
   providers: [new OTelProvider()],    // events → spans
@@ -121,14 +121,14 @@ All packages published on npm under the `@emit` scope.
 
 ```
 packages/
-  core/         @emitio/core              — LoggerStrategy, transports, plugins, types
-  react/        @emitio/react         — React hooks, provider + RSC server
-  react-native/ @emitio/react-native   — RN hooks, provider, navigation, AppState
-  fastify/      @emitio/fastify       — Fastify plugin (per-request logging)
-  next/         @emitio/next          — Next.js middleware + route handler
-  hono/         @emitio/hono          — Hono middleware (request id, child logger)
-  codegen/      @emitio/codegen       — CLI: YAML schema → TypeScript + Avro + JSON Schema
-  otel/         @emitio/otel          — OpenTelemetry transport + provider
+  core/         @emit-io/core              — LoggerStrategy, transports, plugins, types
+  react/        @emit-io/react         — React hooks, provider + RSC server
+  react-native/ @emit-io/react-native   — RN hooks, provider, navigation, AppState
+  fastify/      @emit-io/fastify       — Fastify plugin (per-request logging)
+  next/         @emit-io/next          — Next.js middleware + route handler
+  hono/         @emit-io/hono          — Hono middleware (request id, child logger)
+  codegen/      @emit-io/codegen       — CLI: YAML schema → TypeScript + Avro + JSON Schema
+  otel/         @emit-io/otel          — OpenTelemetry transport + provider
 ```
 
 ## Build System
@@ -164,7 +164,7 @@ bun run test:coverage     # vitest run --coverage
 
 ## Benchmarks
 
-**Tool: tinybench** — compares @emitio/core vs pino vs winston.
+**Tool: tinybench** — compares @emit-io/core vs pino vs winston.
 
 ```
 bun run bench          # standalone (tsx packages/core/bench/index.ts)
@@ -175,12 +175,12 @@ Results documented in `BENCHMARKS.md`. Always use `/dev/null` writes for fair co
 
 ## Package Conventions
 
-- `name`: `@emitio/<suffix>` (or `@emitio/core` for core)
+- `name`: `@emit-io/<suffix>` (or `@emit-io/core` for core)
 - `type`: `"module"`, `main`: `./dist/index.cjs`, `module`: `./dist/index.js`
 - `exports`: conditional (`import`/`require`/`browser`/`workerd`/`edge-light`)
 - `files`: `["dist", "README.md", "LICENSE"]`
 - **Core:** zero runtime deps
-- **Framework packages:** framework as peerDependency, `@emitio/core` as devDependency
+- **Framework packages:** framework as peerDependency, `@emit-io/core` as devDependency
 - **codegen:** only package with non-peer runtime dep (`js-yaml`)
 
 ## Code Conventions

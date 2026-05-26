@@ -3,7 +3,7 @@ import {
   ConsoleTransport,
   ConsoleProvider,
   LogLevelEnum,
-} from '@emitio/core'
+} from '@emit-io/core'
 
 /**
  * Browser-safe LoggerStrategy.

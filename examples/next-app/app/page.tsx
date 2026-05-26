@@ -5,7 +5,7 @@ export default async function HomePage() {
 
   return (
     <main style={{ padding: 24, fontFamily: 'system-ui' }}>
-      <h1>@emitio/next example</h1>
+      <h1>@emit-io/next example</h1>
       <p>Middleware emits request logs with auto requestId + pageview events.</p>
       <ul>
         <li>

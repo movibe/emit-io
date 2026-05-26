@@ -1,5 +1,5 @@
 import { type NextRequest } from 'next/server'
-import { runWithContext, type LoggerStrategy } from '@emitio/core'
+import { runWithContext, type LoggerStrategy } from '@emit-io/core'
 
 export interface RouteHandlerOptions {
   logger: LoggerStrategy

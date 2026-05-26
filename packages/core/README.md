@@ -1,11 +1,11 @@
-# @emitio/core
+# @emit-io/core
 
 Core logging + analytics library for TypeScript — Node, browser, edge, React Native.
 
 ## Install
 
 ```bash
-npm install @emitio/core
+npm install @emit-io/core
 ```
 
 ## Quick Start
@@ -19,7 +19,7 @@ import {
   redact,
   sample,
   LogLevelEnum,
-} from '@emitio/core'
+} from '@emit-io/core'
 
 const emit = new LoggerStrategy({
   transports: [
@@ -148,7 +148,7 @@ Connects via WebSocket to a devtools panel. Buffers entries while disconnected a
 Built-in plugins are plain `(entry: LogEntry) => LogEntry | null` functions.
 
 ```typescript
-import { redact, sample, rateLimit, normalizeStack } from '@emitio/core'
+import { redact, sample, rateLimit, normalizeStack } from '@emit-io/core'
 
 redact({ paths: ['password', 'user.token', '*.secret'] })
 sample({ rate: 0.05, levels: [LogLevelEnum.DEBUG] })
@@ -159,7 +159,7 @@ normalizeStack({ maxFrames: 10 })
 ## Type-Safe Events
 
 ```typescript
-declare module '@emitio/core' {
+declare module '@emit-io/core' {
   interface EventRegistry {
     'purchase': { orderId: string; total: number }
     'page-view': { path: string }
@@ -176,7 +176,7 @@ emit.event('unknown', {})  // TS error
 const reqLog = emit.child({ requestId: 'abc-123' })
 reqLog.info('request received')  // logs include requestId
 
-import { runWithContext } from '@emitio/core'
+import { runWithContext } from '@emit-io/core'
 await runWithContext({ traceId: 'tx-1' }, async () => {
   reqLog.info('in trace')  // merges traceId from ALS + requestId from binding
 })
@@ -195,7 +195,7 @@ emit.setConsent({ analytics: true })    // re-enable after user consent
 ## Circuit Breaker
 
 ```typescript
-import { circuitBreaker } from '@emitio/core'
+import { circuitBreaker } from '@emit-io/core'
 
 const safe = circuitBreaker(myProvider, {
   failureThreshold: 5,
@@ -221,7 +221,7 @@ emit.init()              // flushes buffer → providers
 ## Test Helpers
 
 ```typescript
-import { createTestLogger } from '@emitio/core/test'
+import { createTestLogger } from '@emit-io/core/test'
 
 const { logger, entries } = createTestLogger()
 emit.info('hello', { x: 1 })

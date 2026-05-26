@@ -1,5 +1,5 @@
 import { trace, type Tracer } from '@opentelemetry/api'
-import type { AnalyticsProvider } from '@emitio/core'
+import type { AnalyticsProvider } from '@emit-io/core'
 
 export interface OTelProviderOptions {
   name?: string
@@ -15,7 +15,7 @@ export class OTelProvider implements AnalyticsProvider {
   constructor(opts?: OTelProviderOptions) {
     this.name = opts?.name ?? 'otel'
     this.enabled = opts?.enabled ?? true
-    this.tracer = trace.getTracer(opts?.tracerName ?? '@emitio/otel', '1.0.0')
+    this.tracer = trace.getTracer(opts?.tracerName ?? '@emit-io/otel', '1.0.0')
   }
 
   init(): void {

@@ -1,4 +1,4 @@
-import type { LoggerStrategy, AnalyticsProvider } from '@emitio/core'
+import type { LoggerStrategy, AnalyticsProvider } from '@emit-io/core'
 
 export interface AnalyticsContextValue {
   client: LoggerStrategy

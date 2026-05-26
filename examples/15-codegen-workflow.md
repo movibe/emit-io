@@ -1,6 +1,6 @@
 # Codegen workflow
 
-`@emitio/codegen` generates TypeScript types from a YAML schema and keeps them in sync with CI checks.
+`@emit-io/codegen` generates TypeScript types from a YAML schema and keeps them in sync with CI checks.
 
 ## 1. Define schema
 
@@ -39,7 +39,7 @@ events:
 ## 2. Generate TypeScript types
 
 ```bash
-npx @emitio/codegen generate analytics-schema.yaml --out src/analytics
+npx @emit-io/codegen generate analytics-schema.yaml --out src/analytics
 ```
 
 Output: `src/analytics/index.d.ts` with `EventRegistry` augmentation ready to import.
@@ -49,7 +49,7 @@ Output: `src/analytics/index.d.ts` with `EventRegistry` augmentation ready to im
 Fails the build if generated types are out of sync with the schema:
 
 ```bash
-npx @emitio/codegen check analytics-schema.yaml
+npx @emit-io/codegen check analytics-schema.yaml
 ```
 
 Add to your CI pipeline:
@@ -57,13 +57,13 @@ Add to your CI pipeline:
 ```yaml
 # .github/workflows/ci.yml
 - name: Check analytics schema drift
-  run: npx @emitio/codegen check analytics-schema.yaml
+  run: npx @emit-io/codegen check analytics-schema.yaml
 ```
 
 ## 4. Detect PII
 
 ```bash
-npx @emitio/codegen generate schema.yaml --detect-pii --strict-pii
+npx @emit-io/codegen generate schema.yaml --detect-pii --strict-pii
 ```
 
 `--detect-pii` warns on fields marked `pii: true`. `--strict-pii` turns warnings into errors.
@@ -74,8 +74,8 @@ Export the schema for validation in backend services or data pipelines:
 
 ```bash
 # JSON Schema (OpenAPI-compatible)
-npx @emitio/codegen export schema.yaml --format=json-schema --out schemas/
+npx @emit-io/codegen export schema.yaml --format=json-schema --out schemas/
 
 # Apache Avro
-npx @emitio/codegen export schema.yaml --format=avro --out schemas/
+npx @emit-io/codegen export schema.yaml --format=avro --out schemas/
 ```

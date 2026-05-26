@@ -8,14 +8,14 @@
   "fixed": [],
   "linked": [
     [
-      "@emitio/core",
-      "@emitio/react",
-      "@emitio/react-native",
-      "@emitio/next",
-      "@emitio/fastify",
-      "@emitio/hono",
-      "@emitio/otel",
-      "@emitio/codegen"
+      "@emit-io/core",
+      "@emit-io/react",
+      "@emit-io/react-native",
+      "@emit-io/next",
+      "@emit-io/fastify",
+      "@emit-io/hono",
+      "@emit-io/otel",
+      "@emit-io/codegen"
     ]
   ],
   "access": "public",

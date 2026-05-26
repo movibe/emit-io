@@ -1,4 +1,4 @@
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emitio/core'
+import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit-io/core'
 
 // Child loggers inherit all transports and providers from the parent,
 // and automatically attach bound fields to every log entry.

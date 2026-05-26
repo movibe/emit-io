@@ -1,5 +1,5 @@
 // No 'use client' — this module is safe to import in server context (Next.js server actions, etc.)
-import type { LoggerStrategy } from '@emitio/core'
+import type { LoggerStrategy } from '@emit-io/core'
 
 /**
  * withAnalytics — wraps a Next.js server action (or any async function) to

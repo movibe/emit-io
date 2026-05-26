@@ -1,5 +1,5 @@
 {
-  "name": "@emitio/core",
+  "name": "@emit-io/core",
   "version": "1.0.0",
   "description": "A flexible and type-safe logging system for JavaScript/TypeScript applications",
   "type": "module",

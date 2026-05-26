@@ -1,6 +1,6 @@
 import fp from 'fastify-plugin'
 import type { FastifyPluginAsync } from 'fastify'
-import { type LoggerStrategy } from '@emitio/core'
+import { type LoggerStrategy } from '@emit-io/core'
 import { randomUUID } from 'node:crypto'
 
 declare module 'fastify' {
@@ -56,6 +56,6 @@ const pluginImpl: FastifyPluginAsync<LoggerPluginOptions> = async (fastify, opts
 }
 
 export const loggerPlugin = fp<LoggerPluginOptions>(pluginImpl, {
-  name: '@emitio/fastify',
+  name: '@emit-io/fastify',
   fastify: '4.x || 5.x',
 })

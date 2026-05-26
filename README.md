@@ -1,13 +1,13 @@
-# @emitio/core
+# @emit-io/core
 
-[![npm version](https://img.shields.io/npm/v/@emitio/core)](https://www.npmjs.com/package/@emitio/core)
+[![npm version](https://img.shields.io/npm/v/@emit-io/core)](https://www.npmjs.com/package/@emit-io/core)
 [![Tests & Coverage](https://github.com/Emit-io/emit/actions/workflows/tests.yml/badge.svg)](https://github.com/Emit-io/emit/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/Emit-io/emit/branch/main/graph/badge.svg)](https://codecov.io/gh/Emit-io/emit)
 
 Universal logging + analytics for TypeScript — Node, browser, edge, React Native.
 
 ```typescript
-import { LoggerStrategy, JSONTransport, ConsoleTransport, redact, sample, LogLevelEnum } from '@emitio/core'
+import { LoggerStrategy, JSONTransport, ConsoleTransport, redact, sample, LogLevelEnum } from '@emit-io/core'
 
 const emit = new LoggerStrategy({
   transports: [
@@ -28,7 +28,7 @@ emit.captureError('Auth', 'login_failed', false, new Error('bad token'))
 const reqLog = emit.child({ requestId: 'abc-123' })
 reqLog.info('handling request')
 
-import { runWithContext } from '@emitio/core'
+import { runWithContext } from '@emit-io/core'
 await runWithContext({ traceId: 'tx' }, async () => {
   reqLog.info('inside trace')  // context auto-merged
 })
@@ -38,14 +38,14 @@ await runWithContext({ traceId: 'tx' }, async () => {
 
 | Package | Use | npm |
 |---|---|---|
-| `@emitio/core` | Core: logs, transports, plugins, providers | [![npm](https://img.shields.io/npm/v/@emitio/core)](https://www.npmjs.com/package/@emitio/core) |
-| `@emitio/react` | React (DOM/RSC): hooks, provider, server actions | [![npm](https://img.shields.io/npm/v/@emitio/react)](https://www.npmjs.com/package/@emitio/react) |
-| `@emitio/react-native` | React Native: AppState, navigation, hooks | [![npm](https://img.shields.io/npm/v/@emitio/react-native)](https://www.npmjs.com/package/@emitio/react-native) |
-| `@emitio/next` | Next.js: middleware, route handler instrumentation | [![npm](https://img.shields.io/npm/v/@emitio/next)](https://www.npmjs.com/package/@emitio/next) |
-| `@emitio/fastify` | Fastify: plugin, request id, child logger per request | [![npm](https://img.shields.io/npm/v/@emitio/fastify)](https://www.npmjs.com/package/@emitio/fastify) |
-| `@emitio/hono` | Hono: middleware with context propagation | [![npm](https://img.shields.io/npm/v/@emitio/hono)](https://www.npmjs.com/package/@emitio/hono) |
-| `@emitio/otel` | OpenTelemetry: spans + logs bridge | [![npm](https://img.shields.io/npm/v/@emitio/otel)](https://www.npmjs.com/package/@emitio/otel) |
-| `@emitio/codegen` | Codegen: YAML schema → TS types, drift detection, JSON Schema/Avro | [![npm](https://img.shields.io/npm/v/@emitio/codegen)](https://www.npmjs.com/package/@emitio/codegen) |
+| `@emit-io/core` | Core: logs, transports, plugins, providers | [![npm](https://img.shields.io/npm/v/@emit-io/core)](https://www.npmjs.com/package/@emit-io/core) |
+| `@emit-io/react` | React (DOM/RSC): hooks, provider, server actions | [![npm](https://img.shields.io/npm/v/@emit-io/react)](https://www.npmjs.com/package/@emit-io/react) |
+| `@emit-io/react-native` | React Native: AppState, navigation, hooks | [![npm](https://img.shields.io/npm/v/@emit-io/react-native)](https://www.npmjs.com/package/@emit-io/react-native) |
+| `@emit-io/next` | Next.js: middleware, route handler instrumentation | [![npm](https://img.shields.io/npm/v/@emit-io/next)](https://www.npmjs.com/package/@emit-io/next) |
+| `@emit-io/fastify` | Fastify: plugin, request id, child logger per request | [![npm](https://img.shields.io/npm/v/@emit-io/fastify)](https://www.npmjs.com/package/@emit-io/fastify) |
+| `@emit-io/hono` | Hono: middleware with context propagation | [![npm](https://img.shields.io/npm/v/@emit-io/hono)](https://www.npmjs.com/package/@emit-io/hono) |
+| `@emit-io/otel` | OpenTelemetry: spans + logs bridge | [![npm](https://img.shields.io/npm/v/@emit-io/otel)](https://www.npmjs.com/package/@emit-io/otel) |
+| `@emit-io/codegen` | Codegen: YAML schema → TS types, drift detection, JSON Schema/Avro | [![npm](https://img.shields.io/npm/v/@emit-io/codegen)](https://www.npmjs.com/package/@emit-io/codegen) |
 
 ## Features
 
@@ -66,15 +66,15 @@ await runWithContext({ traceId: 'tx' }, async () => {
 ### Install
 
 ```bash
-npm install @emitio/core
+npm install @emit-io/core
 ```
 
-See [npm package page](https://www.npmjs.com/package/@emitio/core) for versions and stats.
+See [npm package page](https://www.npmjs.com/package/@emit-io/core) for versions and stats.
 
 ### Core
 
 ```typescript
-import { LoggerStrategy, ConsoleTransport, JSONTransport, LogLevelEnum } from '@emitio/core'
+import { LoggerStrategy, ConsoleTransport, JSONTransport, LogLevelEnum } from '@emit-io/core'
 
 const emit = new LoggerStrategy({
   transports: [
@@ -102,12 +102,12 @@ emit.logFeature('Auth', 'login_success', { method: 'oauth' })
 ### React
 
 ```bash
-npm install @emitio/core @emitio/react
+npm install @emit-io/core @emit-io/react
 ```
 
 ```tsx
-import { AnalyticsProvider, useAnalytics, usePageTracking } from '@emitio/react'
-import { LoggerStrategy } from '@emitio/core'
+import { AnalyticsProvider, useAnalytics, usePageTracking } from '@emit-io/react'
+import { LoggerStrategy } from '@emit-io/core'
 
 const emit = new LoggerStrategy({ /* ... */ })
 
@@ -129,12 +129,12 @@ function ProductPage() {
 ### Next.js
 
 ```bash
-npm install @emitio/core @emitio/next
+npm install @emit-io/core @emit-io/next
 ```
 
 ```typescript
 // middleware.ts
-import { withLogger } from '@emitio/next'
+import { withLogger } from '@emit-io/next'
 import { NextResponse } from 'next/server'
 import { emit } from './lib/emit'
 
@@ -144,7 +144,7 @@ export default withLogger(
 )
 
 // app/api/orders/route.ts
-import { instrumentRoute } from '@emitio/next'
+import { instrumentRoute } from '@emit-io/next'
 import { emit } from './lib/emit'
 
 export const GET = instrumentRoute(
@@ -156,12 +156,12 @@ export const GET = instrumentRoute(
 ### React Native
 
 ```bash
-npm install @emitio/core @emitio/react-native
+npm install @emit-io/core @emit-io/react-native
 ```
 
 ```tsx
-import { AnalyticsProvider, useAnalytics, useScreenTracking } from '@emitio/react-native'
-import { LoggerStrategy } from '@emitio/core'
+import { AnalyticsProvider, useAnalytics, useScreenTracking } from '@emit-io/react-native'
+import { LoggerStrategy } from '@emit-io/core'
 
 const emit = new LoggerStrategy({ /* ... */ })
 
@@ -190,7 +190,7 @@ function HomeScreen() {
 | `DevToolsTransport` | WebSocket to devtools panel; buffers while disconnected |
 
 ```typescript
-import { HTTPTransport } from '@emitio/core'
+import { HTTPTransport } from '@emit-io/core'
 
 new HTTPTransport({
   url: 'https://logs.example.com/ingest',
@@ -205,7 +205,7 @@ new HTTPTransport({
 ## Plugins
 
 ```typescript
-import { redact, sample, rateLimit, normalizeStack } from '@emitio/core'
+import { redact, sample, rateLimit, normalizeStack } from '@emit-io/core'
 
 new LoggerStrategy({
   plugins: [
@@ -224,8 +224,8 @@ Plugins are plain functions `(entry: LogEntry) => LogEntry | null`. Return `null
 Two complementary paths — use one or both:
 
 ```typescript
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emitio/core'
-import { OTelTransport, OTelProvider } from '@emitio/otel'
+import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '@emit-io/core'
+import { OTelTransport, OTelProvider } from '@emit-io/otel'
 
 const emit = new LoggerStrategy({
   transports: [
@@ -255,7 +255,7 @@ emit.captureError('Payments', 'charge', true, err)
 ## Type-Safe Events
 
 ```typescript
-declare module '@emitio/core' {
+declare module '@emit-io/core' {
   interface EventRegistry {
     'purchase': { orderId: string; total: number }
     'page-view': { path: string }
@@ -274,7 +274,7 @@ const reqLog = emit.child({ requestId: 'abc-123', userId: 'u-1' })
 reqLog.info('request received')  // context: { requestId, userId }
 
 // AsyncLocalStorage — auto-merges into every log call in scope
-import { runWithContext } from '@emitio/core'
+import { runWithContext } from '@emit-io/core'
 
 await runWithContext({ traceId: 'trace-abc' }, async () => {
   await processOrder()  // all logs inside get traceId automatically
@@ -299,7 +299,7 @@ emit.getConsent() // { analytics: true, errors: true }
 ## Circuit Breaker
 
 ```typescript
-import { circuitBreaker } from '@emitio/core'
+import { circuitBreaker } from '@emit-io/core'
 import { PostHogProvider } from './providers/posthog'
 
 const safePostHog = circuitBreaker(new PostHogProvider(), {
@@ -317,12 +317,12 @@ Runnable apps per integration in [`examples/`](./examples):
 
 | App | Stack |
 |---|---|
-| [next-app](./examples/next-app) | Next.js 15 App Router + `@emitio/next` (middleware + instrumentRoute) |
-| [fastify-server](./examples/fastify-server) | Fastify 5 + `@emitio/fastify` (plugin + per-request child logger) |
+| [next-app](./examples/next-app) | Next.js 15 App Router + `@emit-io/next` (middleware + instrumentRoute) |
+| [fastify-server](./examples/fastify-server) | Fastify 5 + `@emit-io/fastify` (plugin + per-request child logger) |
 | [hono-worker](./examples/hono-worker) | Cloudflare Worker (Hono 4) + `HTTPTransport` remote ingest |
 | [otel-bridge](./examples/otel-bridge) | Node + NodeSDK + OTLP exporters + `OTelProvider`/`OTelTransport` |
-| [react-vite](./examples/react-vite) | Vite + React 19 SPA + `@emitio/react` hooks + provider |
-| [react-native-expo](./examples/react-native-expo) | Expo SDK 52 + expo-router + `@emitio/react-native` |
+| [react-vite](./examples/react-vite) | Vite + React 19 SPA + `@emit-io/react` hooks + provider |
+| [react-native-expo](./examples/react-native-expo) | Expo SDK 52 + expo-router + `@emit-io/react-native` |
 
 Single-concept snippets in [`examples/`](./examples) (files `01-`...`15-`): redact, child loggers, ALS context, HTTP transport, consent, circuit breaker, event registry, codegen workflow.
 
@@ -342,7 +342,7 @@ See [CHANGELOG.md](./CHANGELOG.md) and [docs/MIGRATION_v2_to_v3.md](./docs/MIGRA
 + emit.logFeature('Auth', 'login_success', { method: 'oauth' })
 
 - declare global { interface EVENT_TAGS { ... } }
-+ declare module '@emitio/core' { interface EventRegistry { ... } }
++ declare module '@emit-io/core' { interface EventRegistry { ... } }
 ```
 
 ## Contributing

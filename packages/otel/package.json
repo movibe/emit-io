@@ -1,7 +1,7 @@
 {
-  "name": "@emitio/otel",
+  "name": "@emit-io/otel",
   "version": "1.0.0",
-  "description": "OpenTelemetry bridge for @emitio/core — emit OTel spans + logs",
+  "description": "OpenTelemetry bridge for @emit-io/core — emit OTel spans + logs",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -14,19 +14,19 @@
   },
   "files": ["dist", "README.md"],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=@opentelemetry/api --external=@emitio/core && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=@opentelemetry/api --external=@emitio/core",
+    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=@opentelemetry/api --external=@emit-io/core && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=@opentelemetry/api --external=@emit-io/core",
     "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "vitest run",
     "prepack": "bun run build:all"
   },
   "peerDependencies": {
-    "@emitio/core": "^1.0.0",
+    "@emit-io/core": "^1.0.0",
     "@opentelemetry/api": "^1.7.0",
     "@opentelemetry/api-logs": "^0.50.0"
   },
   "devDependencies": {
-    "@emitio/core": "workspace:*",
+    "@emit-io/core": "workspace:*",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/api-logs": "^0.50.0",
     "@types/node": "^20.11.19",

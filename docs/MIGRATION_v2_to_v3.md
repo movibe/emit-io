@@ -6,7 +6,7 @@
 |---|---|---|
 | Analytics error call | `logger.error(feature, name, critical, err, extra)` | `logger.captureError(feature, name, critical, err, extra)` |
 | Analytics info call | `logger.info(feature, name, properties)` | `logger.logFeature(feature, name, properties)` |
-| Typed event registry | `declare global { interface EVENT_TAGS { ... } }` | `declare module '@emitio/core' { interface EventRegistry { ... } }` |
+| Typed event registry | `declare global { interface EVENT_TAGS { ... } }` | `declare module '@emit-io/core' { interface EventRegistry { ... } }` |
 | Config format | `LoggerStrategyConstructor[]` | `LoggerConfig` with `AnalyticsProvider` instances |
 
 Log-level calls `logger.error('message')` and `logger.info('message')` are **unchanged**.
@@ -18,13 +18,13 @@ Log-level calls `logger.error('message')` and `logger.info('message')` are **unc
 ### 1. Update package
 
 ```bash
-npm install @emitio/core@^1.0.0
+npm install @emit-io/core@^1.0.0
 ```
 
 Or with bun:
 
 ```bash
-bun add @emitio/core@^1.0.0
+bun add @emit-io/core@^1.0.0
 ```
 
 ### 2. Rename analytics calls
@@ -75,7 +75,7 @@ declare global {
 v3:
 
 ```typescript
-declare module '@emitio/core' {
+declare module '@emit-io/core' {
   interface EventRegistry {
     'my-event': { foo: string }
     'purchase': { orderId: string; total: number }
@@ -92,7 +92,7 @@ The `LoggerStrategyConstructor[]` array config still works in v3 but emits a dep
 v2:
 
 ```typescript
-import { LoggerStrategy, LoggerStrategyType } from '@emitio/core'
+import { LoggerStrategy, LoggerStrategyType } from '@emit-io/core'
 
 class MyStrategy extends LoggerStrategyType {
   init() {}
@@ -121,7 +121,7 @@ const logger = new LoggerStrategy([
 v3:
 
 ```typescript
-import { LoggerStrategy, type AnalyticsProvider } from '@emitio/core'
+import { LoggerStrategy, type AnalyticsProvider } from '@emit-io/core'
 
 const myProvider: AnalyticsProvider = {
   name: 'my-provider',
@@ -154,7 +154,7 @@ reqLog.info('handling request')  // context includes requestId
 **AsyncLocalStorage context** — propagate context across async boundaries without passing it manually:
 
 ```typescript
-import { runWithContext } from '@emitio/core'
+import { runWithContext } from '@emit-io/core'
 
 await runWithContext({ traceId: 'abc' }, async () => {
   await doWork()  // all logger calls here automatically include traceId
@@ -164,7 +164,7 @@ await runWithContext({ traceId: 'abc' }, async () => {
 **Plugins** — transform or filter log entries in the pipeline:
 
 ```typescript
-import { redact, sample, rateLimit, normalizeStack } from '@emitio/core'
+import { redact, sample, rateLimit, normalizeStack } from '@emit-io/core'
 
 const logger = new LoggerStrategy({
   plugins: [
@@ -177,7 +177,7 @@ const logger = new LoggerStrategy({
 **New transports** — structured output and remote ingestion:
 
 ```typescript
-import { JSONTransport, HTTPTransport, DevToolsTransport } from '@emitio/core'
+import { JSONTransport, HTTPTransport, DevToolsTransport } from '@emit-io/core'
 ```
 
 **Consent gate** — GDPR-compliant analytics opt-out:
@@ -208,7 +208,7 @@ logger.init()
 **Circuit breaker** — protect against flaky providers:
 
 ```typescript
-import { circuitBreaker } from '@emitio/core'
+import { circuitBreaker } from '@emit-io/core'
 
 const safeProvider = circuitBreaker(myProvider, {
   failureThreshold: 5,
@@ -220,7 +220,7 @@ const safeProvider = circuitBreaker(myProvider, {
 
 ## React migration
 
-The `@emitio/react` package exposes `captureError` on `AnalyticsContextValue`. The old `error` method is kept as a deprecated alias and will be removed in v4.
+The `@emit-io/react` package exposes `captureError` on `AnalyticsContextValue`. The old `error` method is kept as a deprecated alias and will be removed in v4.
 
 ```typescript
 // v2

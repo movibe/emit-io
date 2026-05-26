@@ -1,4 +1,4 @@
-import { LoggerStrategy, ConsoleTransport, type AnalyticsProvider, LogLevelEnum } from '@emitio/core'
+import { LoggerStrategy, ConsoleTransport, type AnalyticsProvider, LogLevelEnum } from '@emit-io/core'
 
 // The consent gate blocks analytics calls when analytics: false.
 // Structural log output (transports) is never blocked.

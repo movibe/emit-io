@@ -1,5 +1,5 @@
 {
-  "name": "@emitio/example-react-vite",
+  "name": "@emit-io/example-react-vite",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emitio/core": "workspace:*",
-    "@emitio/react": "workspace:*",
+    "@emit-io/core": "workspace:*",
+    "@emit-io/react": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

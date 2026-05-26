@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet } from 'react-native'
 import {
   AnalyticsProvider,
   AnalyticsErrorBoundary,
-} from '@emitio/react-native'
+} from '@emit-io/react-native'
 import { logger } from '../src/logger'
 
 export default function RootLayout() {

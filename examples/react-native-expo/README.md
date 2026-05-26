@@ -1,6 +1,6 @@
 # logger-rn-example
 
-Expo (React Native) example using `@emitio/core` + `@emitio/react-native`.
+Expo (React Native) example using `@emit-io/core` + `@emit-io/react-native`.
 
 ## Features
 
