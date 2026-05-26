@@ -33,8 +33,8 @@ jobs:
 
       - name: Create auto patch changeset
         run: |
-          # Derive package names from workspace package.json files
-          FRONTMATTER=$(find packages -maxdepth 2 -name "package.json" ! -path "*/node_modules/*" \
+          # Derive package names from workspace package.json files (absolute path for require)
+          FRONTMATTER=$(find "$PWD/packages" -maxdepth 2 -name "package.json" ! -path "*/node_modules/*" \
             -exec node -e "const p=require(process.argv[1]); if(p.name && !p.private) console.log('\"'+p.name+'\": patch')" {} \;)
           FILE=".changeset/auto-patch-$(date +%s).md"
           printf -- "---\n%s\n---\n\nAuto patch release\n" "$FRONTMATTER" > "$FILE"
@@ -55,3 +55,4 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
