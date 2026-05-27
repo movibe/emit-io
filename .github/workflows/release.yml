@@ -12,6 +12,7 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   release:
@@ -28,31 +29,78 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+
       - name: Install dependencies
         run: bun install
 
       - name: Create auto patch changeset
+        id: changeset
         run: |
-          # Derive package names from workspace package.json files (absolute path for require)
           FRONTMATTER=$(find "$PWD/packages" -maxdepth 2 -name "package.json" ! -path "*/node_modules/*" \
             -exec node -e "const p=require(process.argv[1]); if(p.name && !p.private) console.log('\"'+p.name+'\": patch')" {} \;)
+          if [ -z "$FRONTMATTER" ]; then
+            echo "skipped=true" >> "$GITHUB_OUTPUT"
+            echo "No publishable packages found. Skipping release."
+            exit 0
+          fi
           FILE=".changeset/auto-patch-$(date +%s).md"
           printf -- "---\n%s\n---\n\nAuto patch release\n" "$FRONTMATTER" > "$FILE"
+          echo "skipped=false" >> "$GITHUB_OUTPUT"
+          echo "changeset_file=$FILE" >> "$GITHUB_OUTPUT"
 
       - name: Version packages
+        if: steps.changeset.outputs.skipped != 'true'
         run: bun changeset version
 
-      - name: Commit version bump
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "chore: version packages [skip ci]" || echo "Nothing to commit"
-          git push
-
       - name: Build and publish
+        if: steps.changeset.outputs.skipped != 'true'
         run: bun run release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release
+        if: steps.changeset.outputs.skipped != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(node -e "console.log(require('./packages/core/package.json').version)")
+          TAG="v$VERSION"
+          # Collect changelogs from all packages
+          CHANGELOG=""
+          for pkg in core react react-native next fastify hono otel codegen; do
+            CHANGELOG_FILE="packages/$pkg/CHANGELOG.md"
+            if [ -f "$CHANGELOG_FILE" ]; then
+              SECTION=$(awk "/^## $VERSION$/{flag=1; next} /^## [0-9]/{flag=0} flag" "$CHANGELOG_FILE" 2>/dev/null || true)
+              if [ -n "$SECTION" ]; then
+                CHANGELOG="${CHANGELOG}\n## emit-io-$pkg\n\n$SECTION"
+              fi
+            fi
+          done
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="Patch release — version bump for all packages."
+          fi
+          if gh release view "$TAG" &>/dev/null; then
+            echo "Release $TAG already exists. Skipping."
+          else
+            gh release create "$TAG" --title "$TAG" --notes "$(echo -e "$CHANGELOG")" --target main
+          fi
+
+      - name: Commit version bump
+        if: steps.changeset.outputs.skipped != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -m "chore: version packages [skip ci]"
+            git push
+          fi
