@@ -1,5 +1,5 @@
 import Fastify from 'fastify'
-import { loggerPlugin } from '@emit-io/fastify'
+import { loggerPlugin } from 'emit-io-fastify'
 import { logger } from './logger.js'
 import { userRoutes } from './routes/users.js'
 

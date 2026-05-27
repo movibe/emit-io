@@ -28,7 +28,7 @@ export class OTelTransport implements Transport {
     this.name = opts?.name ?? 'otel'
     this.minLevel = (opts?.minLevel ?? LogLevelEnum.DEBUG) as LogLevel
     const provider = opts?.loggerProvider ?? logs.getLoggerProvider()
-    this.otelLogger = provider.getLogger(opts?.loggerName ?? '@emit-io/otel', '1.0.0')
+    this.otelLogger = provider.getLogger(opts?.loggerName ?? 'emit-io-otel', '1.0.0')
   }
 
   log(entry: LogEntry): void {

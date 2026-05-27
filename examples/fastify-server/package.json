@@ -1,13 +1,13 @@
 {
-  "name": "@emit-io/example-fastify",
+  "name": "emit-io-example-fastify",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "tsx src/server.ts"
   },
   "dependencies": {
-    "@emit-io/core": "^1.0.0",
-    "@emit-io/fastify": "^1.0.0",
+    "emit-io-core": "^1.0.0",
+    "emit-io-fastify": "^1.0.0",
     "fastify": "^5.0.0"
   },
   "devDependencies": {
