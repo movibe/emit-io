@@ -12,7 +12,6 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   release:
@@ -72,14 +71,17 @@ jobs:
         run: |
           VERSION=$(node -e "console.log(require('./packages/core/package.json').version)")
           TAG="v$VERSION"
-          # Collect changelogs from all packages
+          # Collect changelogs from all detected packages
           CHANGELOG=""
-          for pkg in core react react-native next fastify hono otel codegen; do
-            CHANGELOG_FILE="packages/$pkg/CHANGELOG.md"
-            if [ -f "$CHANGELOG_FILE" ]; then
-              SECTION=$(awk "/^## $VERSION$/{flag=1; next} /^## [0-9]/{flag=0} flag" "$CHANGELOG_FILE" 2>/dev/null || true)
-              if [ -n "$SECTION" ]; then
-                CHANGELOG="${CHANGELOG}\n## emit-io-$pkg\n\n$SECTION"
+          for pkgdir in packages/*; do
+            if [ -d "$pkgdir" ] && [ -f "$pkgdir/package.json" ]; then
+              PKG_NAME=$(node -e "console.log(require('./$pkgdir/package.json').name)")
+              CHANGELOG_FILE="$pkgdir/CHANGELOG.md"
+              if [ -f "$CHANGELOG_FILE" ]; then
+                SECTION=$(awk "/^## $VERSION$/{flag=1; next} /^## [0-9]/{flag=0} flag" "$CHANGELOG_FILE" 2>/dev/null || true)
+                if [ -n "$SECTION" ]; then
+                  CHANGELOG="${CHANGELOG}\n## $PKG_NAME\n\n$SECTION"
+                fi
               fi
             fi
           done
@@ -89,7 +91,7 @@ jobs:
           if gh release view "$TAG" &>/dev/null; then
             echo "Release $TAG already exists. Skipping."
           else
-            gh release create "$TAG" --title "$TAG" --notes "$(echo -e "$CHANGELOG")" --target main
+            gh release create "$TAG" --title "$TAG" --notes "$(echo -e "$CHANGELOG")" --target "$GITHUB_SHA"
           fi
 
       - name: Commit version bump
