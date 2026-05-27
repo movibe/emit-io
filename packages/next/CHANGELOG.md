@@ -1,5 +1,14 @@
 # emit-io-next
 
+## 1.0.3
+
+### Patch Changes
+
+- Auto patch release
+
+- Updated dependencies []:
+  - emit-io-core@1.0.3
+
 ## 1.0.2
 
 ### Patch Changes
