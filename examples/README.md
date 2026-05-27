@@ -8,12 +8,12 @@ Full skeleton apps. Each `cd` + `npm install` + run.
 
 | App | Stack | Path |
 |---|---|---|
-| Next.js App Router | `@emit-io/next` middleware + instrumentRoute | [next-app/](./next-app) |
-| Fastify server | `@emit-io/fastify` plugin + child logger per request | [fastify-server/](./fastify-server) |
-| Hono Cloudflare Worker | `@emit-io/hono` + HTTPTransport (edge) | [hono-worker/](./hono-worker) |
-| OpenTelemetry bridge | `@emit-io/otel` + NodeSDK + OTLP exporters | [otel-bridge/](./otel-bridge) |
-| React + Vite SPA | `@emit-io/react` hooks + error boundary | [react-vite/](./react-vite) |
-| Expo (React Native) | `@emit-io/react-native` + expo-router | [react-native-expo/](./react-native-expo) |
+| Next.js App Router | `emit-io-next` middleware + instrumentRoute | [next-app/](./next-app) |
+| Fastify server | `emit-io-fastify` plugin + child logger per request | [fastify-server/](./fastify-server) |
+| Hono Cloudflare Worker | `emit-io-hono` + HTTPTransport (edge) | [hono-worker/](./hono-worker) |
+| OpenTelemetry bridge | `emit-io-otel` + NodeSDK + OTLP exporters | [otel-bridge/](./otel-bridge) |
+| React + Vite SPA | `emit-io-react` hooks + error boundary | [react-vite/](./react-vite) |
+| Expo (React Native) | `emit-io-react-native` + expo-router | [react-native-expo/](./react-native-expo) |
 
 ## Snippet references
 

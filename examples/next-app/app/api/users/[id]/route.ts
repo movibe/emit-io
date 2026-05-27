@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { instrumentRoute } from '@emit-io/next'
+import { instrumentRoute } from 'emit-io-next'
 import { logger } from '../../../../lib/logger.js'
 
 interface Params {

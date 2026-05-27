@@ -1,4 +1,4 @@
-import { LoggerStrategy, circuitBreaker, type AnalyticsProvider } from '@emit-io/core'
+import { LoggerStrategy, circuitBreaker, type AnalyticsProvider } from 'emit-io-core'
 
 // circuitBreaker wraps any AnalyticsProvider. After failureThreshold consecutive
 // errors, the circuit opens and calls are dropped for cooldownMs milliseconds.

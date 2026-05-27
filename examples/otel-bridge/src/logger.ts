@@ -7,8 +7,8 @@
  * Must be imported AFTER ./tracing.js so that `trace.getTracer` and
  * `logs.getLoggerProvider` resolve to the SDK-backed providers.
  */
-import { ConsoleTransport, LoggerStrategy, LogLevelEnum } from '@emit-io/core'
-import { OTelProvider, OTelTransport } from '@emit-io/otel'
+import { ConsoleTransport, LoggerStrategy, LogLevelEnum } from 'emit-io-core'
+import { OTelProvider, OTelTransport } from 'emit-io-otel'
 
 export const logger = new LoggerStrategy({
   transports: [

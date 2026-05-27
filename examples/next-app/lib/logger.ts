@@ -4,7 +4,7 @@ import {
   ConsoleTransport,
   LogLevelEnum,
   redact,
-} from '@emit-io/core'
+} from 'emit-io-core'
 
 export const logger = new LoggerStrategy({
   transports: [

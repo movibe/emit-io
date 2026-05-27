@@ -14,12 +14,12 @@ function main() {
 
   if (!command || command === '--help' || command === '-h') {
     console.log(`
-@emit-io/codegen — Generate typed analytics tracker from YAML schema
+emit-io-codegen — Generate typed analytics tracker from YAML schema
 
 USAGE
-  npx @emit-io/codegen generate <schema.yaml> [options]
-  npx @emit-io/codegen check <schema.yaml> [options]
-  npx @emit-io/codegen export <schema.yaml> --format=<fmt> [options]
+  npx emit-io-codegen generate <schema.yaml> [options]
+  npx emit-io-codegen check <schema.yaml> [options]
+  npx emit-io-codegen export <schema.yaml> --format=<fmt> [options]
 
 GENERATE OPTIONS
   --out <dir>     Output directory (default: same as schema file)
@@ -37,13 +37,13 @@ EXPORT OPTIONS
   --out <dir>     Output directory (default: same as schema file)
 
 EXAMPLES
-  npx @emit-io/codegen generate analytics-schema.yaml
-  npx @emit-io/codegen generate schema.yaml --out src/analytics --detect-pii
-  npx @emit-io/codegen check schema.yaml
-  npx @emit-io/codegen check schema.yaml --strict
-  npx @emit-io/codegen check schema.yaml --update
-  npx @emit-io/codegen export schema.yaml --format json-schema --out schemas/
-  npx @emit-io/codegen export schema.yaml --format avro --out schemas/
+  npx emit-io-codegen generate analytics-schema.yaml
+  npx emit-io-codegen generate schema.yaml --out src/analytics --detect-pii
+  npx emit-io-codegen check schema.yaml
+  npx emit-io-codegen check schema.yaml --strict
+  npx emit-io-codegen check schema.yaml --update
+  npx emit-io-codegen export schema.yaml --format json-schema --out schemas/
+  npx emit-io-codegen export schema.yaml --format avro --out schemas/
 `)
     process.exit(0)
   }

@@ -1,4 +1,4 @@
-import { LoggerStrategy, ConsoleTransport, JSONTransport, LogLevelEnum } from '@emit-io/core'
+import { LoggerStrategy, ConsoleTransport, JSONTransport, LogLevelEnum } from 'emit-io-core'
 
 // Two transports in parallel: pretty console for dev, JSON for log aggregators
 const logger = new LoggerStrategy({

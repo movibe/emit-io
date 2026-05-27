@@ -56,6 +56,6 @@ const pluginImpl: FastifyPluginAsync<LoggerPluginOptions> = async (fastify, opts
 }
 
 export const loggerPlugin = fp<LoggerPluginOptions>(pluginImpl, {
-  name: '@emit-io/fastify',
+  name: 'emit-io-fastify',
   fastify: '4.x || 5.x',
 })

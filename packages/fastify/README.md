@@ -1,11 +1,11 @@
-# @emit-io/fastify
+# emit-io-fastify
 
-Fastify plugin for [@emit-io/core](https://github.com/movibe/emit-io) — per-request child logger, request ID, and automatic hook timings.
+Fastify plugin for [emit-io-core](https://github.com/movibe/emit-io) — per-request child logger, request ID, and automatic hook timings.
 
 ## Install
 
 ```bash
-npm install @emit-io/core @emit-io/fastify
+npm install emit-io-core emit-io-fastify
 ```
 
 `fastify-plugin` is a direct dependency and installed automatically.
@@ -14,8 +14,8 @@ npm install @emit-io/core @emit-io/fastify
 
 ```typescript
 import Fastify from 'fastify'
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit-io/core'
-import { loggerPlugin } from '@emit-io/fastify'
+import { LoggerStrategy, JSONTransport, LogLevelEnum } from 'emit-io-core'
+import { loggerPlugin } from 'emit-io-fastify'
 
 const logger = new LoggerStrategy({
   transports: [new JSONTransport({ minLevel: LogLevelEnum.INFO })],
@@ -41,8 +41,8 @@ await app.listen({ port: 3000 })
 A `fastify-plugin` compatible with Fastify 4.x and 5.x.
 
 ```typescript
-import { loggerPlugin } from '@emit-io/fastify'
-import type { LoggerPluginOptions } from '@emit-io/fastify'
+import { loggerPlugin } from 'emit-io-fastify'
+import type { LoggerPluginOptions } from 'emit-io-fastify'
 
 await app.register(loggerPlugin, {
   logger,                          // required: LoggerStrategy instance
@@ -95,7 +95,7 @@ app.get('/', async (req) => {
 
 | Package | Version |
 |---|---|
-| `@emit-io/core` | `^1.0.0` |
+| `emit-io-core` | `^1.0.0` |
 | `fastify` | `^4.0.0 \|\| ^5.0.0` |
 
 ## License
