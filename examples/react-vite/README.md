@@ -1,8 +1,8 @@
-# @emit-io/react · Vite Example
+# emit-io-react · Vite Example
 
 Minimal **React 19 + Vite 5** app demonstrating
-[`@emit-io/core`](../../packages/core) and
-[`@emit-io/react`](../../packages/react) in the browser.
+[`emit-io-core`](../../packages/core) and
+[`emit-io-react`](../../packages/react) in the browser.
 
 ## What it shows
 

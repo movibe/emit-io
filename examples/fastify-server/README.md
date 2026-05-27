@@ -1,6 +1,6 @@
 # Fastify Server Example
 
-Demonstrates `@emit-io/fastify` with per-request child loggers, request IDs, auto-log hooks, and sensitive data redaction.
+Demonstrates `emit-io-fastify` with per-request child loggers, request IDs, auto-log hooks, and sensitive data redaction.
 
 ## Run
 

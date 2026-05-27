@@ -1,19 +1,19 @@
-# @emit-io/hono
+# emit-io-hono
 
-Hono middleware for [@emit-io/core](https://github.com/movibe/emit-io) — request ID, child logger, timings, and ALS context propagation.
+Hono middleware for [emit-io-core](https://github.com/movibe/emit-io) — request ID, child logger, timings, and ALS context propagation.
 
 ## Install
 
 ```bash
-npm install @emit-io/core @emit-io/hono
+npm install emit-io-core emit-io-hono
 ```
 
 ## Quick Start
 
 ```typescript
 import { Hono } from 'hono'
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from '@emit-io/core'
-import { loggerMiddleware } from '@emit-io/hono'
+import { LoggerStrategy, JSONTransport, LogLevelEnum } from 'emit-io-core'
+import { loggerMiddleware } from 'emit-io-hono'
 
 const emit = new LoggerStrategy({
   transports: [new JSONTransport({ minLevel: LogLevelEnum.INFO })],
@@ -39,8 +39,8 @@ export default app
 ### `loggerMiddleware(options)`
 
 ```typescript
-import { loggerMiddleware } from '@emit-io/hono'
-import type { LoggerMiddlewareOptions } from '@emit-io/hono'
+import { loggerMiddleware } from 'emit-io-hono'
+import type { LoggerMiddlewareOptions } from 'emit-io-hono'
 
 const options: LoggerMiddlewareOptions = {
   logger,                          // required: LoggerStrategy instance
@@ -92,7 +92,7 @@ async function processOrder() {
 
 | Package | Version |
 |---|---|
-| `@emit-io/core` | `^1.0.0` |
+| `emit-io-core` | `^1.0.0` |
 | `hono` | `^4.0.0` |
 
 ## License
