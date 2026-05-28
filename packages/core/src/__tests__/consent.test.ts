@@ -1,4 +1,4 @@
-import { test, expect, describe, vi } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 import { EmitIoStrategy } from '../index.js'
 import type { AnalyticsProvider, Transport } from '../types.js'
 import { LogLevel } from '../types.js'

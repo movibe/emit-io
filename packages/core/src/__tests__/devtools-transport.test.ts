@@ -1,11 +1,11 @@
-import { test, expect, describe, vi, beforeEach, afterEach } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { DevToolsTransport } from '../devtools-transport.js'
 import { LogLevel } from '../types.js'
 
 class MockWebSocket {
   static instances: MockWebSocket[] = []
   url: string
-  readyState = 0  // CONNECTING
+  readyState = 0 // CONNECTING
   onopen: (() => void) | null = null
   onclose: (() => void) | null = null
   onerror: (() => void) | null = null
@@ -88,7 +88,7 @@ describe('DevToolsTransport', () => {
     const ws = MockWebSocket.instances[0]
     ws.simulateOpen()
     expect(ws.sent).toHaveLength(2)
-    const msgs = ws.sent.map(s => JSON.parse(s).msg)
+    const msgs = ws.sent.map((s) => JSON.parse(s).msg)
     expect(msgs).toEqual(['2', '3'])
   })
 
@@ -119,7 +119,7 @@ describe('DevToolsTransport', () => {
     ws.simulateOpen()
     await t.close()
     vi.advanceTimersByTime(5000)
-    expect(MockWebSocket.instances).toHaveLength(1)  // no new connection
+    expect(MockWebSocket.instances).toHaveLength(1) // no new connection
   })
 
   test('onState callback fires', () => {

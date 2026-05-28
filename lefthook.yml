@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  commands:
+    biome-check:
+      glob: "packages/**/*.{ts,tsx}"
+      run: bunx biome check {staged_files} --no-errors-on-unmatched
+      stage_fixed: true
+
+pre-push:
+  parallel: false
+  commands:
+    typecheck:
+      run: cd /Users/movibe/sites/libs/logger && bun run typecheck 2>/dev/null || bun run --filter '*' tsc --noEmit 2>&1 | head -30
+    tests:
+      run: cd /Users/movibe/sites/libs/logger && bun run test --run

@@ -1,8 +1,8 @@
-import { test, expect, describe, vi } from 'vitest'
 import { SeverityNumber } from '@opentelemetry/api-logs'
-import { OTelTransport } from '../otel-transport.js'
-import { LogLevelEnum } from 'emit-io-core'
 import type { LogLevel } from 'emit-io-core'
+import { LogLevelEnum } from 'emit-io-core'
+import { describe, expect, test, vi } from 'vitest'
+import { OTelTransport } from '../otel-transport.js'
 
 function createMockOtelLogger() {
   return { emit: vi.fn() }
@@ -18,11 +18,13 @@ describe('OTelTransport', () => {
     const provider = createMockProvider(otelLogger) as any
     const t = new OTelTransport({ loggerProvider: provider })
     t.log({ level: LogLevelEnum.INFO as LogLevel, message: 'hello', timestamp: new Date() })
-    expect(otelLogger.emit).toHaveBeenCalledWith(expect.objectContaining({
-      severityNumber: SeverityNumber.INFO,
-      severityText: 'INFO',
-      body: 'hello',
-    }))
+    expect(otelLogger.emit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        severityNumber: SeverityNumber.INFO,
+        severityText: 'INFO',
+        body: 'hello',
+      }),
+    )
   })
 
   test('maps all levels correctly', () => {
@@ -48,23 +50,37 @@ describe('OTelTransport', () => {
     const provider = createMockProvider(otelLogger) as any
     const t = new OTelTransport({ loggerProvider: provider })
     const err = new Error('boom')
-    t.log({ level: LogLevelEnum.ERROR as LogLevel, message: 'e', timestamp: new Date(), error: err })
-    expect(otelLogger.emit).toHaveBeenCalledWith(expect.objectContaining({
-      attributes: expect.objectContaining({
-        'error.message': 'boom',
-        'error.name': 'Error',
+    t.log({
+      level: LogLevelEnum.ERROR as LogLevel,
+      message: 'e',
+      timestamp: new Date(),
+      error: err,
+    })
+    expect(otelLogger.emit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        attributes: expect.objectContaining({
+          'error.message': 'boom',
+          'error.name': 'Error',
+        }),
       }),
-    }))
+    )
   })
 
   test('passes context as attributes', () => {
     const otelLogger = createMockOtelLogger()
     const provider = createMockProvider(otelLogger) as any
     const t = new OTelTransport({ loggerProvider: provider })
-    t.log({ level: LogLevelEnum.INFO as LogLevel, message: 'x', timestamp: new Date(), context: { userId: 'u1' } })
-    expect(otelLogger.emit).toHaveBeenCalledWith(expect.objectContaining({
-      attributes: expect.objectContaining({ userId: 'u1' }),
-    }))
+    t.log({
+      level: LogLevelEnum.INFO as LogLevel,
+      message: 'x',
+      timestamp: new Date(),
+      context: { userId: 'u1' },
+    })
+    expect(otelLogger.emit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        attributes: expect.objectContaining({ userId: 'u1' }),
+      }),
+    )
   })
 
   test('timestamp converted to ns', () => {
@@ -73,8 +89,10 @@ describe('OTelTransport', () => {
     const t = new OTelTransport({ loggerProvider: provider })
     const ts = new Date('2026-01-01T00:00:00.000Z')
     t.log({ level: LogLevelEnum.INFO as LogLevel, message: 'x', timestamp: ts })
-    expect(otelLogger.emit).toHaveBeenCalledWith(expect.objectContaining({
-      timestamp: ts.getTime() * 1_000_000,
-    }))
+    expect(otelLogger.emit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        timestamp: ts.getTime() * 1_000_000,
+      }),
+    )
   })
 })

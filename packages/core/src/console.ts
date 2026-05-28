@@ -1,20 +1,13 @@
-import type { LogEntry, Transport, AnalyticsProvider } from './types.js'
-import { LogLevel, resolveEnabled } from './types.js'
+import type { AnalyticsProvider, LogEntry, Transport } from './types.js'
+import { LEVEL_LABELS, LogLevel, resolveEnabled } from './types.js'
 
 const RESET = '\x1b[0m'
 const LEVEL_COLORS: Record<LogLevel, string> = {
   [LogLevel.DEBUG]: '\x1b[90m',
-  [LogLevel.INFO]:  '\x1b[34m',
-  [LogLevel.WARN]:  '\x1b[33m',
+  [LogLevel.INFO]: '\x1b[34m',
+  [LogLevel.WARN]: '\x1b[33m',
   [LogLevel.ERROR]: '\x1b[31m',
   [LogLevel.FATAL]: '\x1b[41;97m',
-}
-const LEVEL_LABELS: Record<LogLevel, string> = {
-  [LogLevel.DEBUG]: 'DEBUG',
-  [LogLevel.INFO]:  'INFO',
-  [LogLevel.WARN]:  'WARN',
-  [LogLevel.ERROR]: 'ERROR',
-  [LogLevel.FATAL]: 'FATAL',
 }
 
 function formatEntry(entry: LogEntry): string {
@@ -46,10 +39,15 @@ export class ConsoleTransport implements Transport {
   }
 
   log(entry: LogEntry): void {
-    const formatted = this.pretty ? formatEntry(entry) : `${entry.timestamp} [${LEVEL_LABELS[entry.level]}] ${entry.message}`
-    const fn = entry.level >= LogLevel.ERROR ? console.error
-      : entry.level === LogLevel.WARN ? console.warn
-      : console.log
+    const formatted = this.pretty
+      ? formatEntry(entry)
+      : `${entry.timestamp} [${LEVEL_LABELS[entry.level]}] ${entry.message}`
+    const fn =
+      entry.level >= LogLevel.ERROR
+        ? console.error
+        : entry.level === LogLevel.WARN
+          ? console.warn
+          : console.log
     fn(formatted)
   }
 
@@ -86,8 +84,18 @@ export class ConsoleProvider implements AnalyticsProvider {
     console.log(`[${this.name}] screen: ${name}`, params ?? '')
   }
 
-  error(feature: string, name: string, critical: boolean, error: Error, extra?: Record<string, unknown>): void {
-    console.error(`[${this.name}] error: [${feature}] ${name} (critical: ${critical})`, error, extra ?? '')
+  error(
+    feature: string,
+    name: string,
+    critical: boolean,
+    error: Error,
+    extra?: Record<string, unknown>,
+  ): void {
+    console.error(
+      `[${this.name}] error: [${feature}] ${name} (critical: ${critical})`,
+      error,
+      extra ?? '',
+    )
   }
 
   flush(): void {}

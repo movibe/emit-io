@@ -1,4 +1,4 @@
-import { emit } from '../lib/emit.js'
+import { emit } from '../lib/logger.js'
 
 export default async function HomePage() {
   emit.info('rendering HomePage (RSC)')

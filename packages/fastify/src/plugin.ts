@@ -1,7 +1,7 @@
-import fp from 'fastify-plugin'
-import type { FastifyPluginAsync } from 'fastify'
-import { type EmitIoStrategy } from 'emit-io-core'
 import { randomUUID } from 'node:crypto'
+import type { EmitIoStrategy } from 'emit-io-core'
+import type { FastifyPluginAsync } from 'fastify'
+import fp from 'fastify-plugin'
 
 declare module 'fastify' {
   interface FastifyRequest {

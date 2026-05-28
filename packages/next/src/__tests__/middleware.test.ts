@@ -1,4 +1,4 @@
-import { test, expect, describe, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { withLogger } from '../middleware.js'
 
 function mockReq(opts: { method?: string; path?: string; headers?: Record<string, string> } = {}) {
@@ -38,12 +38,15 @@ describe('withLogger middleware', () => {
 
     await wrapped(req)
 
-    expect(logger.info).toHaveBeenCalledWith('request', expect.objectContaining({
-      method: 'POST',
-      path: '/api/test',
-      status: 200,
-      durationMs: expect.any(Number),
-    }))
+    expect(logger.info).toHaveBeenCalledWith(
+      'request',
+      expect.objectContaining({
+        method: 'POST',
+        path: '/api/test',
+        status: 200,
+        durationMs: expect.any(Number),
+      }),
+    )
   })
 
   test('auto-generates requestId if x-request-id header is absent', async () => {
@@ -92,12 +95,15 @@ describe('withLogger middleware', () => {
     const req = mockReq({ method: 'GET', path: '/fail' })
 
     await expect(wrapped(req)).rejects.toThrow('boom')
-    expect(logger.error).toHaveBeenCalledWith('request-failed', expect.objectContaining({
-      method: 'GET',
-      path: '/fail',
-      error: 'boom',
-      durationMs: expect.any(Number),
-    }))
+    expect(logger.error).toHaveBeenCalledWith(
+      'request-failed',
+      expect.objectContaining({
+        method: 'GET',
+        path: '/fail',
+        error: 'boom',
+        durationMs: expect.any(Number),
+      }),
+    )
   })
 
   test('emits pageview on GET by default', async () => {

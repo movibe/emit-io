@@ -56,7 +56,6 @@
     "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "vitest run",
-    "lint": "eslint src --ext .ts",
     "prepack": "bun run build:all"
   },
   "repository": {

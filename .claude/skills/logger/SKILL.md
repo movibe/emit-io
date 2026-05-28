@@ -117,7 +117,7 @@ Both layers run on every call. `emit.error()` writes to all transports AND fires
 
 ## Project Structure (Monorepo)
 
-All packages published on npm under the `@emit` scope.
+All packages published on npm as unscoped `emit-io-*` packages.
 
 ```
 packages/
@@ -129,16 +129,32 @@ packages/
   hono/         emit-io-hono          — Hono middleware (request id, child logger)
   codegen/      emit-io-codegen       — CLI: YAML schema → TypeScript + Avro + JSON Schema
   otel/         emit-io-otel          — OpenTelemetry transport + provider
+
+examples/
+  fastify-server/     emit-io-example-fastify    — Fastify 5 server example
+  hono-worker/        hono-logger-worker-example  — Cloudflare Worker + Hono
+  next-app/           next-app-example            — Next.js 15 App Router
+  otel-bridge/        emit-io-example-otel-bridge — OTel + NodeSDK
+  react-vite/         emit-io-example-react-vite  — Vite + React 19 SPA
+  react-native-expo/  logger-rn-example           — Expo SDK 56 + expo-router
 ```
+
+Note: `examples/fastify-server` and `examples/react-native-expo` are workspace members (use `workspace:*` for emit-io deps). Others use `workspace:*` but are not in the workspace array.
 
 ## Build System
 
-All packages use **Bun** (`bun build`) for bundling. Build scripts follow a consistent pattern:
+Core (`emit-io-core`) uses **Bun** (`bun build`) — works correctly for non-barrel entry points.
+All other packages (react, react-native, fastify, hono, next, otel) use **esbuild** via the `esbuild` CLI because Bun's bundler does not resolve `.js` → `.ts/.tsx` extensions in re-export barrel files.
+
+Build pattern for framework packages:
 
 ```
-bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=pkg
-bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=pkg
+esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --platform=node --external:peer-dep --minify
+esbuild src/index.ts --bundle --outfile=dist/index.cjs --format=cjs --platform=node --external:peer-dep --minify
 ```
+
+React/react-native packages also add `--jsx=automatic --external:react/jsx-runtime`.
+`emit-io-react-native` uses a `src/_bundle.ts` build entry (import+export pattern) instead of `src/index.ts` (re-export barrel) to work around Bun's bundler limitation.
 
 Every package has `build`, `build:types`, `build:all`, and `prepack` scripts. Core produces 6 output bundles (ESM/CJS for Node, Browser, Worker/Edge) plus a `/test` subpath export. All other packages produce 2 bundles (ESM + CJS), except codegen which is CLI-only.
 
@@ -153,6 +169,8 @@ Every package has `build`, `build:types`, `build:all`, and `prepack` scripts. Co
 **Test runner: Vitest** (configured at root `vitest.config.ts`).
 
 Root configuration: `{ globals: false, environment: 'node', include: ['packages/*/src/**/*.test.ts'] }`
+
+`resolve.dedupe: ['react', 'react-dom', 'react-native']` — required to prevent multiple React instances when `examples/react-native-expo` is in workspace (Bun nests react under `packages/react-native/node_modules`).
 
 Exceptions: `react` and `codegen` use `bun test`. Files: `src/__tests__/*.test.ts`. Imports: `import { test, expect, describe, vi } from 'vitest'`. Mocking: `vi.spyOn()`, `vi.fn()`.
 
@@ -186,10 +204,10 @@ Results documented in `BENCHMARKS.md`. Always use `/dev/null` writes for fair co
 ## Code Conventions
 
 - TypeScript strict mode, enums for log levels
-- Interface over type for public APIs, readonly properties
+- Type aliases used throughout (refactored from interfaces in v1.0.5), readonly properties
 - Explicit return types, optional chaining, early returns
 - Zero comments by default — code should be self-documenting
-- ESLint config at `packages/core/.eslintrc.json`
+- Biome for lint + format (`biome.json` at root, covers all packages). Lefthook for git hooks (pre-commit: biome check, pre-push: typecheck + tests).
 
 ## Release
 
@@ -211,4 +229,4 @@ Uses **Changesets**: `bun run changeset` → `bun run version` → `bun run rele
 Run `bun run bench:compare`, update BENCHMARKS.md with results (include `node -v`, `uname -mrs`).
 
 ### Add a transport or plugin
-Create in `packages/core/src/`, implement `Transport` or `Plugin` from `types.ts`, export from `index.ts`, add tests. Transport must declare `enabled?: boolean` (default `true`).
+Create in `packages/core/src/`, implement `Transport` or `Plugin` from `types.ts`, export from `index.ts`, add tests. Transport must declare `enabled?: boolean` (default `true`). Transport interface now includes `close?(): void | Promise<void>` — implement to clean up timers/connections. `EmitIoStrategy.close()` calls flush then close on all transports.

@@ -10,7 +10,7 @@ export type CircuitBreakerOptions = {
 
 export function circuitBreaker<P extends AnalyticsProvider>(
   provider: P,
-  opts?: CircuitBreakerOptions
+  opts?: CircuitBreakerOptions,
 ): P {
   const threshold = opts?.failureThreshold ?? 5
   const cooldown = opts?.cooldownMs ?? 30000

@@ -1,14 +1,28 @@
-import type {
-  EVENT_TAGS, LOG_TAGS, NETWORK_ANALYTICS_TAGS, User,
-  BeginCheckoutEvent, LoggerStrategyConstructor, LoggerStrategyType,
-  PurchaseLogEvent, LogLevel, LogEntry, Transport, Plugin,
-  AnalyticsProvider, EmitIoStrategyConfig, RegisteredEvents, ConsentState
-} from './types.js'
-
-import { LogLevel as LogLevelEnum } from './types.js'
 import { getContext } from './context.js'
+import type {
+  AnalyticsProvider,
+  BeginCheckoutEvent,
+  ConsentState,
+  EmitIoStrategyConfig,
+  LOG_TAGS,
+  LogEntry,
+  LoggerStrategyConstructor,
+  LoggerStrategyType,
+  NETWORK_ANALYTICS_TAGS,
+  Plugin,
+  PurchaseLogEvent,
+  RegisteredEvents,
+  Transport,
+  User,
+} from './types.js'
+import { LogLevel as LogLevelEnum } from './types.js'
 
-function createLogEntry(level: LogLevelEnum, message: string, context?: Record<string, unknown>, error?: Error): LogEntry {
+function createLogEntry(
+  level: LogLevelEnum,
+  message: string,
+  context?: Record<string, unknown>,
+  error?: Error,
+): LogEntry {
   return { level, message, timestamp: new Date(), context, error }
 }
 
@@ -18,11 +32,21 @@ export class EmitIoStrategy<
   TUser extends { id: string } = User,
   TBeginCheckout extends { currency?: string; value?: number } = BeginCheckoutEvent,
   TPurchase extends { type: string } = PurchaseLogEvent,
-  TEvent extends Record<string, any> = RegisteredEvents
+  TEvent extends Record<string, any> = RegisteredEvents,
 > {
   private providers: AnalyticsProvider<TEvent, TUser>[] = []
-  private legacyStrategies: LoggerStrategyType<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>[] = []
-  private legacyStrategyMap = new Map<string, LoggerStrategyType<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>>()
+  private legacyStrategies: LoggerStrategyType<
+    TLogTags,
+    TNetworkTags,
+    TUser,
+    TBeginCheckout,
+    TPurchase,
+    TEvent
+  >[] = []
+  private legacyStrategyMap = new Map<
+    string,
+    LoggerStrategyType<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>
+  >()
   private transports: Transport[] = []
   private plugins: Plugin[] = []
   private emitAppOpenOnInit: boolean
@@ -33,16 +57,38 @@ export class EmitIoStrategy<
   private isBuffering = false
   private consent: ConsentState = { analytics: true, errors: true }
 
-  constructor(config?: EmitIoStrategyConfig<TEvent, TUser> | LoggerStrategyConstructor<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>[])
   constructor(
-    config?: EmitIoStrategyConfig<TEvent, TUser> | LoggerStrategyConstructor<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>[]
+    config?:
+      | EmitIoStrategyConfig<TEvent, TUser>
+      | LoggerStrategyConstructor<
+          TLogTags,
+          TNetworkTags,
+          TUser,
+          TBeginCheckout,
+          TPurchase,
+          TEvent
+        >[],
+  )
+  constructor(
+    config?:
+      | EmitIoStrategyConfig<TEvent, TUser>
+      | LoggerStrategyConstructor<
+          TLogTags,
+          TNetworkTags,
+          TUser,
+          TBeginCheckout,
+          TPurchase,
+          TEvent
+        >[],
   ) {
     this.emitAppOpenOnInit = true
 
     if (!config) return
 
     if (Array.isArray(config)) {
-      console.warn('[EmitIoStrategy] LoggerStrategyConstructor array is deprecated; pass EmitIoStrategyConfig with AnalyticsProvider instances. Will be removed in v4.')
+      console.warn(
+        '[EmitIoStrategy] LoggerStrategyConstructor array is deprecated; pass EmitIoStrategyConfig with AnalyticsProvider instances. will be removed in emit-io v2.0.',
+      )
       for (const injector of config) {
         if (injector.enabled) {
           this.legacyStrategies.push(injector.class)
@@ -54,7 +100,7 @@ export class EmitIoStrategy<
       }
     } else {
       if (config.providers) {
-        this.providers.push(...config.providers.filter(p => p.enabled))
+        this.providers.push(...config.providers.filter((p) => p.enabled))
       }
       if (config.transports) {
         this.transports.push(...config.transports)
@@ -126,7 +172,9 @@ export class EmitIoStrategy<
     return current
   }
 
-  child(bindings: Record<string, unknown>): EmitIoStrategy<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent> {
+  child(
+    bindings: Record<string, unknown>,
+  ): EmitIoStrategy<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent> {
     const c = new EmitIoStrategy<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>()
     c.providers = this.providers
     c.legacyStrategies = this.legacyStrategies
@@ -194,7 +242,7 @@ export class EmitIoStrategy<
 
   private executeOnProviders<T>(
     methodName: string,
-    callback: (provider: AnalyticsProvider<TEvent, TUser>) => T
+    callback: (provider: AnalyticsProvider<TEvent, TUser>) => T,
   ): void {
     for (const provider of this.providers) {
       try {
@@ -207,7 +255,16 @@ export class EmitIoStrategy<
 
   private executeOnLegacy<T>(
     methodName: string,
-    callback: (strategy: LoggerStrategyType<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>) => T
+    callback: (
+      strategy: LoggerStrategyType<
+        TLogTags,
+        TNetworkTags,
+        TUser,
+        TBeginCheckout,
+        TPurchase,
+        TEvent
+      >,
+    ) => T,
   ): void {
     for (const strategy of this.legacyStrategies) {
       try {
@@ -220,8 +277,10 @@ export class EmitIoStrategy<
 
   private executeOnAll<T>(
     methodName: string,
-    legacyFn: (s: LoggerStrategyType<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>) => T,
-    providerFn: (p: AnalyticsProvider<TEvent, TUser>) => T
+    legacyFn: (
+      s: LoggerStrategyType<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>,
+    ) => T,
+    providerFn: (p: AnalyticsProvider<TEvent, TUser>) => T,
   ): void {
     this.executeOnLegacy(methodName, legacyFn)
     this.executeOnProviders(methodName, providerFn)
@@ -239,16 +298,23 @@ export class EmitIoStrategy<
   // captureError() — analytics error (v3 API, replaces error overload)
   // ============================================================
 
-  captureError(feature: string, name: string, critical: boolean, err: Error, extra?: Record<string, unknown>): void {
+  captureError(
+    feature: string,
+    name: string,
+    critical: boolean,
+    err: Error,
+    extra?: Record<string, unknown>,
+  ): void {
     // Always emit to transport (structural log) regardless of consent
     this.emitToTransports(
-      createLogEntry(LogLevelEnum.ERROR, `[${feature}] ${name}`, { ...extra, critical }, err)
+      createLogEntry(LogLevelEnum.ERROR, `[${feature}] ${name}`, { ...extra, critical }, err),
     )
     // Analytics error gate: only call providers if errors consent is granted
     if (this.consent.errors === false) return
-    this.executeOnAll('captureError',
+    this.executeOnAll(
+      'captureError',
       (s) => s.error?.(feature, name, critical, err, extra),
-      (p) => p.error?.(feature, name, critical, err, extra)
+      (p) => p.error?.(feature, name, critical, err, extra),
     )
   }
 
@@ -261,9 +327,10 @@ export class EmitIoStrategy<
     this.initialized = true
     this.isBuffering = false
 
-    this.executeOnAll('init',
+    this.executeOnAll(
+      'init',
       (s) => s.init?.(),
-      (p) => p.init?.()
+      (p) => p.init?.(),
     )
 
     if (this.preInitBuffer) {
@@ -290,9 +357,10 @@ export class EmitIoStrategy<
   event<K extends keyof TEvent>(name: K, properties?: TEvent[K]): void {
     if (this.consent.analytics === false) return
     this.bufferOrRun(() => {
-      this.executeOnAll('event',
+      this.executeOnAll(
+        'event',
         (s) => s.event?.(name, properties),
-        (p) => p.event?.(name, properties)
+        (p) => p.event?.(name, properties),
       )
     })
   }
@@ -318,22 +386,29 @@ export class EmitIoStrategy<
   // logFeature() — analytics info (v3 API, replaces info overload)
   // ============================================================
 
-  logFeature(feature: string, name: string, properties?: Record<string, any> | string | boolean): void {
+  logFeature(
+    feature: string,
+    name: string,
+    properties?: Record<string, any> | string | boolean,
+  ): void {
     if (this.consent.analytics === false) return
     this.bufferOrRun(() => {
       this.executeOnLegacy('info', (s) => {
         s.info?.(feature, name, properties)
       })
-      this.emitToTransports(createLogEntry(LogLevelEnum.INFO, `[${feature}] ${name}`, { properties }))
+      this.emitToTransports(
+        createLogEntry(LogLevelEnum.INFO, `[${feature}] ${name}`, { properties }),
+      )
     })
   }
 
   logScreen(screenName: string, params?: Record<string, any>): void {
     if (this.consent.analytics === false) return
     this.bufferOrRun(() => {
-      this.executeOnAll('screen',
+      this.executeOnAll(
+        'screen',
         (s) => s.logScreen?.(screenName, params),
-        (p) => p.screen?.(screenName, params)
+        (p) => p.screen?.(screenName, params),
       )
     })
   }
@@ -360,16 +435,18 @@ export class EmitIoStrategy<
     if (this.consent.analytics === false) return
     this.bufferOrRun(() => {
       if (!properties?.id) {
-        this.executeOnAll('error',
+        this.executeOnAll(
+          'error',
           (s) => s.error?.('EmitIoStrategy', 'setUser', false, new Error('User ID is required')),
-          (p) => p.error?.('EmitIoStrategy', 'setUser', false, new Error('User ID is required'))
+          (p) => p.error?.('EmitIoStrategy', 'setUser', false, new Error('User ID is required')),
         )
         return
       }
 
-      this.executeOnAll('identify',
+      this.executeOnAll(
+        'identify',
         (s) => s.setUser?.(properties),
-        (p) => p.identify?.(properties)
+        (p) => p.identify?.(properties),
       )
     })
   }
@@ -391,9 +468,22 @@ export class EmitIoStrategy<
     if (this.consent.analytics === false) return
     this.bufferOrRun(() => {
       if (!checkoutId) {
-        this.executeOnAll('error',
-          (s) => s.error?.('EmitIoStrategy', 'logBeginCheckout', false, new Error('Checkout ID is required')),
-          (p) => p.error?.('EmitIoStrategy', 'logBeginCheckout', false, new Error('Checkout ID is required'))
+        this.executeOnAll(
+          'error',
+          (s) =>
+            s.error?.(
+              'EmitIoStrategy',
+              'logBeginCheckout',
+              false,
+              new Error('Checkout ID is required'),
+            ),
+          (p) =>
+            p.error?.(
+              'EmitIoStrategy',
+              'logBeginCheckout',
+              false,
+              new Error('Checkout ID is required'),
+            ),
         )
         return
       }
@@ -408,9 +498,22 @@ export class EmitIoStrategy<
     if (this.consent.analytics === false) return
     this.bufferOrRun(() => {
       if (!checkoutId || !params?.type) {
-        this.executeOnAll('error',
-          (s) => s.error?.('EmitIoStrategy', 'logPaymentSuccess', false, new Error('Checkout ID and payment type are required')),
-          (p) => p.error?.('EmitIoStrategy', 'logPaymentSuccess', false, new Error('Checkout ID and payment type are required'))
+        this.executeOnAll(
+          'error',
+          (s) =>
+            s.error?.(
+              'EmitIoStrategy',
+              'logPaymentSuccess',
+              false,
+              new Error('Checkout ID and payment type are required'),
+            ),
+          (p) =>
+            p.error?.(
+              'EmitIoStrategy',
+              'logPaymentSuccess',
+              false,
+              new Error('Checkout ID and payment type are required'),
+            ),
         )
         return
       }
@@ -422,85 +525,101 @@ export class EmitIoStrategy<
   }
 
   flush(): void {
-    this.executeOnAll('flush',
+    this.executeOnAll(
+      'flush',
       (s) => s.flush?.(),
-      (p) => p.flush?.()
+      (p) => p.flush?.(),
     )
     this.forEachTransport((t) => t.flush?.())
   }
 
   async close(): Promise<void> {
-    this.executeOnAll('flush',
+    this.executeOnAll(
+      'flush',
       (s) => s.flush?.(),
-      (p) => p.flush?.()
+      (p) => p.flush?.(),
     )
-    await Promise.all(
-      this.transports.map(t => Promise.resolve(t.flush?.()))
-    )
+    await Promise.all(this.transports.map((t) => Promise.resolve(t.flush?.())))
+    await Promise.all(this.transports.map((t) => Promise.resolve(t.close?.())))
   }
 
   reset(): void {
-    this.executeOnAll('reset',
+    this.executeOnAll(
+      'reset',
       (s) => s.reset?.(),
-      (p) => p.reset?.()
+      (p) => p.reset?.(),
     )
   }
 
-  getStrategy(id: string): AnalyticsProvider<TEvent, TUser> | LoggerStrategyType<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent> | undefined {
-    const fromProviders = this.providers.find(p => p.name === id)
+  getStrategy(
+    id: string,
+  ):
+    | AnalyticsProvider<TEvent, TUser>
+    | LoggerStrategyType<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>
+    | undefined {
+    const fromProviders = this.providers.find((p) => p.name === id)
     if (fromProviders) return fromProviders
     return this.legacyStrategyMap.get(id)
   }
 
   hasStrategy(id: string): boolean {
-    return this.providers.some(p => p.name === id) || this.legacyStrategyMap.has(id)
+    return this.providers.some((p) => p.name === id) || this.legacyStrategyMap.has(id)
   }
 }
 
-// Re-export all public types
+export type { CircuitBreakerOptions, CircuitState } from './circuit-breaker.js'
+export { circuitBreaker } from './circuit-breaker.js'
 export type {
-  LOG_TAGS, EVENT_TAGS, NETWORK_ANALYTICS_TAGS,
-  User, LogItem, CheckoutData, PaymentData,
-  BeginCheckoutEvent, PurchaseLogEvent, Item,
-  LoggerStrategyConstructor, LoggerStrategyType,
-  LogLevel, LogEntry, Transport, Plugin,
-  AnalyticsProvider, EmitIoStrategyConfig,
-  EventRegistry, RegisteredEvents,
-  ConsentState,
-} from './types.js'
-
-export { LogLevel as LogLevelEnum } from './types.js'
-export { resolveEnabled } from './types.js'
+  ConsoleProviderOptions,
+  ConsoleTransportOptions,
+} from './console.js'
 
 // Built-in transports and providers
 export {
-  ConsoleTransport,
   ConsoleProvider,
+  ConsoleTransport,
 } from './console.js'
-export type {
-  ConsoleTransportOptions,
-  ConsoleProviderOptions,
-} from './console.js'
-
-export { JSONTransport } from './json-transport.js'
-export type { JSONTransportOptions } from './json-transport.js'
-
-export { sample, rateLimit, redact, normalizeStack } from './plugins/index.js'
-export type { SampleOptions, RateLimitOptions, RedactOptions, NormalizeStackOptions, StackFrame } from './plugins/index.js'
-
-export { runWithContext, getContext } from './context.js'
-
-export { circuitBreaker } from './circuit-breaker.js'
-export type { CircuitBreakerOptions, CircuitState } from './circuit-breaker.js'
-
-export { HTTPTransport } from './http-transport.js'
-export type { HTTPTransportOptions } from './http-transport.js'
-
-export { DevToolsTransport } from './devtools-transport.js'
+export { getContext, runWithContext } from './context.js'
 export type { DevToolsTransportOptions } from './devtools-transport.js'
-
-/** @deprecated Use EmitIoStrategy instead */
-export { EmitIoStrategy as LoggerStrategy }
-
+export { DevToolsTransport } from './devtools-transport.js'
+export type { HTTPTransportOptions } from './http-transport.js'
+export { HTTPTransport } from './http-transport.js'
+export type { JSONTransportOptions } from './json-transport.js'
+export { JSONTransport } from './json-transport.js'
+export type {
+  NormalizeStackOptions,
+  RateLimitOptions,
+  RedactOptions,
+  SampleOptions,
+  StackFrame,
+} from './plugins/index.js'
+export { normalizeStack, rateLimit, redact, sample } from './plugins/index.js'
+// Re-export all public types
+export type {
+  AnalyticsProvider,
+  BeginCheckoutEvent,
+  CheckoutData,
+  ConsentState,
+  EmitIoStrategyConfig,
+  EVENT_TAGS,
+  EventRegistry,
+  Item,
+  LOG_TAGS,
+  LogEntry,
+  LoggerStrategyConstructor,
+  LoggerStrategyType,
+  LogItem,
+  LogLevel,
+  NETWORK_ANALYTICS_TAGS,
+  PaymentData,
+  Plugin,
+  PurchaseLogEvent,
+  RegisteredEvents,
+  Transport,
+  User,
+} from './types.js'
+export { LEVEL_LABELS, LogLevel as LogLevelEnum, resolveEnabled } from './types.js'
 /** @deprecated Use EmitIoStrategyConfig instead */
 export type { EmitIoStrategyConfig as LoggerConfig }
+/** @deprecated Use EmitIoStrategy instead */
+export { EmitIoStrategy as LoggerStrategy }

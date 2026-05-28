@@ -1,9 +1,13 @@
-import { useMemo, useEffect } from 'react'
-import { AnalyticsReactContext } from './context.js'
+import { useEffect, useMemo } from 'react'
 import { useAppStateAnalytics } from './app-state.js'
+import { AnalyticsReactContext } from './context.js'
 import type { AnalyticsContextValue, AnalyticsProviderProps } from './types.js'
 
-export function AnalyticsProvider({ client, children, trackAppState = true }: AnalyticsProviderProps) {
+export function AnalyticsProvider({
+  client,
+  children,
+  trackAppState = true,
+}: AnalyticsProviderProps) {
   const value = useMemo<AnalyticsContextValue>(() => {
     const providers = (client as any).providers ?? []
     return {
@@ -29,11 +33,7 @@ export function AnalyticsProvider({ client, children, trackAppState = true }: An
     )
   }
 
-  return (
-    <AnalyticsReactContext.Provider value={value}>
-      {children}
-    </AnalyticsReactContext.Provider>
-  )
+  return <AnalyticsReactContext.Provider value={value}>{children}</AnalyticsReactContext.Provider>
 }
 
 function AppStateTracker({ client, children }: { client: any; children: React.ReactNode }) {

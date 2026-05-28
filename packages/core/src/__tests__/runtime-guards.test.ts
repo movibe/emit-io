@@ -1,4 +1,4 @@
-import { test, expect, describe, vi, beforeEach, afterEach } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
 describe('runtime guards — context.ts no-op store without process', () => {
   let originalProcess: typeof globalThis.process
@@ -34,7 +34,7 @@ describe('runtime guards — context.ts no-op store without process', () => {
     expect(() =>
       mod.runWithContext({ a: 1 }, () => {
         mod.runWithContext({ b: 2 }, () => {})
-      })
+      }),
     ).not.toThrow()
   })
 })
@@ -65,7 +65,7 @@ describe('runtime guards — JSONTransport without process', () => {
         level: LogLevel.INFO,
         message: 'hello from browser',
         timestamp: new Date(),
-      })
+      }),
     ).not.toThrow()
     expect(consoleSpy).toHaveBeenCalled()
   })
@@ -105,11 +105,13 @@ describe('runtime guards — EmitIoStrategy works without process', () => {
     const { EmitIoStrategy } = await import('../index.js')
     const entries: unknown[] = []
     const logger = new EmitIoStrategy({
-      transports: [{
-        name: 'mem',
-        minLevel: 0,
-        log: (e) => entries.push(e),
-      }],
+      transports: [
+        {
+          name: 'mem',
+          minLevel: 0,
+          log: (e) => entries.push(e),
+        },
+      ],
       emitAppOpenOnInit: false,
     })
     expect(() => logger.info('info msg')).not.toThrow()

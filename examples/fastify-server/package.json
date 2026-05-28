@@ -3,11 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "tsx src/server.ts"
+    "start": "tsx src/server.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "emit-io-core": "^1.0.0",
-    "emit-io-fastify": "^1.0.0",
+    "emit-io-core": "workspace:*",
+    "emit-io-fastify": "workspace:*",
     "fastify": "^5.0.0"
   },
   "devDependencies": {

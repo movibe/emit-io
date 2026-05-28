@@ -1,4 +1,4 @@
-import { test, expect, describe, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { instrumentRoute } from '../route-handler.js'
 
 function mockReq(opts: { method?: string; path?: string; headers?: Record<string, string> } = {}) {
@@ -35,10 +35,13 @@ describe('instrumentRoute route handler', () => {
 
     await wrapped(req, mockCtx())
 
-    expect(logger.info).toHaveBeenCalledWith('route-handled', expect.objectContaining({
-      status: 200,
-      durationMs: expect.any(Number),
-    }))
+    expect(logger.info).toHaveBeenCalledWith(
+      'route-handled',
+      expect.objectContaining({
+        status: 200,
+        durationMs: expect.any(Number),
+      }),
+    )
   })
 
   test('re-throws error and calls logger.error on failure', async () => {
@@ -48,10 +51,13 @@ describe('instrumentRoute route handler', () => {
     const req = mockReq({ method: 'POST', path: '/api/fail' })
 
     await expect(wrapped(req, mockCtx())).rejects.toThrow('route error')
-    expect(logger.error).toHaveBeenCalledWith('route-failed', expect.objectContaining({
-      error: 'route error',
-      durationMs: expect.any(Number),
-    }))
+    expect(logger.error).toHaveBeenCalledWith(
+      'route-failed',
+      expect.objectContaining({
+        error: 'route error',
+        durationMs: expect.any(Number),
+      }),
+    )
   })
 
   test('respects custom eventName option', async () => {
@@ -63,15 +69,18 @@ describe('instrumentRoute route handler', () => {
 
     await wrapped(req, mockCtx())
 
-    expect(logger.info).toHaveBeenCalledWith('user-created', expect.objectContaining({
-      status: 201,
-    }))
+    expect(logger.info).toHaveBeenCalledWith(
+      'user-created',
+      expect.objectContaining({
+        status: 201,
+      }),
+    )
   })
 
   test('propagates requestId from header', async () => {
     const logger = mockLogger()
     const res = new Response(null, { status: 200 })
-    let capturedContext: Record<string, unknown> | undefined
+    let _capturedContext: Record<string, unknown> | undefined
 
     // We verify context propagation by checking that runWithContext was called
     // The handler itself can inspect the captured call args
@@ -86,7 +95,10 @@ describe('instrumentRoute route handler', () => {
     // logger.info is called — which means runWithContext ran successfully
     expect(logger.info).toHaveBeenCalled()
     // handler was called
-    expect(handler).toHaveBeenCalledWith(req, expect.objectContaining({ params: expect.any(Promise) }))
+    expect(handler).toHaveBeenCalledWith(
+      req,
+      expect.objectContaining({ params: expect.any(Promise) }),
+    )
   })
 
   test('auto-generates requestId when header is absent', async () => {

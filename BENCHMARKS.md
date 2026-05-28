@@ -56,7 +56,7 @@ Pino is the throughput leader across all three scenarios, running roughly 2× fa
 
 ```bash
 git clone https://github.com/movibe/emit-io.git
-cd emit
+cd logger
 bun install
 bun run bench:compare
 ```

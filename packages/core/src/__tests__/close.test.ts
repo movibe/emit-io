@@ -1,6 +1,6 @@
-import { test, expect, describe, vi } from 'vitest'
-import { EmitIoStrategy } from '../index.js'
-import type { Transport, AnalyticsProvider } from '../types.js'
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
+import { EmitIoStrategy, HTTPTransport } from '../index.js'
+import type { AnalyticsProvider, Transport } from '../types.js'
 import { LogLevel } from '../types.js'
 
 describe('close()', () => {
@@ -29,12 +29,13 @@ describe('close()', () => {
       name: 'async-transport',
       minLevel: LogLevel.DEBUG,
       log: vi.fn(),
-      flush: () => new Promise<void>(resolve => {
-        setTimeout(() => {
-          order.push('flushed')
-          resolve()
-        }, 10)
-      }),
+      flush: () =>
+        new Promise<void>((resolve) => {
+          setTimeout(() => {
+            order.push('flushed')
+            resolve()
+          }, 10)
+        }),
     }
 
     const logger = new EmitIoStrategy({
@@ -92,14 +93,26 @@ describe('close()', () => {
       name: 'slow',
       minLevel: LogLevel.DEBUG,
       log: vi.fn(),
-      flush: () => new Promise<void>(r => setTimeout(() => { results.push('slow'); r() }, 20)),
+      flush: () =>
+        new Promise<void>((r) =>
+          setTimeout(() => {
+            results.push('slow')
+            r()
+          }, 20),
+        ),
     }
 
     const fast: Transport = {
       name: 'fast',
       minLevel: LogLevel.DEBUG,
       log: vi.fn(),
-      flush: () => new Promise<void>(r => setTimeout(() => { results.push('fast'); r() }, 5)),
+      flush: () =>
+        new Promise<void>((r) =>
+          setTimeout(() => {
+            results.push('fast')
+            r()
+          }, 5),
+        ),
     }
 
     const logger = new EmitIoStrategy({
@@ -112,5 +125,119 @@ describe('close()', () => {
     // Both should be flushed by the time close() resolves
     expect(results).toContain('slow')
     expect(results).toContain('fast')
+  })
+})
+
+describe('close() transport teardown', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  test('strategy.close() closes an HTTPTransport (logs after close are ignored, no active timer)', async () => {
+    const fetchMock = vi.fn(() => Promise.resolve(new Response('ok', { status: 200 })))
+    const transport = new HTTPTransport({
+      url: 'https://example.com/logs',
+      batchSize: 100,
+      flushIntervalMs: 60_000,
+      maxRetries: 0,
+      fetch: fetchMock,
+    })
+
+    const logger = new EmitIoStrategy({
+      transports: [transport],
+      emitAppOpenOnInit: false,
+    })
+
+    await logger.close()
+
+    // After close(), logging into the transport should be a no-op
+    transport.log({ level: LogLevel.INFO, message: 'after close', timestamp: new Date() })
+    await vi.advanceTimersByTimeAsync(120_000)
+
+    // fetch should never have been called (buffer was empty, after close logs are ignored)
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  test('strategy.close() calls close() on a mock transport', async () => {
+    const closeMock = vi.fn()
+    const flushMock = vi.fn()
+    const transport: Transport = {
+      name: 'mock-closeable',
+      minLevel: LogLevel.DEBUG,
+      log: vi.fn(),
+      flush: flushMock,
+      close: closeMock,
+    }
+
+    const logger = new EmitIoStrategy({
+      transports: [transport],
+      emitAppOpenOnInit: false,
+    })
+
+    await logger.close()
+
+    expect(flushMock).toHaveBeenCalled()
+    expect(closeMock).toHaveBeenCalled()
+  })
+
+  test('strategy.close() calls close() on multiple transports', async () => {
+    const close1 = vi.fn()
+    const close2 = vi.fn()
+
+    const t1: Transport = {
+      name: 'transport-1',
+      minLevel: LogLevel.DEBUG,
+      log: vi.fn(),
+      close: close1,
+    }
+    const t2: Transport = {
+      name: 'transport-2',
+      minLevel: LogLevel.DEBUG,
+      log: vi.fn(),
+      close: close2,
+    }
+
+    const logger = new EmitIoStrategy({
+      transports: [t1, t2],
+      emitAppOpenOnInit: false,
+    })
+
+    await logger.close()
+
+    expect(close1).toHaveBeenCalledOnce()
+    expect(close2).toHaveBeenCalledOnce()
+  })
+
+  test('strategy.close() resolves when transport.close() returns a Promise', async () => {
+    const order: string[] = []
+    const transport: Transport = {
+      name: 'async-closeable',
+      minLevel: LogLevel.DEBUG,
+      log: vi.fn(),
+      close: () =>
+        new Promise<void>((resolve) => {
+          setTimeout(() => {
+            order.push('transport-closed')
+            resolve()
+          }, 10)
+        }),
+    }
+
+    const logger = new EmitIoStrategy({
+      transports: [transport],
+      emitAppOpenOnInit: false,
+    })
+
+    // Start closing, advance timers so the async close completes, then await
+    const closePromise = logger.close()
+    await vi.advanceTimersByTimeAsync(20)
+    await closePromise
+
+    order.push('strategy-close-resolved')
+
+    expect(order).toEqual(['transport-closed', 'strategy-close-resolved'])
   })
 })

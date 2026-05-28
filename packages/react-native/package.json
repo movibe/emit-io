@@ -26,7 +26,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=browser --format=esm --external=react --external=react-native --external=@react-navigation/native --external=expo-router --external=emit-io-core --minify && bun build ./src/index.ts --target=browser --format=cjs --outfile=dist/index.cjs --external=react --external=react-native --external=@react-navigation/native --external=expo-router --external=emit-io-core --minify",
+    "build": "esbuild src/_bundle.ts --bundle --outfile=dist/index.js --format=esm --platform=browser --external:react --external:react/jsx-runtime --external:react-native --external:@react-navigation/native --external:expo-router --external:emit-io-core --minify --jsx=automatic && esbuild src/_bundle.ts --bundle --outfile=dist/index.cjs --format=cjs --platform=browser --external:react --external:react/jsx-runtime --external:react-native --external:@react-navigation/native --external:expo-router --external:emit-io-core --minify --jsx=automatic",
     "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "vitest run",
@@ -49,7 +49,7 @@
     "emit-io-core": "workspace:*",
     "@types/react": "^18.2.0",
     "react": "^18.2.0",
-    "react-native": "^0.74.0",
+    "react-native": "^0.76.0",
     "@react-navigation/native": "^6.0.0",
     "@testing-library/react": "^16.0.0",
     "happy-dom": "^15.0.0",

@@ -1,5 +1,5 @@
-export { withLogger } from './middleware.js'
 export type { MiddlewareOptions } from './middleware.js'
+export { withLogger } from './middleware.js'
+export type { RouteHandler, RouteHandlerOptions } from './route-handler.js'
 export { instrumentRoute } from './route-handler.js'
-export type { RouteHandlerOptions, RouteHandler } from './route-handler.js'
 export type { RequestContext } from './types.js'

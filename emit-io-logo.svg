@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <!-- Subtle radial gradient for background -->
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#141414"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+    <!-- Glow filter for octopus body -->
+    <filter id="bodyGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Subtle glow for nodes -->
+    <filter id="nodeGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="800" fill="url(#bgGrad)"/>
+
+  <!-- Emit signal rings — concentric, emanating from center -->
+  <circle cx="400" cy="400" r="105" fill="none" stroke="#ffffff" stroke-width="0.8" opacity="0.12"/>
+  <circle cx="400" cy="400" r="130" fill="none" stroke="#ffffff" stroke-width="0.7" opacity="0.09"/>
+  <circle cx="400" cy="400" r="158" fill="none" stroke="#ffffff" stroke-width="0.6" opacity="0.07"/>
+  <circle cx="400" cy="400" r="188" fill="none" stroke="#ffffff" stroke-width="0.5" opacity="0.05"/>
+
+  <!-- ======= TENTACLES (curved paths, consistent clockwise swirl) ======= -->
+
+  <!-- GF — top (angle -90°) -->
+  <path d="M 400,320 Q 360,246 400,120"
+        fill="none" stroke="#e0e0e0" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- PH — top-right (angle -45°) -->
+  <path d="M 456.6,343.4 Q 480.6,262.8 598,202"
+        fill="none" stroke="#e0e0e0" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- GA — right (angle 0°) -->
+  <path d="M 480,400 Q 554,360 680,400"
+        fill="none" stroke="#e0e0e0" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- DD — bottom-right (angle 45°) -->
+  <path d="M 456.6,456.6 Q 537.2,480.6 598,598"
+        fill="none" stroke="#e0e0e0" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- CL — bottom (angle 90°) -->
+  <path d="M 400,480 Q 440,554 400,680"
+        fill="none" stroke="#e0e0e0" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- OP — bottom-left (angle 135°) -->
+  <path d="M 343.4,456.6 Q 319.4,537.2 202,598"
+        fill="none" stroke="#e0e0e0" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- SN — left (angle 180°) -->
+  <path d="M 320,400 Q 246,440 120,400"
+        fill="none" stroke="#e0e0e0" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- OT — top-left (angle 225°) -->
+  <path d="M 343.4,343.4 Q 262.8,319.4 202,202"
+        fill="none" stroke="#e0e0e0" stroke-width="3" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- ======= OCTOPUS BODY ======= -->
+  <!-- Outer ring of body -->
+  <circle cx="400" cy="400" r="85" fill="#1a1a1a" stroke="#d0d0d0" stroke-width="2.5" filter="url(#bodyGlow)" opacity="0.95"/>
+  <!-- Inner lighter center -->
+  <circle cx="400" cy="400" r="55" fill="#242424" stroke="#e8e8e8" stroke-width="1.5" opacity="0.9"/>
+  <!-- Core dot -->
+  <circle cx="400" cy="400" r="22" fill="#2e2e2e" stroke="#f0f0f0" stroke-width="1" opacity="0.85"/>
+  <!-- Central pulse dot -->
+  <circle cx="400" cy="400" r="7" fill="#ffffff" opacity="0.9"/>
+
+  <!-- Small dot accents on body ring (eye-like) -->
+  <circle cx="381" cy="388" r="5" fill="#ffffff" opacity="0.85"/>
+  <circle cx="419" cy="388" r="5" fill="#ffffff" opacity="0.85"/>
+  <!-- Subtle mouth curve -->
+  <path d="M 388,412 Q 400,422 412,412" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- ======= TOOL NODES ======= -->
+
+  <!-- Node 0: GF — Grafana (#F46800) — top (400, 120) -->
+  <circle cx="400" cy="120" r="46" fill="#F46800" stroke="#0a0a0a" stroke-width="2.5" filter="url(#nodeGlow)"/>
+  <text x="400" y="120" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="700"
+        font-size="17" fill="#ffffff" letter-spacing="0.5">GF</text>
+  <!-- Tool name label -->
+  <text x="400" y="65" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="400"
+        font-size="10" fill="#888888" letter-spacing="0.8">GRAFANA</text>
+
+  <!-- Node 1: PH — PostHog (#1D4AFF) — top-right (598, 202) -->
+  <circle cx="598" cy="202" r="46" fill="#1D4AFF" stroke="#0a0a0a" stroke-width="2.5" filter="url(#nodeGlow)"/>
+  <text x="598" y="202" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="700"
+        font-size="17" fill="#ffffff" letter-spacing="0.5">PH</text>
+  <text x="640" y="158" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="400"
+        font-size="10" fill="#888888" letter-spacing="0.8">POSTHOG</text>
+
+  <!-- Node 2: GA — Google Analytics (#E37400) — right (680, 400) -->
+  <circle cx="680" cy="400" r="46" fill="#E37400" stroke="#0a0a0a" stroke-width="2.5" filter="url(#nodeGlow)"/>
+  <text x="680" y="400" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="700"
+        font-size="17" fill="#ffffff" letter-spacing="0.5">GA</text>
+  <text x="745" y="390" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="400"
+        font-size="9" fill="#888888" letter-spacing="0.5">ANALYTICS</text>
+  <text x="745" y="402" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="400"
+        font-size="9" fill="#888888" letter-spacing="0.5">GOOGLE</text>
+
+  <!-- Node 3: DD — Datadog (#632CA6) — bottom-right (598, 598) -->
+  <circle cx="598" cy="598" r="46" fill="#632CA6" stroke="#0a0a0a" stroke-width="2.5" filter="url(#nodeGlow)"/>
+  <text x="598" y="598" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="700"
+        font-size="17" fill="#ffffff" letter-spacing="0.5">DD</text>
+  <text x="642" y="644" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="400"
+        font-size="10" fill="#888888" letter-spacing="0.8">DATADOG</text>
+
+  <!-- Node 4: CL — Microsoft Clarity (#0078D4) — bottom (400, 680) -->
+  <circle cx="400" cy="680" r="46" fill="#0078D4" stroke="#0a0a0a" stroke-width="2.5" filter="url(#nodeGlow)"/>
+  <text x="400" y="680" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="700"
+        font-size="17" fill="#ffffff" letter-spacing="0.5">CL</text>
+  <text x="400" y="735" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="400"
+        font-size="10" fill="#888888" letter-spacing="0.8">CLARITY</text>
+
+  <!-- Node 5: OP — OpenPanel (#ffffff) — bottom-left (202, 598) -->
+  <!-- White fill: use dark text for legibility -->
+  <circle cx="202" cy="598" r="46" fill="#ffffff" stroke="#555555" stroke-width="2.5" filter="url(#nodeGlow)"/>
+  <text x="202" y="598" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="700"
+        font-size="17" fill="#0a0a0a" letter-spacing="0.5">OP</text>
+  <text x="158" y="644" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="400"
+        font-size="10" fill="#888888" letter-spacing="0.8">OPENPANEL</text>
+
+  <!-- Node 6: SN — Sentry (#F55459) — left (120, 400) -->
+  <circle cx="120" cy="400" r="46" fill="#F55459" stroke="#0a0a0a" stroke-width="2.5" filter="url(#nodeGlow)"/>
+  <text x="120" y="400" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="700"
+        font-size="17" fill="#ffffff" letter-spacing="0.5">SN</text>
+  <text x="55" y="390" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="400"
+        font-size="9" fill="#888888" letter-spacing="0.5">SENTRY</text>
+
+  <!-- Node 7: OT — OpenTelemetry (#4192CB) — top-left (202, 202) -->
+  <circle cx="202" cy="202" r="46" fill="#4192CB" stroke="#0a0a0a" stroke-width="2.5" filter="url(#nodeGlow)"/>
+  <text x="202" y="202" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="700"
+        font-size="17" fill="#ffffff" letter-spacing="0.5">OT</text>
+  <text x="158" y="158" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="400"
+        font-size="9" fill="#888888" letter-spacing="0.5">OPENTELEMETRY</text>
+
+  <!-- ======= BRAND NAME ======= -->
+  <!-- "emit-io" at bottom center, below the bottom node (CL at y=680, edge y=726) -->
+  <text x="400" y="776" text-anchor="middle" dominant-baseline="central"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-weight="300"
+        font-size="28" fill="#ffffff" letter-spacing="6" opacity="0.92">emit-io</text>
+
+  <!-- Thin divider line above the brand name -->
+  <line x1="340" y1="758" x2="460" y2="758" stroke="#444444" stroke-width="0.8" opacity="0.6"/>
+
+</svg>

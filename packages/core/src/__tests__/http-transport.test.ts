@@ -1,7 +1,7 @@
-import { test, expect, describe, vi, beforeEach, afterEach } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { HTTPTransport } from '../http-transport.js'
-import { LogLevel } from '../types.js'
 import type { LogEntry } from '../types.js'
+import { LogLevel } from '../types.js'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -21,9 +21,7 @@ function makeOkFetch(times = Infinity): ReturnType<typeof vi.fn> {
 }
 
 function makeFailFetch(status = 500): ReturnType<typeof vi.fn> {
-  return vi.fn(() =>
-    Promise.resolve(new Response('error', { status })),
-  )
+  return vi.fn(() => Promise.resolve(new Response('error', { status })))
 }
 
 // ---------------------------------------------------------------------------
@@ -439,9 +437,7 @@ describe('maxRetries exhausted', () => {
 describe('custom serializer', () => {
   test('uses custom serializer for request body', async () => {
     const fetchMock = makeOkFetch()
-    const serializer = vi.fn((entries: LogEntry[]) =>
-      JSON.stringify({ logs: entries }),
-    )
+    const serializer = vi.fn((entries: LogEntry[]) => JSON.stringify({ logs: entries }))
 
     const transport = new HTTPTransport({
       url: 'https://example.com/logs',
@@ -484,7 +480,7 @@ describe('custom headers', () => {
     await transport.flush()
 
     const reqHeaders = fetchMock.mock.calls[0][1].headers
-    expect(reqHeaders['Authorization']).toBe('Bearer secret')
+    expect(reqHeaders.Authorization).toBe('Bearer secret')
     expect(reqHeaders['X-Custom']).toBe('val')
     expect(reqHeaders['content-type']).toBe('application/json')
 

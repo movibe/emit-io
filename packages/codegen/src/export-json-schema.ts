@@ -4,12 +4,12 @@ import type { ParsedEvent } from './types.js'
 // A union is detected when the type string contains `|` and each part
 // (after trimming) is a quoted string literal.
 function parseEnumValues(type: string): string[] | null {
-  const parts = type.split('|').map(p => p.trim())
-  const stringLiterals = parts.map(p => {
+  const parts = type.split('|').map((p) => p.trim())
+  const stringLiterals = parts.map((p) => {
     const m = p.match(/^['"](.+)['"]$/)
     return m ? m[1] : null
   })
-  if (stringLiterals.every(v => v !== null)) {
+  if (stringLiterals.every((v) => v !== null)) {
     return stringLiterals as string[]
   }
   return null
@@ -35,13 +35,20 @@ function typeToJSONSchema(type: string): JSONSchemaProperty {
   }
 
   switch (type) {
-    case 'string': return { type: 'string' }
-    case 'number': return { type: 'number' }
-    case 'integer': return { type: 'integer' }
-    case 'boolean': return { type: 'boolean' }
-    case 'array': return { type: 'array' }
-    case 'object': return { type: 'object' }
-    default: return {}
+    case 'string':
+      return { type: 'string' }
+    case 'number':
+      return { type: 'number' }
+    case 'integer':
+      return { type: 'integer' }
+    case 'boolean':
+      return { type: 'boolean' }
+    case 'array':
+      return { type: 'array' }
+    case 'object':
+      return { type: 'object' }
+    default:
+      return {}
   }
 }
 
@@ -74,10 +81,10 @@ export function eventToJSONSchema(event: ParsedEvent): JSONSchema {
 }
 
 export function eventsToJSONSchemaFiles(
-  events: ParsedEvent[]
+  events: ParsedEvent[],
 ): Array<{ filename: string; content: string }> {
-  return events.map(e => ({
+  return events.map((e) => ({
     filename: `${e.name}.schema.json`,
-    content: JSON.stringify(eventToJSONSchema(e), null, 2) + '\n',
+    content: `${JSON.stringify(eventToJSONSchema(e), null, 2)}\n`,
   }))
 }

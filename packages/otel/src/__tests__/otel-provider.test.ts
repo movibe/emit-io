@@ -1,11 +1,11 @@
-import { test, expect, describe, vi, beforeEach } from 'vitest'
 import { trace } from '@opentelemetry/api'
+import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { OTelProvider } from '../otel-provider.js'
 
 describe('OTelProvider', () => {
   let mockSpan: any
   let mockTracer: any
-  let getTracerSpy: any
+  let _getTracerSpy: any
 
   beforeEach(() => {
     mockSpan = {
@@ -15,27 +15,33 @@ describe('OTelProvider', () => {
     mockTracer = {
       startSpan: vi.fn(() => mockSpan),
     }
-    getTracerSpy = vi.spyOn(trace, 'getTracer').mockReturnValue(mockTracer)
+    _getTracerSpy = vi.spyOn(trace, 'getTracer').mockReturnValue(mockTracer)
   })
 
   test('event() starts and ends span', () => {
     const p = new OTelProvider()
     p.event('user-login', { method: 'email' })
-    expect(mockTracer.startSpan).toHaveBeenCalledWith('analytics.user-login', expect.objectContaining({
-      attributes: expect.objectContaining({
-        'analytics.event.name': 'user-login',
-        method: 'email',
+    expect(mockTracer.startSpan).toHaveBeenCalledWith(
+      'analytics.user-login',
+      expect.objectContaining({
+        attributes: expect.objectContaining({
+          'analytics.event.name': 'user-login',
+          method: 'email',
+        }),
       }),
-    }))
+    )
     expect(mockSpan.end).toHaveBeenCalled()
   })
 
   test('identify() emits user attributes', () => {
     const p = new OTelProvider()
     p.identify({ id: 'u1', email: 'x@y.com' })
-    expect(mockTracer.startSpan).toHaveBeenCalledWith('analytics.identify', expect.objectContaining({
-      attributes: expect.objectContaining({ 'analytics.user.id': 'u1' }),
-    }))
+    expect(mockTracer.startSpan).toHaveBeenCalledWith(
+      'analytics.identify',
+      expect.objectContaining({
+        attributes: expect.objectContaining({ 'analytics.user.id': 'u1' }),
+      }),
+    )
   })
 
   test('screen() includes screen name', () => {

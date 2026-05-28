@@ -1,4 +1,4 @@
-import type { LogEntry, Plugin } from '../types.js'
+import type { Plugin } from '../types.js'
 
 export type StackFrame = {
   function?: string
@@ -23,8 +23,9 @@ export function normalizeStack(opts?: NormalizeStackOptions): Plugin {
   const maxFrames = opts?.maxFrames
 
   return (entry) => {
-    const stack = (fromError && entry.error?.stack)
-      || (fromContext && typeof entry.context?.stack === 'string' ? entry.context.stack : undefined)
+    const stack =
+      (fromError && entry.error?.stack) ||
+      (fromContext && typeof entry.context?.stack === 'string' ? entry.context.stack : undefined)
     if (!stack) return entry
 
     const frames = parseStack(stack)

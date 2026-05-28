@@ -1,5 +1,5 @@
+import { type EmitIoStrategy, runWithContext } from 'emit-io-core'
 import type { MiddlewareHandler } from 'hono'
-import { runWithContext, type EmitIoStrategy } from 'emit-io-core'
 
 export type LoggerMiddlewareOptions = {
   logger: EmitIoStrategy

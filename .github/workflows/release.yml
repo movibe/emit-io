@@ -3,19 +3,19 @@ name: Release
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - 'packages/*/CHANGELOG.md'
-      - 'packages/*/package.json'
-      - '.changeset/**'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
   contents: write
+  pull-requests: write
+  id-token: write
 
 jobs:
-  release:
+  version:
+    name: Version or Publish
     runs-on: ubuntu-latest
+    needs: []
 
     steps:
       - uses: actions/checkout@v4
@@ -35,74 +35,14 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: bun install
+        run: bun install --frozen-lockfile
 
-      - name: Create auto patch changeset
-        id: changeset
-        run: |
-          FRONTMATTER=$(find "$PWD/packages" -maxdepth 2 -name "package.json" ! -path "*/node_modules/*" \
-            -exec node -e "const p=require(process.argv[1]); if(p.name && !p.private) console.log('\"'+p.name+'\": patch')" {} \;)
-          if [ -z "$FRONTMATTER" ]; then
-            echo "skipped=true" >> "$GITHUB_OUTPUT"
-            echo "No publishable packages found. Skipping release."
-            exit 0
-          fi
-          FILE=".changeset/auto-patch-$(date +%s).md"
-          printf -- "---\n%s\n---\n\nAuto patch release\n" "$FRONTMATTER" > "$FILE"
-          echo "skipped=false" >> "$GITHUB_OUTPUT"
-          echo "changeset_file=$FILE" >> "$GITHUB_OUTPUT"
-
-      - name: Version packages
-        if: steps.changeset.outputs.skipped != 'true'
-        run: bun changeset version
-
-      - name: Build and publish
-        if: steps.changeset.outputs.skipped != 'true'
-        run: bun run release
+      - name: Create or update Version Packages PR / publish
+        uses: changesets/action@v1
+        with:
+          version: bun run version
+          publish: bun run release
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create GitHub Release
-        if: steps.changeset.outputs.skipped != 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          VERSION=$(node -e "console.log(require('./packages/core/package.json').version)")
-          TAG="v$VERSION"
-          # Collect changelogs from all detected packages
-          CHANGELOG=""
-          for pkgdir in packages/*; do
-            if [ -d "$pkgdir" ] && [ -f "$pkgdir/package.json" ]; then
-              PKG_NAME=$(node -e "console.log(require('./$pkgdir/package.json').name)")
-              CHANGELOG_FILE="$pkgdir/CHANGELOG.md"
-              if [ -f "$CHANGELOG_FILE" ]; then
-                SECTION=$(awk "/^## $VERSION$/{flag=1; next} /^## [0-9]/{flag=0} flag" "$CHANGELOG_FILE" 2>/dev/null || true)
-                if [ -n "$SECTION" ]; then
-                  CHANGELOG="${CHANGELOG}\n## $PKG_NAME\n\n$SECTION"
-                fi
-              fi
-            fi
-          done
-          if [ -z "$CHANGELOG" ]; then
-            CHANGELOG="Patch release — version bump for all packages."
-          fi
-          if gh release view "$TAG" &>/dev/null; then
-            echo "Release $TAG already exists. Skipping."
-          else
-            gh release create "$TAG" --title "$TAG" --notes "$(echo -e "$CHANGELOG")" --target "$GITHUB_SHA"
-          fi
-
-      - name: Commit version bump
-        if: steps.changeset.outputs.skipped != 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if git diff --staged --quiet; then
-            echo "Nothing to commit"
-          else
-            git commit -m "chore: version packages [skip ci]"
-            git push
-          fi

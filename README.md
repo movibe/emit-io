@@ -1,5 +1,9 @@
 # emit-io-core
 
+<p align="center">
+  <img src="./emit-io-logo.svg" alt="emit-io logo" width="400" />
+</p>
+
 [![npm version](https://img.shields.io/npm/v/emit-io-core)](https://www.npmjs.com/package/emit-io-core)
 [![Tests & Coverage](https://github.com/movibe/emit-io/actions/workflows/tests.yml/badge.svg)](https://github.com/movibe/emit-io/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/movibe/emit-io/branch/main/graph/badge.svg)](https://codecov.io/gh/movibe/emit-io)
