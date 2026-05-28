@@ -1,7 +1,7 @@
 # emit-io-core
 
 <p align="center">
-  <img src="./emit-io-logo.svg" alt="emit-io logo" width="400" />
+  <img src="./assets/logo.png" alt="emit-io logo" width="500" />
 </p>
 
 [![npm version](https://img.shields.io/npm/v/emit-io-core)](https://www.npmjs.com/package/emit-io-core)
