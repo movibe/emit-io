@@ -1,6 +1,6 @@
 import type { LogEntry, Plugin } from '../types.js'
 
-export interface RateLimitOptions {
+export type RateLimitOptions = {
   max: number
   windowMs: number
   key?: (entry: LogEntry) => string

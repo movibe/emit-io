@@ -16,7 +16,7 @@ export function useAnalytics(): AnalyticsContextValue {
   return ctx
 }
 
-export interface TrackEventOptions {
+export type TrackEventOptions = {
   /** Properties to send with the event */
   properties?: Record<string, unknown>
   /** Only fire once per session (uses a ref) */

@@ -1,7 +1,7 @@
 import { trace, type Tracer } from '@opentelemetry/api'
 import type { AnalyticsProvider } from 'emit-io-core'
 
-export interface OTelProviderOptions {
+export type OTelProviderOptions = {
   name?: string
   enabled?: boolean
   tracerName?: string

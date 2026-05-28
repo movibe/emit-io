@@ -10,7 +10,7 @@ export enum LogLevel {
   FATAL = 4,
 }
 
-export interface LogEntry {
+export type LogEntry = {
   level: LogLevel
   message: string
   timestamp: Date
@@ -18,7 +18,7 @@ export interface LogEntry {
   error?: Error
 }
 
-export interface Transport {
+export type Transport = {
   readonly name: string
   readonly minLevel: LogLevel
   enabled?: boolean
@@ -57,7 +57,7 @@ export type RegisteredEvents = keyof EventRegistry extends never
   ? EVENT_TAGS
   : EventRegistry
 
-export interface ConsentState {
+export type ConsentState = {
   analytics?: boolean
   errors?: boolean
 }
@@ -105,7 +105,7 @@ export type NETWORK_ANALYTICS_TAGS =
   | 'WebSocket_info'
   | 'WebSocket_request';
 
-export interface User {
+export type User = {
   id: string;
   email?: string;
   name?: string;
@@ -114,7 +114,7 @@ export interface User {
   [key: string]: any;
 }
 
-export interface LogItem {
+export type LogItem = {
   item_id: string;
   item_name: string;
   price: number;
@@ -122,14 +122,14 @@ export interface LogItem {
   [key: string]: any;
 }
 
-export interface CheckoutData {
+export type CheckoutData = {
   currency: string;
   value: number;
   items: LogItem[];
   [key: string]: any;
 }
 
-export interface PaymentData extends CheckoutData {
+export type PaymentData = CheckoutData & {
   tax?: number;
   shipping?: number;
   transaction_id: string;
@@ -181,7 +181,7 @@ export abstract class LoggerStrategyType<
   abstract getId?(): string
 }
 
-export interface PurchaseLogEvent {
+export type PurchaseLogEvent = {
   affiliation?: string
   coupon?: string
   currency?: string
@@ -193,14 +193,14 @@ export interface PurchaseLogEvent {
   type: 'credit_card'
 }
 
-export interface BeginCheckoutEvent {
+export type BeginCheckoutEvent = {
   currency?: string
   value?: number
   coupon?: string
   items?: Item[]
 }
 
-export interface Item {
+export type Item = {
   item_brand?: string
   item_id?: string
   item_name?: string

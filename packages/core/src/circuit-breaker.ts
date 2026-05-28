@@ -2,7 +2,7 @@ import type { AnalyticsProvider } from './types.js'
 
 export type CircuitState = 'CLOSED' | 'OPEN' | 'HALF_OPEN'
 
-export interface CircuitBreakerOptions {
+export type CircuitBreakerOptions = {
   failureThreshold?: number
   cooldownMs?: number
   onStateChange?: (state: CircuitState, providerName: string) => void

@@ -2,13 +2,13 @@ import type { LogEntry, Transport, AnalyticsProvider } from './types.js'
 import { LogLevel } from './types.js'
 import { EmitIoStrategy } from './index.js'
 
-export interface MockTransport extends Transport {
+export type MockTransport = Transport & {
   readonly entries: LogEntry[]
   readonly flushCalls: number
   clear(): void
 }
 
-export interface MockProvider extends AnalyticsProvider {
+export type MockProvider = AnalyticsProvider & {
   readonly events: Array<{ name: string; properties: unknown }>
   readonly identifies: Array<unknown>
   readonly screens: Array<{ name: string; params?: unknown }>

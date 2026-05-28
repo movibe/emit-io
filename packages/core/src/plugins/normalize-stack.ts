@@ -1,6 +1,6 @@
 import type { LogEntry, Plugin } from '../types.js'
 
-export interface StackFrame {
+export type StackFrame = {
   function?: string
   file?: string
   line?: number
@@ -8,7 +8,7 @@ export interface StackFrame {
   raw: string
 }
 
-export interface NormalizeStackOptions {
+export type NormalizeStackOptions = {
   /** Read stack from entry.error.stack (default true) */
   fromError?: boolean
   /** Read stack from entry.context.stack (default true) */

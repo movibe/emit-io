@@ -25,7 +25,7 @@ function formatEntry(entry: LogEntry): string {
   return `${entry.timestamp.toISOString()} ${color}${label}${RESET} ${entry.message}${ctx}${err}`
 }
 
-export interface ConsoleTransportOptions {
+export type ConsoleTransportOptions = {
   name?: string
   minLevel?: LogLevel
   pretty?: boolean
@@ -56,7 +56,7 @@ export class ConsoleTransport implements Transport {
   flush(): void {}
 }
 
-export interface ConsoleProviderOptions {
+export type ConsoleProviderOptions = {
   name?: string
   enabled?: boolean
 }

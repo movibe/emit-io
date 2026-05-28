@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server'
 import { runWithContext, type EmitIoStrategy } from 'emit-io-core'
 
-export interface RouteHandlerOptions {
+export type RouteHandlerOptions = {
   logger: EmitIoStrategy
   eventName?: string
 }

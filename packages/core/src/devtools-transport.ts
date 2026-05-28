@@ -1,7 +1,7 @@
 import type { LogEntry, Transport } from './types.js'
 import { LogLevel, resolveEnabled } from './types.js'
 
-export interface DevToolsTransportOptions {
+export type DevToolsTransportOptions = {
   name?: string
   minLevel?: LogLevel
   /** WebSocket URL (default 'ws://localhost:9999') */

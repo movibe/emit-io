@@ -15,7 +15,7 @@ import {
 } from 'emit-io-core'
 import { loggerMiddleware } from 'emit-io-hono'
 
-export interface Env {
+export type Env = {
   LOG_INGEST_URL: string
   LOG_INGEST_TOKEN: string
 }

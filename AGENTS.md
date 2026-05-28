@@ -100,7 +100,8 @@ Changesets config: `commit: false` (CI handles commits), `updateInternalDependen
 
 - TypeScript strict mode, ES2022 target, NodeNext module resolution
 - Zero runtime deps in core
-- `interface` for public APIs, `type` for unions/aliases (converting interfaces to types planned "later")
+- `type` for all type definitions (was `interface`; converted in refactor/interface-to-type)
+- `interface` only for declaration merging: `EventRegistry` (module augmentation) and `FastifyRequest` (fastify augmentation)
 - Transport `enabled` uses `!== false` check (not `=== true`) — allows `undefined` = enabled
 - ConsoleTransport `log()` applies `enabled` internally; other transports rely on upstream `emitToTransports()` filter
 - React Native `require()` pattern for optional deps: `declare function require` + `require('expo-router')` at module scope

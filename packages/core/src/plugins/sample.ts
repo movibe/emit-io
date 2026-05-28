@@ -1,7 +1,7 @@
 import type { LogEntry, Plugin } from '../types.js'
 import { LogLevel } from '../types.js'
 
-export interface SampleOptions {
+export type SampleOptions = {
   rate: number
   levels?: LogLevel[]
   random?: () => number

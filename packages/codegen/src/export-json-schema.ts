@@ -17,7 +17,7 @@ function parseEnumValues(type: string): string[] | null {
 
 type JSONSchemaProperty = Record<string, unknown>
 
-export interface JSONSchema {
+export type JSONSchema = {
   $schema: string
   $id: string
   title: string

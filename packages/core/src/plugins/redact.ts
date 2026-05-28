@@ -1,6 +1,6 @@
 import type { LogEntry, Plugin } from '../types.js'
 
-export interface RedactOptions {
+export type RedactOptions = {
   paths: string[]
   censor?: string
   remove?: boolean

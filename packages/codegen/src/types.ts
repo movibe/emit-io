@@ -1,26 +1,26 @@
-export interface SchemaEvent {
+export type SchemaEvent = {
   description?: string
   [field: string]: string | undefined
 }
 
-export interface AnalyticsSchema {
+export type AnalyticsSchema = {
   events: Record<string, SchemaEvent>
 }
 
-export interface ParsedField {
+export type ParsedField = {
   name: string
   type: string
   optional: boolean
   description?: string
 }
 
-export interface ParsedEvent {
+export type ParsedEvent = {
   name: string
   description?: string
   fields: ParsedField[]
 }
 
-export interface CodegenOptions {
+export type CodegenOptions = {
   input: string
   output?: string
   clientVar?: string

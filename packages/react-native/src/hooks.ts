@@ -13,7 +13,7 @@ export function useAnalytics(): AnalyticsContextValue {
   return ctx
 }
 
-export interface TrackEventOptions {
+export type TrackEventOptions = {
   properties?: Record<string, unknown>
   once?: boolean
   unless?: boolean
