@@ -1,6 +1,6 @@
 {
   "name": "emit-io-otel",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "OpenTelemetry bridge for emit-io — emit OTel spans + logs",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -31,7 +31,7 @@
     "prepack": "bun run build:all"
   },
   "peerDependencies": {
-    "emit-io-core": "^1.0.5",
+    "emit-io-core": "^1.0.6",
     "@opentelemetry/api": "^1.7.0",
     "@opentelemetry/api-logs": "^0.50.0"
   },

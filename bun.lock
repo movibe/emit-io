@@ -18,7 +18,7 @@
     },
     "packages/codegen": {
       "name": "emit-io-codegen",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "bin": {
         "logger-codegen": "./dist/index.js",
       },
@@ -33,7 +33,7 @@
     },
     "packages/core": {
       "name": "emit-io-core",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "devDependencies": {
         "@types/node": "^20.11.19",
         "@typescript-eslint/eslint-plugin": "^7.0.1",
@@ -47,7 +47,7 @@
     },
     "packages/fastify": {
       "name": "emit-io-fastify",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "dependencies": {
         "fastify-plugin": "^5.0.0",
       },
@@ -58,13 +58,13 @@
         "typescript": "^5.3.3",
       },
       "peerDependencies": {
-        "emit-io-core": "^1.0.4",
+        "emit-io-core": "^1.0.5",
         "fastify": "^4.0.0 || ^5.0.0",
       },
     },
     "packages/hono": {
       "name": "emit-io-hono",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "devDependencies": {
         "@types/node": "^20.11.19",
         "emit-io-core": "workspace:*",
@@ -72,13 +72,13 @@
         "typescript": "^5.3.3",
       },
       "peerDependencies": {
-        "emit-io-core": "^1.0.4",
+        "emit-io-core": "^1.0.5",
         "hono": "^4.0.0",
       },
     },
     "packages/next": {
       "name": "emit-io-next",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "devDependencies": {
         "@types/node": "^20.11.19",
         "emit-io-core": "workspace:*",
@@ -86,13 +86,13 @@
         "typescript": "^5.3.3",
       },
       "peerDependencies": {
-        "emit-io-core": "^1.0.4",
+        "emit-io-core": "^1.0.5",
         "next": "^14.0.0 || ^15.0.0",
       },
     },
     "packages/otel": {
       "name": "emit-io-otel",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "devDependencies": {
         "@opentelemetry/api": "^1.9.0",
         "@opentelemetry/api-logs": "^0.50.0",
@@ -103,12 +103,12 @@
       "peerDependencies": {
         "@opentelemetry/api": "^1.7.0",
         "@opentelemetry/api-logs": "^0.50.0",
-        "emit-io-core": "^1.0.4",
+        "emit-io-core": "^1.0.5",
       },
     },
     "packages/react": {
       "name": "emit-io-react",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "devDependencies": {
         "@types/react": "^18.2.0",
         "@types/react-dom": "^18.2.0",
@@ -118,14 +118,14 @@
         "typescript": "^5.3.3",
       },
       "peerDependencies": {
-        "emit-io-core": "^1.0.4",
+        "emit-io-core": "^1.0.5",
         "react": "^18.0.0 || ^19.0.0",
         "react-dom": "^18.0.0 || ^19.0.0",
       },
     },
     "packages/react-native": {
       "name": "emit-io-react-native",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "devDependencies": {
         "@react-navigation/native": "^6.0.0",
         "@testing-library/react": "^16.0.0",
@@ -138,7 +138,7 @@
       },
       "peerDependencies": {
         "@react-navigation/native": "*",
-        "emit-io-core": "^1.0.4",
+        "emit-io-core": "^1.0.5",
         "expo-router": "*",
         "react": "^18.0.0 || ^19.0.0",
         "react-native": ">=0.72.0",
