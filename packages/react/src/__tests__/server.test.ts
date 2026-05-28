@@ -1,6 +1,6 @@
 import { test, expect, describe, vi } from 'vitest'
 import { withAnalytics } from '../server.js'
-import type { LoggerStrategy } from 'emit-io-core'
+import type { EmitIoStrategy } from 'emit-io-core'
 
 describe('withAnalytics', () => {
   test('calls the action and returns the result', async () => {
@@ -14,7 +14,7 @@ describe('withAnalytics', () => {
   })
 
   test('fires event with status=success on successful action', async () => {
-    const mockLogger = { event: vi.fn() } as unknown as LoggerStrategy
+    const mockLogger = { event: vi.fn() } as unknown as EmitIoStrategy
     const action = vi.fn().mockResolvedValue(42)
     const wrapped = withAnalytics(action, { eventName: 'my-event', logger: mockLogger })
 
@@ -28,7 +28,7 @@ describe('withAnalytics', () => {
   })
 
   test('fires event with status=error and re-throws on failed action', async () => {
-    const mockLogger = { event: vi.fn() } as unknown as LoggerStrategy
+    const mockLogger = { event: vi.fn() } as unknown as EmitIoStrategy
     const error = new Error('boom')
     const action = vi.fn().mockRejectedValue(error)
     const wrapped = withAnalytics(action, { eventName: 'my-event', logger: mockLogger })
@@ -44,7 +44,7 @@ describe('withAnalytics', () => {
   })
 
   test('durationMs is a non-negative number', async () => {
-    const mockLogger = { event: vi.fn() } as unknown as LoggerStrategy
+    const mockLogger = { event: vi.fn() } as unknown as EmitIoStrategy
     const action = vi.fn().mockResolvedValue(undefined)
     const wrapped = withAnalytics(action, { eventName: 'timed', logger: mockLogger })
 
@@ -55,7 +55,7 @@ describe('withAnalytics', () => {
   })
 
   test('respects extractProps and merges with event props', async () => {
-    const mockLogger = { event: vi.fn() } as unknown as LoggerStrategy
+    const mockLogger = { event: vi.fn() } as unknown as EmitIoStrategy
     const action = vi.fn().mockResolvedValue(null)
     const wrapped = withAnalytics(action, {
       eventName: 'form-submit',

@@ -1,5 +1,5 @@
 import { test, expect, describe, vi, beforeEach } from 'vitest'
-import { LoggerStrategy } from '../index.js'
+import { EmitIoStrategy } from '../index.js'
 import type { AnalyticsProvider, Transport } from '../types.js'
 import { LogLevel } from '../types.js'
 
@@ -26,7 +26,7 @@ function makeTransport(): Transport & { log: ReturnType<typeof vi.fn> } {
 describe('pre-init buffer — disabled (default)', () => {
   test('without buffer config, events called pre-init pass through immediately (no buffering)', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
     })
@@ -38,7 +38,7 @@ describe('pre-init buffer — disabled (default)', () => {
 
   test('without buffer config, events after init are also delivered normally', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
     })
@@ -52,7 +52,7 @@ describe('pre-init buffer — disabled (default)', () => {
 describe('pre-init buffer — enabled', () => {
   test('with buffer config, events called pre-init are enqueued (not dispatched yet)', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
       preInitBuffer: {},
@@ -70,7 +70,7 @@ describe('pre-init buffer — enabled', () => {
       event: (name: any) => { order.push(String(name)) },
     }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
       preInitBuffer: {},
@@ -95,7 +95,7 @@ describe('pre-init buffer — enabled', () => {
       event: (name: any) => { received.push(String(name)) },
     }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
       preInitBuffer: { size: 3 },
@@ -115,7 +115,7 @@ describe('pre-init buffer — enabled', () => {
 
   test('logScreen is buffered', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
       preInitBuffer: {},
@@ -130,7 +130,7 @@ describe('pre-init buffer — enabled', () => {
 
   test('setUser is buffered and called after init', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
       preInitBuffer: {},
@@ -163,7 +163,7 @@ describe('pre-init buffer — enabled', () => {
       getId: vi.fn(() => 'mock'),
     }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       // Use legacy array style for network (it's legacy-only)
       preInitBuffer: {},
     } as any)
@@ -176,7 +176,7 @@ describe('pre-init buffer — enabled', () => {
 describe('pre-init buffer — log-level methods NOT buffered', () => {
   test('info (log-level form, 1 arg) goes directly to transports even pre-init', () => {
     const transport = makeTransport()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
       preInitBuffer: {},
@@ -189,7 +189,7 @@ describe('pre-init buffer — log-level methods NOT buffered', () => {
 
   test('debug goes directly to transports pre-init', () => {
     const transport = makeTransport()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
       preInitBuffer: {},
@@ -201,7 +201,7 @@ describe('pre-init buffer — log-level methods NOT buffered', () => {
 
   test('warn goes directly to transports pre-init', () => {
     const transport = makeTransport()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
       preInitBuffer: {},
@@ -213,7 +213,7 @@ describe('pre-init buffer — log-level methods NOT buffered', () => {
 
   test('fatal goes directly to transports pre-init', () => {
     const transport = makeTransport()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
       preInitBuffer: {},
@@ -225,7 +225,7 @@ describe('pre-init buffer — log-level methods NOT buffered', () => {
 
   test('error (log-level form) goes directly to transports pre-init', () => {
     const transport = makeTransport()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
       preInitBuffer: {},

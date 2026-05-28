@@ -2,7 +2,7 @@ import type {
   EVENT_TAGS, LOG_TAGS, NETWORK_ANALYTICS_TAGS, User,
   BeginCheckoutEvent, LoggerStrategyConstructor, LoggerStrategyType,
   PurchaseLogEvent, LogLevel, LogEntry, Transport, Plugin,
-  AnalyticsProvider, LoggerConfig, RegisteredEvents, ConsentState
+  AnalyticsProvider,EmitIoStrategyConfig, RegisteredEvents, ConsentState
 } from './types.js'
 
 import { LogLevel as LogLevelEnum } from './types.js'
@@ -12,7 +12,7 @@ function createLogEntry(level: LogLevelEnum, message: string, context?: Record<s
   return { level, message, timestamp: new Date(), context, error }
 }
 
-export class LoggerStrategy<
+export class EmitIoStrategy<
   TLogTags extends string = LOG_TAGS,
   TNetworkTags extends string = NETWORK_ANALYTICS_TAGS,
   TUser extends { id: string } = User,
@@ -33,16 +33,16 @@ export class LoggerStrategy<
   private isBuffering = false
   private consent: ConsentState = { analytics: true, errors: true }
 
-  constructor(config?: LoggerConfig<TEvent, TUser> | LoggerStrategyConstructor<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>[])
+  constructor(config?:EmitIoStrategyConfig<TEvent, TUser> | LoggerStrategyConstructor<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>[])
   constructor(
-    config?: LoggerConfig<TEvent, TUser> | LoggerStrategyConstructor<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>[]
+    config?:EmitIoStrategyConfig<TEvent, TUser> | LoggerStrategyConstructor<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>[]
   ) {
     this.emitAppOpenOnInit = true
 
     if (!config) return
 
     if (Array.isArray(config)) {
-      console.warn('[LoggerStrategy] LoggerStrategyConstructor array is deprecated; pass LoggerConfig with AnalyticsProvider instances. Will be removed in v4.')
+      console.warn('[EmitIoStrategy] LoggerStrategyConstructor array is deprecated; passEmitIoStrategyConfig with AnalyticsProvider instances. Will be removed in v4.')
       for (const injector of config) {
         if (injector.enabled) {
           this.legacyStrategies.push(injector.class)
@@ -126,8 +126,8 @@ export class LoggerStrategy<
     return current
   }
 
-  child(bindings: Record<string, unknown>): LoggerStrategy<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent> {
-    const c = new LoggerStrategy<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>()
+  child(bindings: Record<string, unknown>): EmitIoStrategy<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent> {
+    const c = new EmitIoStrategy<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>()
     c.providers = this.providers
     c.legacyStrategies = this.legacyStrategies
     c.legacyStrategyMap = this.legacyStrategyMap
@@ -200,7 +200,7 @@ export class LoggerStrategy<
       try {
         callback(provider)
       } catch (e) {
-        console.error(`[LoggerStrategy] provider error in ${methodName}:`, e)
+        console.error(`[EmitIoStrategy] provider error in ${methodName}:`, e)
       }
     }
   }
@@ -213,7 +213,7 @@ export class LoggerStrategy<
       try {
         callback(strategy)
       } catch (e) {
-        console.error(`[LoggerStrategy] legacy error in ${methodName}:`, e)
+        console.error(`[EmitIoStrategy] legacy error in ${methodName}:`, e)
       }
     }
   }
@@ -361,8 +361,8 @@ export class LoggerStrategy<
     this.bufferOrRun(() => {
       if (!properties?.id) {
         this.executeOnAll('error',
-          (s) => s.error?.('LoggerStrategy', 'setUser', false, new Error('User ID is required')),
-          (p) => p.error?.('LoggerStrategy', 'setUser', false, new Error('User ID is required'))
+          (s) => s.error?.('EmitIoStrategy', 'setUser', false, new Error('User ID is required')),
+          (p) => p.error?.('EmitIoStrategy', 'setUser', false, new Error('User ID is required'))
         )
         return
       }
@@ -392,8 +392,8 @@ export class LoggerStrategy<
     this.bufferOrRun(() => {
       if (!checkoutId) {
         this.executeOnAll('error',
-          (s) => s.error?.('LoggerStrategy', 'logBeginCheckout', false, new Error('Checkout ID is required')),
-          (p) => p.error?.('LoggerStrategy', 'logBeginCheckout', false, new Error('Checkout ID is required'))
+          (s) => s.error?.('EmitIoStrategy', 'logBeginCheckout', false, new Error('Checkout ID is required')),
+          (p) => p.error?.('EmitIoStrategy', 'logBeginCheckout', false, new Error('Checkout ID is required'))
         )
         return
       }
@@ -409,8 +409,8 @@ export class LoggerStrategy<
     this.bufferOrRun(() => {
       if (!checkoutId || !params?.type) {
         this.executeOnAll('error',
-          (s) => s.error?.('LoggerStrategy', 'logPaymentSuccess', false, new Error('Checkout ID and payment type are required')),
-          (p) => p.error?.('LoggerStrategy', 'logPaymentSuccess', false, new Error('Checkout ID and payment type are required'))
+          (s) => s.error?.('EmitIoStrategy', 'logPaymentSuccess', false, new Error('Checkout ID and payment type are required')),
+          (p) => p.error?.('EmitIoStrategy', 'logPaymentSuccess', false, new Error('Checkout ID and payment type are required'))
         )
         return
       }
@@ -464,7 +464,7 @@ export type {
   BeginCheckoutEvent, PurchaseLogEvent, Item,
   LoggerStrategyConstructor, LoggerStrategyType,
   LogLevel, LogEntry, Transport, Plugin,
-  AnalyticsProvider, LoggerConfig,
+  AnalyticsProvider,EmitIoStrategyConfig,
   EventRegistry, RegisteredEvents,
   ConsentState,
 } from './types.js'

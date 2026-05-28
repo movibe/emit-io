@@ -1,6 +1,6 @@
-import { LoggerStrategy, ConsoleProvider, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, ConsoleProvider, LogLevelEnum } from 'emit-io-core'
 
-export const logger = new LoggerStrategy({
+export const emit = new EmitIoStrategy({
   providers: [
     new ConsoleProvider({ minLevel: LogLevelEnum.DEBUG }),
   ],

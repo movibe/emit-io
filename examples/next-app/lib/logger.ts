@@ -1,12 +1,12 @@
 import {
-  LoggerStrategy,
+  EmitIoStrategy,
   JSONTransport,
   ConsoleTransport,
   LogLevelEnum,
   redact,
 } from 'emit-io-core'
 
-export const logger = new LoggerStrategy({
+export const emit = new EmitIoStrategy({
   transports: [
     new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG, pretty: true }),
     new JSONTransport({ minLevel: LogLevelEnum.INFO }),

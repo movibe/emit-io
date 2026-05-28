@@ -33,5 +33,5 @@ app/
   index.tsx       # Home screen (CTA + identify)
   profile.tsx     # Profile screen (event + error capture)
 src/
-  logger.ts       # LoggerStrategy + ConsoleProvider
+  emit.ts       # EmitIoStrategy + ConsoleProvider
 ```

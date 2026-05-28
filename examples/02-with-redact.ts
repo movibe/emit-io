@@ -1,8 +1,8 @@
-import { LoggerStrategy, JSONTransport, redact, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, JSONTransport, redact, LogLevelEnum } from 'emit-io-core'
 
 // Redact plugin runs in the pipeline before any transport receives the entry.
 // Patterns support exact paths, dot-notation, and wildcards.
-const logger = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [new JSONTransport({ minLevel: LogLevelEnum.INFO })],
   plugins: [
     redact({
@@ -18,7 +18,7 @@ const logger = new LoggerStrategy({
   ],
 })
 
-logger.info('User login attempt', {
+emit.info('User login attempt', {
   username: 'alice',
   password: 'hunter2',          // -> '[REDACTED]'
   user: { id: 'u1', token: 'jwt-abc' }, // user.token -> '[REDACTED]'

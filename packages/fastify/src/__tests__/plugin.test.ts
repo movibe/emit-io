@@ -2,13 +2,13 @@ import { test, expect, describe, vi } from 'vitest'
 import Fastify from 'fastify'
 import { loggerPlugin } from '../plugin.js'
 
-function createMockLogger() {
+function createMockEmitIoStrategy() {
   const calls: any[] = []
   return {
     info: vi.fn((msg, ctx) => calls.push({ kind: 'info', msg, ctx })),
     error: vi.fn((msg, ctx) => calls.push({ kind: 'error', msg, ctx })),
     child: vi.fn(function (this: any, bindings: any) {
-      const child = createMockLogger()
+      const child = createMockEmitIoStrategy()
       child.bindings = bindings
       return child
     }),
@@ -19,7 +19,7 @@ function createMockLogger() {
 
 describe('loggerPlugin', () => {
   test('decorates request with log_ and requestId', async () => {
-    const logger = createMockLogger()
+    const logger = createMockEmitIoStrategy()
     const app = Fastify()
     await app.register(loggerPlugin, { logger })
     app.get('/', (req, reply) => {
@@ -34,7 +34,7 @@ describe('loggerPlugin', () => {
   })
 
   test('uses request id from header when present', async () => {
-    const logger = createMockLogger()
+    const logger = createMockEmitIoStrategy()
     const app = Fastify()
     await app.register(loggerPlugin, { logger })
     app.get('/', (req, reply) => {
@@ -47,7 +47,7 @@ describe('loggerPlugin', () => {
   })
 
   test('logs request-start and request-complete with autoLog', async () => {
-    const logger = createMockLogger()
+    const logger = createMockEmitIoStrategy()
     const app = Fastify()
     await app.register(loggerPlugin, { logger })
     app.get('/', (_req, reply) => reply.send({ ok: true }))
@@ -57,7 +57,7 @@ describe('loggerPlugin', () => {
   })
 
   test('autoLog=false skips request hooks', async () => {
-    const logger = createMockLogger()
+    const logger = createMockEmitIoStrategy()
     const app = Fastify()
     await app.register(loggerPlugin, { logger, autoLog: false })
     app.get('/', (_req, reply) => reply.send({ ok: true }))
@@ -66,7 +66,7 @@ describe('loggerPlugin', () => {
   })
 
   test('logs error on thrown handler', async () => {
-    const logger = createMockLogger()
+    const logger = createMockEmitIoStrategy()
     const app = Fastify()
     await app.register(loggerPlugin, { logger })
     app.get('/', () => { throw new Error('boom') })
@@ -76,7 +76,7 @@ describe('loggerPlugin', () => {
   })
 
   test('custom requestIdHeader respected', async () => {
-    const logger = createMockLogger()
+    const logger = createMockEmitIoStrategy()
     const app = Fastify()
     await app.register(loggerPlugin, { logger, requestIdHeader: 'x-trace-id' })
     app.get('/', (_req, reply) => reply.send({ ok: true }))

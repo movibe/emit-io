@@ -87,7 +87,7 @@ describe('runtime guards — JSONTransport without process', () => {
   })
 })
 
-describe('runtime guards — LoggerStrategy works without process', () => {
+describe('runtime guards — EmitIoStrategy works without process', () => {
   let originalProcess: typeof globalThis.process
 
   beforeEach(() => {
@@ -99,12 +99,12 @@ describe('runtime guards — LoggerStrategy works without process', () => {
     vi.resetModules()
   })
 
-  test('LoggerStrategy info/warn/error do not throw without process', async () => {
+  test('EmitIoStrategy info/warn/error do not throw without process', async () => {
     delete (globalThis as any).process
     vi.resetModules()
-    const { LoggerStrategy } = await import('../index.js')
+    const { EmitIoStrategy } = await import('../index.js')
     const entries: unknown[] = []
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [{
         name: 'mem',
         minLevel: 0,

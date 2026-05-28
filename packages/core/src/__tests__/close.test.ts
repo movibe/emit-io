@@ -1,5 +1,5 @@
 import { test, expect, describe, vi } from 'vitest'
-import { LoggerStrategy } from '../index.js'
+import { EmitIoStrategy } from '../index.js'
 import type { Transport, AnalyticsProvider } from '../types.js'
 import { LogLevel } from '../types.js'
 
@@ -13,7 +13,7 @@ describe('close()', () => {
       flush: flushMock,
     }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
     })
@@ -37,7 +37,7 @@ describe('close()', () => {
       }),
     }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
     })
@@ -55,7 +55,7 @@ describe('close()', () => {
       log: vi.fn(),
     }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
     })
@@ -71,7 +71,7 @@ describe('close()', () => {
       flush: providerFlush,
     }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
     })
@@ -81,7 +81,7 @@ describe('close()', () => {
   })
 
   test('close() resolves with no transports or providers', async () => {
-    const logger = new LoggerStrategy({ emitAppOpenOnInit: false })
+    const logger = new EmitIoStrategy({ emitAppOpenOnInit: false })
     await expect(logger.close()).resolves.toBeUndefined()
   })
 
@@ -102,7 +102,7 @@ describe('close()', () => {
       flush: () => new Promise<void>(r => setTimeout(() => { results.push('fast'); r() }, 5)),
     }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [slow, fast],
       emitAppOpenOnInit: false,
     })

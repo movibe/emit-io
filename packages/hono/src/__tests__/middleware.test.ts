@@ -2,7 +2,7 @@ import { test, expect, describe, vi } from 'vitest'
 import { Hono } from 'hono'
 import { loggerMiddleware } from '../middleware.js'
 
-function createMockLogger() {
+function createMockEmitIoStrategy() {
   const childCalls: any[] = []
   const createMock = (): any => ({
     info: vi.fn(),
@@ -22,7 +22,7 @@ function createMockLogger() {
 
 describe('loggerMiddleware', () => {
   test('sets requestId and logger in context', async () => {
-    const logger = createMockLogger()
+    const logger = createMockEmitIoStrategy()
     const app = new Hono()
     app.use('*', loggerMiddleware({ logger }))
     app.get('/', (c) => {
@@ -38,7 +38,7 @@ describe('loggerMiddleware', () => {
   })
 
   test('uses request id from header when present', async () => {
-    const logger = createMockLogger()
+    const logger = createMockEmitIoStrategy()
     const app = new Hono()
     app.use('*', loggerMiddleware({ logger }))
     app.get('/', (c) => c.text(c.get('requestId' as any) as string))
@@ -48,7 +48,7 @@ describe('loggerMiddleware', () => {
   })
 
   test('logs request-start and request-complete', async () => {
-    const logger = createMockLogger()
+    const logger = createMockEmitIoStrategy()
     const app = new Hono()
     app.use('*', loggerMiddleware({ logger }))
     app.get('/', (c) => c.text('ok'))
@@ -58,7 +58,7 @@ describe('loggerMiddleware', () => {
   })
 
   test('autoLog=false skips request logs', async () => {
-    const logger = createMockLogger()
+    const logger = createMockEmitIoStrategy()
     const app = new Hono()
     app.use('*', loggerMiddleware({ logger, autoLog: false }))
     app.get('/', (c) => c.text('ok'))
@@ -68,7 +68,7 @@ describe('loggerMiddleware', () => {
   })
 
   test('logs error on thrown handler', async () => {
-    const logger = createMockLogger()
+    const logger = createMockEmitIoStrategy()
     const app = new Hono()
     app.use('*', loggerMiddleware({ logger }))
     app.get('/', () => { throw new Error('boom') })
@@ -78,7 +78,7 @@ describe('loggerMiddleware', () => {
   })
 
   test('custom requestIdHeader respected', async () => {
-    const logger = createMockLogger()
+    const logger = createMockEmitIoStrategy()
     const app = new Hono()
     app.use('*', loggerMiddleware({ logger, requestIdHeader: 'x-trace-id' }))
     app.get('/', (c) => c.text('ok'))
@@ -87,7 +87,7 @@ describe('loggerMiddleware', () => {
   })
 
   test('contextKey custom name', async () => {
-    const logger = createMockLogger()
+    const logger = createMockEmitIoStrategy()
     const app = new Hono()
     app.use('*', loggerMiddleware({ logger, contextKey: 'log' }))
     app.get('/', (c) => {

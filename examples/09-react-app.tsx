@@ -15,14 +15,14 @@ const consoleProvider: AnalyticsProvider = {
   error(feature, name, critical, err) { console.error('[error]', feature, name, err) },
 }
 
-const logger = new LoggerStrategy({ providers: [consoleProvider] })
+const emit = new LoggerStrategy({ providers: [consoleProvider] })
 
 // Root — wrap with AnalyticsContext and AnalyticsErrorBoundary
 export function App() {
   return (
     <AnalyticsContext client={logger} autoTrack>
       <AnalyticsErrorBoundary
-        onError={(err, info) => logger.captureError('App', 'render-error', true, err)}
+        onError={(err, info) => emit.captureError('App', 'render-error', true, err)}
       >
         <Home />
       </AnalyticsErrorBoundary>

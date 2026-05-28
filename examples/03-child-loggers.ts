@@ -1,14 +1,14 @@
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
 
 // Child loggers inherit all transports and providers from the parent,
 // and automatically attach bound fields to every log entry.
-const logger = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG })],
 })
 
 function handleRequest(requestId: string, userId: string) {
   // Attach requestId to all logs in this function
-  const reqLog = logger.child({ requestId })
+  const reqLog = emit.child({ requestId })
   reqLog.info('handling request')  // context: { requestId }
 
   // Nest further — adds component on top of requestId

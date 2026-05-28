@@ -1,5 +1,5 @@
 import { test, expect, describe, vi } from 'vitest'
-import { LoggerStrategy } from '../index.js'
+import { EmitIoStrategy } from '../index.js'
 import type { AnalyticsProvider, EventRegistry } from '../types.js'
 
 // Module augmentation — extend EventRegistry inline for this test file
@@ -19,7 +19,7 @@ describe('event registry — type-safe augmentation', () => {
       event: eventMock,
     }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
     })
@@ -44,7 +44,7 @@ describe('event registry — type-safe augmentation', () => {
     }
 
     // Use explicit generic to bypass augmentation for this test
-    const logger = new LoggerStrategy<
+    const logger = new EmitIoStrategy<
       string, string, { id: string }, any, any, { 'app-open': Record<string, never> }
     >({
       providers: [provider],

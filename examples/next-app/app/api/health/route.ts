@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { instrumentRoute } from 'emit-io-next'
-import { logger } from '../../../lib/logger.js'
+import { logger } from '../../../lib/emit.js'
 
 export const GET = instrumentRoute(
   async () => {

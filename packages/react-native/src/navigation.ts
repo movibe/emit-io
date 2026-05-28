@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import type { LoggerStrategy } from 'emit-io-core'
+import type { EmitIoStrategy } from 'emit-io-core'
 
 /**
  * Track screen views via @react-navigation/native NavigationContainer ref.
@@ -12,7 +12,7 @@ import type { LoggerStrategy } from 'emit-io-core'
  */
 export function useNavigationAnalytics(
   navigationRef: { current: { getCurrentRoute(): { name: string; params?: Record<string, unknown> } | undefined } | null } | null,
-  client: LoggerStrategy
+  client: EmitIoStrategy
 ): void {
   useEffect(() => {
     if (!navigationRef?.current) return

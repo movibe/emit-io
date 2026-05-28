@@ -1,6 +1,6 @@
 import Fastify from 'fastify'
 import { loggerPlugin } from 'emit-io-fastify'
-import { logger } from './logger.js'
+import { logger } from './emit.js'
 import { userRoutes } from './routes/users.js'
 
 const app = Fastify({ disableRequestLogging: true })
@@ -30,8 +30,8 @@ app.post('/login', async (req, reply) => {
 
 try {
   await app.listen({ port: 3000 })
-  logger.info('server started', { port: 3000 })
+  emit.info('server started', { port: 3000 })
 } catch (err) {
-  logger.fatal('server failed', { error: (err as Error).message })
+  emit.fatal('server failed', { error: (err as Error).message })
   process.exit(1)
 }

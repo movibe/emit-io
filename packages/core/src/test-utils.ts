@@ -1,6 +1,6 @@
 import type { LogEntry, Transport, AnalyticsProvider } from './types.js'
 import { LogLevel } from './types.js'
-import { LoggerStrategy } from './index.js'
+import { EmitIoStrategy } from './index.js'
 
 export interface MockTransport extends Transport {
   readonly entries: LogEntry[]
@@ -97,13 +97,13 @@ export function createMockProvider(options?: { name?: string; enabled?: boolean 
   return provider
 }
 
-export function createTestLogger(): { logger: LoggerStrategy; transport: MockTransport; provider: MockProvider } {
+export function createTestEmitter(): { emit: EmitIoStrategy; transport: MockTransport; provider: MockProvider } {
   const transport = createMockTransport()
   const provider = createMockProvider()
-  const logger = new LoggerStrategy({
+  const emit = new EmitIoStrategy({
     transports: [transport],
     providers: [provider],
     emitAppOpenOnInit: false,
   })
-  return { logger, transport, provider }
+  return { emit, transport, provider }
 }

@@ -14,10 +14,10 @@ npm install emit-io-core emit-io-fastify
 
 ```typescript
 import Fastify from 'fastify'
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, JSONTransport, LogLevelEnum } from 'emit-io-core'
 import { loggerPlugin } from 'emit-io-fastify'
 
-const logger = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [new JSONTransport({ minLevel: LogLevelEnum.INFO })],
 })
 
@@ -45,7 +45,7 @@ import { loggerPlugin } from 'emit-io-fastify'
 import type { LoggerPluginOptions } from 'emit-io-fastify'
 
 await app.register(loggerPlugin, {
-  logger,                          // required: LoggerStrategy instance
+  logger,                          // required: EmitIoStrategy instance
   requestIdHeader: 'x-request-id', // default: 'x-request-id'
   autoLog: true,                   // default: true — logs request-start and request-complete
 })
@@ -57,7 +57,7 @@ After registration, every request has:
 
 | Decorator | Type | Description |
 |---|---|---|
-| `req.log_` | `LoggerStrategy` | Child logger bound with `{ requestId, method, path }` |
+| `req.log_` | `EmitIoStrategy` | Child logger bound with `{ requestId, method, path }` |
 | `req.requestId` | `string` | Request ID from header or generated UUID |
 
 ```typescript
@@ -86,7 +86,7 @@ The plugin augments Fastify's types automatically:
 ```typescript
 // No import needed — available after app.register(loggerPlugin, ...)
 app.get('/', async (req) => {
-  req.log_    // LoggerStrategy
+  req.log_    // EmitIoStrategy
   req.requestId  // string
 })
 ```

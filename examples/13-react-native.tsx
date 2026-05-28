@@ -16,7 +16,7 @@ const provider: AnalyticsProvider = {
   screen(name) { console.log('[screen]', name) },
 }
 
-const logger = new LoggerStrategy({ providers: [provider] })
+const emit = new LoggerStrategy({ providers: [provider] })
 
 // Root component — useNavigationAnalytics auto-tracks screen changes
 export function App() {

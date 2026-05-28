@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { AppState, type AppStateStatus } from 'react-native'
-import type { LoggerStrategy } from 'emit-io-core'
+import type { EmitIoStrategy } from 'emit-io-core'
 
 /**
  * Tracks AppState transitions and emits analytics events:
  *   - app-foreground when active
  *   - app-background when background/inactive
  */
-export function useAppStateAnalytics(client: LoggerStrategy): void {
+export function useAppStateAnalytics(client: EmitIoStrategy): void {
   const prevState = useRef<AppStateStatus>(AppState.currentState)
 
   useEffect(() => {

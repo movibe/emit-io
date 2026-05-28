@@ -7,9 +7,9 @@
 Universal logging + analytics for TypeScript — Node, browser, edge, React Native.
 
 ```typescript
-import { LoggerStrategy, JSONTransport, ConsoleTransport, redact, sample, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, JSONTransport, ConsoleTransport, redact, sample, LogLevelEnum } from 'emit-io-core'
 
-const emit = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [
     new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG, pretty: true }),
     new JSONTransport({ minLevel: LogLevelEnum.INFO }),
@@ -74,9 +74,9 @@ See [npm package page](https://www.npmjs.com/package/emit-io-core) for versions 
 ### Core
 
 ```typescript
-import { LoggerStrategy, ConsoleTransport, JSONTransport, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, ConsoleTransport, JSONTransport, LogLevelEnum } from 'emit-io-core'
 
-const emit = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [
     new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG }),
     new JSONTransport({ minLevel: LogLevelEnum.INFO }),
@@ -107,9 +107,9 @@ npm install emit-io-core emit-io-react
 
 ```tsx
 import { AnalyticsProvider, useAnalytics, usePageTracking } from 'emit-io-react'
-import { LoggerStrategy } from 'emit-io-core'
+import { EmitIoStrategy } from 'emit-io-core'
 
-const emit = new LoggerStrategy({ /* ... */ })
+const emit = new EmitIoStrategy({ /* ... */ })
 
 function App() {
   return (
@@ -161,9 +161,9 @@ npm install emit-io-core emit-io-react-native
 
 ```tsx
 import { AnalyticsProvider, useAnalytics, useScreenTracking } from 'emit-io-react-native'
-import { LoggerStrategy } from 'emit-io-core'
+import { EmitIoStrategy } from 'emit-io-core'
 
-const emit = new LoggerStrategy({ /* ... */ })
+const emit = new EmitIoStrategy({ /* ... */ })
 
 export default function App() {
   return (
@@ -215,7 +215,7 @@ new HTTPTransport({
 ```typescript
 import { redact, sample, rateLimit, normalizeStack } from 'emit-io-core'
 
-new LoggerStrategy({
+new EmitIoStrategy({
   plugins: [
     redact({ paths: ['password', 'user.token', '*.secret'] }),
     sample({ rate: 0.05, levels: [LogLevelEnum.DEBUG] }),
@@ -232,10 +232,10 @@ Plugins are plain functions `(entry: LogEntry) => LogEntry | null`. Return `null
 Two complementary paths — use one or both:
 
 ```typescript
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
 import { OTelTransport, OTelProvider } from 'emit-io-otel'
 
-const emit = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [
     new ConsoleTransport({ minLevel: LogLevelEnum.INFO }),
     new OTelTransport({ loggerProvider }),   // logs → OTel LogRecords
@@ -292,7 +292,7 @@ await runWithContext({ traceId: 'trace-abc' }, async () => {
 ## Consent Gate
 
 ```typescript
-const emit = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   consent: { analytics: false, errors: true },
 })
 
@@ -316,7 +316,7 @@ const safePostHog = circuitBreaker(new PostHogProvider(), {
   onStateChange: (state, name) => console.warn(`[circuit] ${name}: ${state}`),
 })
 
-new LoggerStrategy({ providers: [safePostHog] })
+new EmitIoStrategy({ providers: [safePostHog] })
 ```
 
 ## Examples

@@ -8,7 +8,7 @@ First release under the `@emit` scope.
 
 | Package | Description |
 |---|---|
-| `emit-io-core` | LoggerStrategy, transports (Console, JSON, HTTP, DevTools), plugins (redact, sample, rateLimit, normalizeStack), context, circuit breaker, consent gate |
+| `emit-io-core` | EmitIoStrategy, transports (Console, JSON, HTTP, DevTools), plugins (redact, sample, rateLimit, normalizeStack), context, circuit breaker, consent gate |
 | `emit-io-react` | React hooks, AnalyticsProvider, server action wrapper (`withAnalytics`) |
 | `emit-io-react-native` | React Native hooks, AnalyticsProvider, AppState tracking, navigation integration |
 | `emit-io-next` | Next.js middleware + route handler instrumentation |

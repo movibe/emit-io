@@ -35,7 +35,7 @@ Open <http://localhost:5173> and watch the browser DevTools console:
 
 | File | What it does |
 |---|---|
-| `src/logger.ts` | Builds a browser-only `LoggerStrategy` with `ConsoleTransport` + `ConsoleProvider`. |
+| `src/emit.ts` | Builds a browser-only `EmitIoStrategy` with `ConsoleTransport` + `ConsoleProvider`. |
 | `src/main.tsx` | Mounts React 19 root and wraps the app in `<AnalyticsProvider>`. |
 | `src/App.tsx` | Uses the analytics hooks, wraps in `AnalyticsErrorBoundary`. |
 | `src/components/CrashButton.tsx` | Throws during render to demo the boundary. |

@@ -1,5 +1,5 @@
 import { test, expect, describe, vi } from 'vitest'
-import { LoggerStrategy, LogLevelEnum } from '../index.js'
+import { EmitIoStrategy, LogLevelEnum } from '../index.js'
 import type { Transport, LogEntry } from '../index.js'
 
 function makeTransport() {
@@ -15,7 +15,7 @@ function makeTransport() {
 describe('child loggers', () => {
   test('child merges bindings into entry.context', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     const child = log.child({ requestId: 'abc-123' })
 
     child.info('hello', { userId: 'u1' })
@@ -26,7 +26,7 @@ describe('child loggers', () => {
 
   test('nested child merges both levels of bindings', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     const child = log.child({ requestId: 'abc-123' })
     const nested = child.child({ traceId: 'tx' })
 
@@ -38,7 +38,7 @@ describe('child loggers', () => {
 
   test('direct context argument overrides bindings', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     const child = log.child({ requestId: 'from-binding' })
 
     child.info('msg', { requestId: 'from-context', extra: true })
@@ -48,7 +48,7 @@ describe('child loggers', () => {
 
   test('child binding overrides parent binding on same key', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     const child = log.child({ requestId: 'parent' })
     const nested = child.child({ requestId: 'child' })
 
@@ -59,7 +59,7 @@ describe('child loggers', () => {
 
   test('child shares transport array reference with parent', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     const child = log.child({ service: 'api' })
 
     // add transport to parent after creating child
@@ -75,7 +75,7 @@ describe('child loggers', () => {
 
   test('child with empty bindings object works correctly', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     const child = log.child({})
 
     child.info('hello', { key: 'value' })
@@ -85,7 +85,7 @@ describe('child loggers', () => {
 
   test('all log methods apply bindings — debug', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     const child = log.child({ svc: 'x' })
 
     child.debug('d')
@@ -94,7 +94,7 @@ describe('child loggers', () => {
 
   test('all log methods apply bindings — warn', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     const child = log.child({ svc: 'x' })
 
     child.warn('w')
@@ -103,7 +103,7 @@ describe('child loggers', () => {
 
   test('all log methods apply bindings — error (log-level overload)', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     const child = log.child({ svc: 'x' })
 
     child.error('err')
@@ -112,7 +112,7 @@ describe('child loggers', () => {
 
   test('all log methods apply bindings — fatal', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     const child = log.child({ svc: 'x' })
 
     child.fatal('f')
@@ -121,7 +121,7 @@ describe('child loggers', () => {
 
   test('all log methods apply bindings — log() legacy method', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     const child = log.child({ svc: 'x' })
 
     child.log('app_start' as any, { extra: 1 })
@@ -130,7 +130,7 @@ describe('child loggers', () => {
 
   test('parent logger is unaffected by child bindings', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     log.child({ requestId: 'abc' })
 
     log.info('parent msg', { key: 'val' })
@@ -140,7 +140,7 @@ describe('child loggers', () => {
 
   test('child without context still gets bindings in context', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     const child = log.child({ requestId: 'r1' })
 
     child.info('no context')

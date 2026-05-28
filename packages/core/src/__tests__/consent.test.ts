@@ -1,5 +1,5 @@
 import { test, expect, describe, vi } from 'vitest'
-import { LoggerStrategy } from '../index.js'
+import { EmitIoStrategy } from '../index.js'
 import type { AnalyticsProvider, Transport } from '../types.js'
 import { LogLevel } from '../types.js'
 
@@ -32,7 +32,7 @@ function makeTransport(): Transport & { log: ReturnType<typeof vi.fn> } {
 describe('consent — default (no config)', () => {
   test('without consent config, all analytics methods pass to providers', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
     })
@@ -48,7 +48,7 @@ describe('consent — default (no config)', () => {
   })
 
   test('without consent config, getConsent returns analytics=true, errors=true', () => {
-    const logger = new LoggerStrategy({ emitAppOpenOnInit: false })
+    const logger = new EmitIoStrategy({ emitAppOpenOnInit: false })
     const consent = logger.getConsent()
     expect(consent.analytics).toBe(true)
     expect(consent.errors).toBe(true)
@@ -58,7 +58,7 @@ describe('consent — default (no config)', () => {
 describe('consent — analytics=false', () => {
   test('event() is no-op when analytics=false', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
       consent: { analytics: false },
@@ -70,7 +70,7 @@ describe('consent — analytics=false', () => {
 
   test('logScreen() is no-op when analytics=false', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
       consent: { analytics: false },
@@ -82,7 +82,7 @@ describe('consent — analytics=false', () => {
 
   test('setUser() is no-op when analytics=false', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
       consent: { analytics: false },
@@ -94,7 +94,7 @@ describe('consent — analytics=false', () => {
 
   test('log-level info() still emits to transport when analytics=false', () => {
     const transport = makeTransport()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
       consent: { analytics: false },
@@ -107,7 +107,7 @@ describe('consent — analytics=false', () => {
 
   test('log-level warn() still emits to transport when analytics=false', () => {
     const transport = makeTransport()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
       consent: { analytics: false },
@@ -119,7 +119,7 @@ describe('consent — analytics=false', () => {
 
   test('log-level debug() still emits to transport when analytics=false', () => {
     const transport = makeTransport()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
       consent: { analytics: false },
@@ -131,7 +131,7 @@ describe('consent — analytics=false', () => {
 
   test('log-level fatal() still emits to transport when analytics=false', () => {
     const transport = makeTransport()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
       consent: { analytics: false },
@@ -143,7 +143,7 @@ describe('consent — analytics=false', () => {
 
   test('log-level error() (1-2 args) still emits to transport when analytics=false', () => {
     const transport = makeTransport()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
       consent: { analytics: false },
@@ -157,7 +157,7 @@ describe('consent — analytics=false', () => {
 describe('consent — errors=false', () => {
   test('captureError() does NOT call providers when errors=false', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
       consent: { errors: false },
@@ -169,7 +169,7 @@ describe('consent — errors=false', () => {
 
   test('captureError() DOES emit to transport when errors=false', () => {
     const transport = makeTransport()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
       consent: { errors: false },
@@ -183,7 +183,7 @@ describe('consent — errors=false', () => {
 
 describe('consent — setConsent', () => {
   test('setConsent merges partially: changing analytics does not reset errors', () => {
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       emitAppOpenOnInit: false,
       consent: { analytics: false, errors: true },
     })
@@ -197,7 +197,7 @@ describe('consent — setConsent', () => {
 
   test('setConsent after init enables previously blocked events', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
       consent: { analytics: false },
@@ -212,7 +212,7 @@ describe('consent — setConsent', () => {
   })
 
   test('getConsent returns a copy — mutating it does not affect internal state', () => {
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       emitAppOpenOnInit: false,
       consent: { analytics: true, errors: true },
     })
@@ -228,7 +228,7 @@ describe('consent — setConsent', () => {
 describe('consent — combinations', () => {
   test('analytics=false + errors=true: events blocked, captureError calls providers', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
       consent: { analytics: false, errors: true },
@@ -244,7 +244,7 @@ describe('consent — combinations', () => {
   test('analytics=false + errors=false: both events and captureError blocked for providers, transport still gets error', () => {
     const provider = makeProvider()
     const transport = makeTransport()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       transports: [transport],
       emitAppOpenOnInit: false,
@@ -264,7 +264,7 @@ describe('consent — combinations', () => {
 describe('consent — pre-init buffer interaction', () => {
   test('analytics=false + preInitBuffer: events NOT buffered (gate before bufferOrRun)', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
       preInitBuffer: {},
@@ -282,7 +282,7 @@ describe('consent — pre-init buffer interaction', () => {
 
   test('analytics=true + preInitBuffer: events ARE buffered and dispatched on init', () => {
     const provider = makeProvider()
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
       preInitBuffer: {},

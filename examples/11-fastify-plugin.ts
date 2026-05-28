@@ -1,10 +1,10 @@
 import Fastify from 'fastify'
 import { loggerPlugin } from 'emit-io-fastify'
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, JSONTransport, LogLevelEnum } from 'emit-io-core'
 
 const app = Fastify({ disableRequestLogging: true })
 
-const logger = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [
     new JSONTransport({ minLevel: LogLevelEnum.INFO }),
   ],
@@ -26,8 +26,8 @@ app.get('/users/:id', async (req, reply) => {
 
 app.listen({ port: 3000 }, (err) => {
   if (err) {
-    logger.fatal('Failed to start server', { error: err.message })
+    emit.fatal('Failed to start server', { error: err.message })
     process.exit(1)
   }
-  logger.info('Server listening', { port: 3000 })
+  emit.info('Server listening', { port: 3000 })
 })

@@ -1,7 +1,7 @@
-import type { LoggerStrategy, AnalyticsProvider } from 'emit-io-core'
+import type { EmitIoStrategy, AnalyticsProvider } from 'emit-io-core'
 
 export interface AnalyticsContextValue {
-  client: LoggerStrategy
+  client: EmitIoStrategy
   /** Direct access to the underlying providers, if needed */
   providers: AnalyticsProvider[]
   /** Track a custom event */
@@ -17,7 +17,7 @@ export interface AnalyticsContextValue {
 }
 
 export interface AnalyticsProviderProps {
-  client: LoggerStrategy
+  client: EmitIoStrategy
   children: React.ReactNode
   /** Automatically track page views on navigation changes */
   autoTrack?: boolean

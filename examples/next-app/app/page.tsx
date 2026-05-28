@@ -1,7 +1,7 @@
-import { logger } from '../lib/logger.js'
+import { logger } from '../lib/emit.js'
 
 export default async function HomePage() {
-  logger.info('rendering HomePage (RSC)')
+  emit.info('rendering HomePage (RSC)')
 
   return (
     <main style={{ padding: 24, fontFamily: 'system-ui' }}>

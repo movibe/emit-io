@@ -1,8 +1,8 @@
 import { NextResponse, type NextRequest } from 'next/server'
-import { runWithContext, type LoggerStrategy } from 'emit-io-core'
+import { runWithContext, type EmitIoStrategy } from 'emit-io-core'
 
 export interface MiddlewareOptions {
-  logger: LoggerStrategy
+  logger: EmitIoStrategy
   extractRequestId?: (req: NextRequest) => string
   /** Auto-emit pageview event on GET (default true) */
   trackPageviews?: boolean

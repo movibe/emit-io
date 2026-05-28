@@ -12,9 +12,9 @@ npm install emit-io-core emit-io-next
 
 ```typescript
 // lib/emit.ts
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, JSONTransport, LogLevelEnum } from 'emit-io-core'
 
-export const emit = new LoggerStrategy({
+export const emit = new EmitIoStrategy({
   transports: [new JSONTransport({ minLevel: LogLevelEnum.INFO })],
 })
 ```

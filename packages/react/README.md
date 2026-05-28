@@ -12,9 +12,9 @@ npm install emit-io-core emit-io-react
 
 ```tsx
 import { AnalyticsProvider, useAnalytics, usePageTracking, useTrackEvent } from 'emit-io-react'
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
 
-const logger = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
 })
 
@@ -49,7 +49,7 @@ function ProductPage() {
 </AnalyticsProvider>
 ```
 
-**Props:** `client: LoggerStrategy`, `autoTrack?: boolean`, `children: ReactNode`
+**Props:** `client: EmitIoStrategy`, `autoTrack?: boolean`, `children: ReactNode`
 
 ## Hooks
 
@@ -111,7 +111,7 @@ Fires `eventName` with `status: 'success' | 'error'` and `durationMs` automatica
 
 ```typescript
 interface AnalyticsContextValue {
-  client: LoggerStrategy
+  client: EmitIoStrategy
   providers: AnalyticsProvider[]
   event(name: string, properties?: Record<string, unknown>): void
   screen(name: string, params?: Record<string, unknown>): void

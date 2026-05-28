@@ -1,6 +1,6 @@
-import { LoggerStrategy, JSONTransport, LogLevelEnum, redact } from 'emit-io-core'
+import { EmitIoStrategy, JSONTransport, LogLevelEnum, redact } from 'emit-io-core'
 
-export const logger = new LoggerStrategy({
+export const emit = new EmitIoStrategy({
   transports: [
     new JSONTransport({ minLevel: LogLevelEnum.INFO }),
   ],

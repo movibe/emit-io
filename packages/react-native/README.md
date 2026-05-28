@@ -14,9 +14,9 @@ npm install @react-navigation/native
 
 ```tsx
 import { AnalyticsProvider, useAnalytics, useScreenTracking } from 'emit-io-react-native'
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
 
-const logger = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
 })
 
@@ -47,7 +47,7 @@ function HomeScreen() {
 </AnalyticsProvider>
 ```
 
-**Props:** `client: LoggerStrategy`, `trackAppState?: boolean` (default `true`), `children: ReactNode`
+**Props:** `client: EmitIoStrategy`, `trackAppState?: boolean` (default `true`), `children: ReactNode`
 
 ## Hooks
 
@@ -112,7 +112,7 @@ Fires `screen(routeName, params)` on every navigation state change.
 
 ```typescript
 interface AnalyticsContextValue {
-  client: LoggerStrategy
+  client: EmitIoStrategy
   providers: AnalyticsProvider[]
   event(name: string, properties?: Record<string, unknown>): void
   screen(name: string, params?: Record<string, unknown>): void

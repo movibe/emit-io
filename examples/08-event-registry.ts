@@ -1,6 +1,6 @@
-import { LoggerStrategy, type AnalyticsProvider } from 'emit-io-core'
+import { EmitIoStrategy, type AnalyticsProvider } from 'emit-io-core'
 
-// EventRegistry module augmentation gives logger.event() full TypeScript types.
+// EventRegistry module augmentation gives emit.event() full TypeScript types.
 // Each key is an event name; its value type is the shape of the properties object.
 // Place this augmentation in a .d.ts file or any file included by tsconfig.
 
@@ -21,14 +21,14 @@ const provider: AnalyticsProvider = {
   },
 }
 
-const logger = new LoggerStrategy({ providers: [provider] })
+const emit = new EmitIoStrategy({ providers: [provider] })
 
 // Fully typed — autocomplete on event name and property keys
-logger.event('purchase', { orderId: 'ord-1', total: 99.99, currency: 'USD' })
-logger.event('pageview', { path: '/home' })
-logger.event('signup', { method: 'oauth', plan: 'pro' })
+emit.event('purchase', { orderId: 'ord-1', total: 99.99, currency: 'USD' })
+emit.event('pageview', { path: '/home' })
+emit.event('signup', { method: 'oauth', plan: 'pro' })
 
 // TypeScript errors (uncomment to see):
-// logger.event('purchase', { orderId: 'x' })          // missing total + currency
-// logger.event('unknown-event', {})                   // not in registry
-// logger.event('purchase', { currency: 'GBP', ... })  // GBP not assignable
+// emit.event('purchase', { orderId: 'x' })          // missing total + currency
+// emit.event('unknown-event', {})                   // not in registry
+// emit.event('purchase', { currency: 'GBP', ... })  // GBP not assignable
