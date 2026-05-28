@@ -1,0 +1,9 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "command": {
+    "pr-review-comment": {
+      "description": "Review comments on all open PRs — checks Sourcery reviews and lists issues found",
+      "prompt": "I need you to review the comments on all open PRs in this repository. Follow these steps:\n\n1. Run `gh pr list --state open --json number,title,headRefName` to list all open PRs\n2. For each PR, run `gh pr view <number> --comments` to read the comments\n3. For each PR, summarize:\n   - Any issues raised (typos, bugs, refactoring suggestions)\n   - How many issues total\n   - Whether there's a Sourcery review and what it found\n4. Group the findings by PR\n5. Prioritize: put critical issues (bugs, breaking changes, type errors) at the top\n\nDo NOT address the issues yet — just report them. I will decide which ones to fix.\n\nReturn a clean summary in markdown."
+    }
+  }
+}
