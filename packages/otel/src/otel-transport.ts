@@ -12,7 +12,7 @@ function getSeverityMap(): Record<number, SeverityNumber> {
   }
 }
 
-export interface OTelTransportOptions {
+export type OTelTransportOptions = {
   name?: string
   minLevel?: LogLevel
   loggerName?: string

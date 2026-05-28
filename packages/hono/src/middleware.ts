@@ -1,7 +1,7 @@
 import type { MiddlewareHandler } from 'hono'
 import { runWithContext, type EmitIoStrategy } from 'emit-io-core'
 
-export interface LoggerMiddlewareOptions {
+export type LoggerMiddlewareOptions = {
   logger: EmitIoStrategy
   /** Header name for request id (default 'x-request-id') */
   requestIdHeader?: string

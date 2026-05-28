@@ -1,13 +1,13 @@
 import type { ParsedEvent } from './types.js'
 
-export interface AvroField {
+export type AvroField = {
   name: string
   type: string | string[] | { type: string; items: string }
   default?: unknown
   doc?: string
 }
 
-export interface AvroRecord {
+export type AvroRecord = {
   type: 'record'
   name: string
   doc?: string

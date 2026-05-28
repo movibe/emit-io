@@ -1,6 +1,6 @@
 import type { ParsedEvent } from './types.js'
 
-export interface PIIMatch {
+export type PIIMatch = {
   event: string
   property: string
   pattern: string

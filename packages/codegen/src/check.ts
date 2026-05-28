@@ -1,12 +1,12 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import type { ParsedEvent } from './types.js'
 
-export interface Snapshot {
+export type Snapshot = {
   version: number
   events: Record<string, { properties: Record<string, { type: string }> }>
 }
 
-export interface DriftResult {
+export type DriftResult = {
   removed: string[]
   propsRemoved: Array<{ event: string; property: string }>
   added: string[]

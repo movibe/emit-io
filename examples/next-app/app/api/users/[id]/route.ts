@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { instrumentRoute } from 'emit-io-next'
 import { emit } from '../../../../lib/emit.js'
 
-interface Params {
+type Params = {
   id: string
 }
 

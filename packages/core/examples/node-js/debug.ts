@@ -5,7 +5,7 @@ const TAG = 'DEBUG'
 // Custom types example
 export type CustomLogTags = 'custom_start' | 'custom_end';
 export type CustomNetworkTags = 'GraphqlQuery_error_graphql' | 'RestApi_error' | 'api_call' | 'websocket';
-export interface CustomUser {
+export type CustomUser = {
 	id: string;
 	role: string;
 	email?: string;
@@ -13,12 +13,12 @@ export interface CustomUser {
 	phone?: string;
 	status?: string;
 }
-export interface CustomCheckout {
+export type CustomCheckout = {
 	currency?: string;
 	value?: number;
 	customField: string;
 }
-export interface CustomPurchase {
+export type CustomPurchase = {
 	type: 'credit_card';
 	customStatus: string;
 	affiliation?: string;

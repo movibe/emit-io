@@ -12,7 +12,7 @@
 import type { LogEntry, Transport } from './types.js'
 import { LogLevel, resolveEnabled } from './types.js'
 
-export interface HTTPTransportOptions {
+export type HTTPTransportOptions = {
   url: string
   name?: string
   minLevel?: LogLevel

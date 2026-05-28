@@ -21,7 +21,7 @@ const defaultWrite: (line: string) => void =
     ? (line: string) => process.stdout.write(line)
     : (line: string) => console.log(line.trimEnd())
 
-export interface JSONTransportOptions {
+export type JSONTransportOptions = {
   name?: string
   minLevel?: LogLevel
   write?: (line: string) => void

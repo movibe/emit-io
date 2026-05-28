@@ -10,7 +10,7 @@ declare module 'fastify' {
   }
 }
 
-export interface LoggerPluginOptions {
+export type LoggerPluginOptions = {
   logger: EmitIoStrategy
   /** Header name for request id (default 'x-request-id') */
   requestIdHeader?: string

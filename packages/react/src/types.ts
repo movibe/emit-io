@@ -1,6 +1,6 @@
 import type { EmitIoStrategy, AnalyticsProvider } from 'emit-io-core'
 
-export interface AnalyticsContextValue {
+export type AnalyticsContextValue = {
   client: EmitIoStrategy
   /** Direct access to the underlying providers, if needed */
   providers: AnalyticsProvider[]
@@ -16,7 +16,7 @@ export interface AnalyticsContextValue {
   error: (feature: string, name: string, critical: boolean, err: Error, extra?: Record<string, unknown>) => void
 }
 
-export interface AnalyticsProviderProps {
+export type AnalyticsProviderProps = {
   client: EmitIoStrategy
   children: React.ReactNode
   /** Automatically track page views on navigation changes */

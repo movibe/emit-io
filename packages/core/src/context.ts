@@ -1,6 +1,6 @@
 type Context = Record<string, unknown>
 
-interface Store {
+type Store = {
   run<T>(ctx: Context, fn: () => T): T
   getStore(): Context | undefined
 }
