@@ -1,5 +1,5 @@
 import type { LogEntry, Transport } from './types.js'
-import { LogLevel } from './types.js'
+import { LogLevel, resolveEnabled } from './types.js'
 
 export interface DevToolsTransportOptions {
   name?: string
@@ -16,11 +16,13 @@ export interface DevToolsTransportOptions {
   bufferSize?: number
   /** Callback on connection state change */
   onState?: (state: 'connecting' | 'open' | 'closed' | 'error') => void
+  enabled?: boolean
 }
 
 export class DevToolsTransport implements Transport {
   readonly name: string
   readonly minLevel: LogLevel
+  enabled: boolean
   private url: string
   private WSClass: typeof WebSocket
   private ws: WebSocket | null = null
@@ -45,6 +47,7 @@ export class DevToolsTransport implements Transport {
     this.currentReconnectMs = this.baseReconnectMs
     this.bufferSize = opts?.bufferSize ?? 100
     this.onState = opts?.onState
+    this.enabled = resolveEnabled(opts)
 
     if (!this.WSClass) {
       console.warn('[DevToolsTransport] WebSocket not available; entries will buffer only')

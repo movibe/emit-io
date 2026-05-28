@@ -6,7 +6,7 @@
 // This matches the behaviour of ConsoleTransport.
 
 import type { LogEntry, Transport } from './types.js'
-import { LogLevel } from './types.js'
+import { LogLevel, resolveEnabled } from './types.js'
 
 const LEVEL_LABELS: Record<LogLevel, string> = {
   [LogLevel.DEBUG]: 'DEBUG',
@@ -26,11 +26,13 @@ export interface JSONTransportOptions {
   minLevel?: LogLevel
   write?: (line: string) => void
   serializer?: (entry: LogEntry) => Record<string, unknown>
+  enabled?: boolean
 }
 
 export class JSONTransport implements Transport {
   readonly name: string
   readonly minLevel: LogLevel
+  enabled: boolean
   private write: (line: string) => void
   private serializer?: (entry: LogEntry) => Record<string, unknown>
 
@@ -39,6 +41,7 @@ export class JSONTransport implements Transport {
     this.minLevel = options?.minLevel ?? LogLevel.DEBUG
     this.write = options?.write ?? defaultWrite
     this.serializer = options?.serializer
+    this.enabled = resolveEnabled(options)
   }
 
   log(entry: LogEntry): void {

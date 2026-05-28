@@ -530,4 +530,99 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
     expect(consoleSpy).toHaveBeenCalled();
     consoleSpy.mockRestore();
   });
+
+  test('transport enabled: false — log() never called', () => {
+    const transportLog = vi.fn()
+    const transport: Transport = {
+      name: 'disabled',
+      minLevel: LogLevelEnum.DEBUG,
+      enabled: false,
+      log: transportLog,
+    }
+
+    const logger = new LoggerStrategy({
+      transports: [transport],
+      emitAppOpenOnInit: false,
+    })
+
+    logger.info('should not arrive')
+    expect(transportLog).not.toHaveBeenCalled()
+  })
+
+  test('transport enabled: undefined (default) — log() called', () => {
+    const transportLog = vi.fn()
+    const transport: Transport = {
+      name: 'default-enabled',
+      minLevel: LogLevelEnum.DEBUG,
+      log: transportLog,
+    }
+
+    const logger = new LoggerStrategy({
+      transports: [transport],
+      emitAppOpenOnInit: false,
+    })
+
+    logger.info('should arrive')
+    expect(transportLog).toHaveBeenCalledTimes(1)
+  })
+
+  test('runtime toggle enabled = false stops delivery', () => {
+    const transportLog = vi.fn()
+    const transport: Transport = {
+      name: 'toggle',
+      minLevel: LogLevelEnum.DEBUG,
+      enabled: true,
+      log: transportLog,
+    }
+
+    const logger = new LoggerStrategy({
+      transports: [transport],
+      emitAppOpenOnInit: false,
+    })
+
+    logger.info('first')
+    expect(transportLog).toHaveBeenCalledTimes(1)
+
+    transport.enabled = false
+    logger.info('second')
+    expect(transportLog).toHaveBeenCalledTimes(1)
+  })
+
+  test('runtime toggle enabled = true resumes delivery', () => {
+    const transportLog = vi.fn()
+    const transport: Transport = {
+      name: 'toggle',
+      minLevel: LogLevelEnum.DEBUG,
+      enabled: false,
+      log: transportLog,
+    }
+
+    const logger = new LoggerStrategy({
+      transports: [transport],
+      emitAppOpenOnInit: false,
+    })
+
+    logger.info('first')
+    expect(transportLog).not.toHaveBeenCalled()
+
+    transport.enabled = true
+    logger.info('second')
+    expect(transportLog).toHaveBeenCalledTimes(1)
+  })
+
+  test('mixed transports: enabled + disabled', () => {
+    const logA = vi.fn()
+    const logB = vi.fn()
+    const t1: Transport = { name: 'a', minLevel: LogLevelEnum.DEBUG, enabled: true, log: logA }
+    const t2: Transport = { name: 'b', minLevel: LogLevelEnum.DEBUG, enabled: false, log: logB }
+
+    const logger = new LoggerStrategy({
+      transports: [t1, t2],
+      emitAppOpenOnInit: false,
+    })
+
+    logger.info('mixed')
+    expect(logA).toHaveBeenCalledTimes(1)
+    expect(logB).not.toHaveBeenCalled()
+  })
 });

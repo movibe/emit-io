@@ -111,7 +111,7 @@ new LoggerStrategy({
 ## Dual-Purpose Architecture
 
 - **Analytics layer** — `event()`, `logScreen()`, `setUser()`, `captureError()` dispatched to `AnalyticsProvider[]` (PostHog, Amplitude, GA4, Sentry)
-- **Observability layer** — `debug/info/warn/error/fatal()` piped through `Transport[]` (Console, JSON, HTTP, OTel)
+- **Observability layer** — `debug/info/warn/error/fatal()` piped through `Transport[]` (Console, JSON, HTTP, OTel). Each transport supports `enabled?: boolean` for runtime toggling via feature flags.
 
 Both layers run on every call. `emit.error()` writes to all transports AND fires analytics providers. `OTelTransport` bridges logs to OTLP LogRecords; `OTelProvider` bridges events to OTLP Spans (Grafana, Tempo, Jaeger, Honeycomb).
 
@@ -211,4 +211,4 @@ Uses **Changesets**: `bun run changeset` → `bun run version` → `bun run rele
 Run `bun run bench:compare`, update BENCHMARKS.md with results (include `node -v`, `uname -mrs`).
 
 ### Add a transport or plugin
-Create in `packages/core/src/`, implement `Transport` or `Plugin` from `types.ts`, export from `index.ts`, add tests.
+Create in `packages/core/src/`, implement `Transport` or `Plugin` from `types.ts`, export from `index.ts`, add tests. Transport must declare `enabled?: boolean` (default `true`).

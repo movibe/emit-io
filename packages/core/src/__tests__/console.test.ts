@@ -67,6 +67,16 @@ describe('ConsoleTransport', () => {
 
     spy.mockRestore()
   })
+
+  test('enabled defaults to true', () => {
+    const t = new ConsoleTransport()
+    expect(t.enabled).toBe(true)
+  })
+
+  test('enabled: false', () => {
+    const t = new ConsoleTransport({ enabled: false })
+    expect(t.enabled).toBe(false)
+  })
 })
 
 describe('ConsoleProvider', () => {

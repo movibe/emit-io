@@ -160,7 +160,7 @@ export class LoggerStrategy<
     if (processed === null) return
 
     for (const transport of this.transports) {
-      if (processed.level >= transport.minLevel) {
+      if (transport.enabled !== false && processed.level >= transport.minLevel) {
         transport.log(processed)
       }
     }
@@ -470,6 +470,7 @@ export type {
 } from './types.js'
 
 export { LogLevel as LogLevelEnum } from './types.js'
+export { resolveEnabled } from './types.js'
 
 // Built-in transports and providers
 export {

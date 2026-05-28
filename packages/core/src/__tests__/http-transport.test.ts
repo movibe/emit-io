@@ -667,4 +667,21 @@ describe('transport name', () => {
     })
     expect(transport.name).toBe('my-http')
   })
+
+  test('enabled defaults to true', () => {
+    const transport = new HTTPTransport({
+      url: 'https://example.com',
+      fetch: makeOkFetch(),
+    })
+    expect(transport.enabled).toBe(true)
+  })
+
+  test('enabled: false', () => {
+    const transport = new HTTPTransport({
+      url: 'https://example.com',
+      fetch: makeOkFetch(),
+      enabled: false,
+    })
+    expect(transport.enabled).toBe(false)
+  })
 })

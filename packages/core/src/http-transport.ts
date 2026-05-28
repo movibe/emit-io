@@ -10,7 +10,7 @@
 //   - close(): flush remaining entries then clear the timer.
 
 import type { LogEntry, Transport } from './types.js'
-import { LogLevel } from './types.js'
+import { LogLevel, resolveEnabled } from './types.js'
 
 export interface HTTPTransportOptions {
   url: string
@@ -25,11 +25,13 @@ export interface HTTPTransportOptions {
   serializer?: (entries: LogEntry[]) => string
   fetch?: typeof fetch
   onError?: (err: Error, entries: LogEntry[]) => void
+  enabled?: boolean
 }
 
 export class HTTPTransport implements Transport {
   readonly name: string
   readonly minLevel: LogLevel
+  enabled: boolean
 
   private readonly url: string
   private readonly batchSize: number
@@ -61,6 +63,7 @@ export class HTTPTransport implements Transport {
     this.serializer = options.serializer ?? ((entries) => JSON.stringify({ entries }))
     this.fetchFn = options.fetch ?? globalThis.fetch
     this.onError = options.onError
+    this.enabled = resolveEnabled(options)
   }
 
   log(entry: LogEntry): void {
