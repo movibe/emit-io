@@ -464,7 +464,7 @@ export type {
   BeginCheckoutEvent, PurchaseLogEvent, Item,
   LoggerStrategyConstructor, LoggerStrategyType,
   LogLevel, LogEntry, Transport, Plugin,
-  AnalyticsProvider,EmitIoStrategyConfig,
+  AnalyticsProvider, EmitIoStrategyConfig,
   EventRegistry, RegisteredEvents,
   ConsentState,
 } from './types.js'
@@ -498,3 +498,9 @@ export type { HTTPTransportOptions } from './http-transport.js'
 
 export { DevToolsTransport } from './devtools-transport.js'
 export type { DevToolsTransportOptions } from './devtools-transport.js'
+
+/** @deprecated Use EmitIoStrategy instead */
+export { EmitIoStrategy as LoggerStrategy }
+
+/** @deprecated Use EmitIoStrategyConfig instead */
+export type { EmitIoStrategyConfig as LoggerConfig }
