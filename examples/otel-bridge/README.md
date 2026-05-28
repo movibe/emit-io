@@ -5,9 +5,9 @@ the OpenTelemetry SDK via [`emit-io-otel`](../../packages/otel).
 
 It demonstrates:
 
-- `OTelProvider` — analytics events (`logger.event`, `logger.captureError`,
-  `logger.screen`, `logger.identify`) become OTel **spans**.
-- `OTelTransport` — structured logs (`logger.info`, `logger.error`, ...)
+- `OTelProvider` — analytics events (`emit.event`, `emit.captureError`,
+  `emit.screen`, `emit.identify`) become OTel **spans**.
+- `OTelTransport` — structured logs (`emit.info`, `emit.error`, ...)
   become OTel **log records**.
 - Side-by-side `ConsoleTransport` so you still see pretty output locally.
 - A real `NodeSDK` bootstrap that loads **before** application code via the
@@ -18,7 +18,7 @@ It demonstrates:
 ```
 src/
   tracing.ts   # NodeSDK + OTLP exporters; must load FIRST
-  logger.ts    # LoggerStrategy with OTelProvider + OTelTransport + Console
+  emit.ts    # EmitIoStrategy with OTelProvider + OTelTransport + Console
   index.ts     # main(): 5 events + 1 captured error
 ```
 

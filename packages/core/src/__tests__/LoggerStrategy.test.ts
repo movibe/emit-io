@@ -1,8 +1,8 @@
 import { test, expect, vi, beforeEach, afterEach, describe } from 'vitest'
-import { LoggerStrategy, LogLevelEnum } from '../index';
+import { EmitIoStrategy, LogLevelEnum } from '../index';
 import type { LoggerStrategyType, User, BeginCheckoutEvent, PurchaseLogEvent, EVENT_TAGS, Transport, Plugin, AnalyticsProvider } from '../types';
 
-class MockLoggerStrategy implements LoggerStrategyType<
+class MockEmitIoStrategy implements LoggerStrategyType<
   string,
   string,
   User,
@@ -47,15 +47,15 @@ class MockLoggerStrategy implements LoggerStrategyType<
   }
 }
 
-describe('LoggerStrategy — Legacy API (backward compat)', () => {
-  let mockStrategy: MockLoggerStrategy;
-  let logger: LoggerStrategy;
+describe('EmitIoStrategy — Legacy API (backward compat)', () => {
+  let mockStrategy: MockEmitIoStrategy;
+  let logger: EmitIoStrategy;
   let warnSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    mockStrategy = new MockLoggerStrategy();
-    logger = new LoggerStrategy([
+    mockStrategy = new MockEmitIoStrategy();
+    logger = new EmitIoStrategy([
       { class: mockStrategy, enabled: true }
     ]);
   });
@@ -207,8 +207,8 @@ describe('LoggerStrategy — Legacy API (backward compat)', () => {
   });
 
   test('should handle multiple strategies', () => {
-    const mockStrategy2 = new MockLoggerStrategy();
-    const logger2 = new LoggerStrategy([
+    const mockStrategy2 = new MockEmitIoStrategy();
+    const logger2 = new EmitIoStrategy([
       { class: mockStrategy, enabled: true },
       { class: mockStrategy2, enabled: true }
     ]);
@@ -222,8 +222,8 @@ describe('LoggerStrategy — Legacy API (backward compat)', () => {
   });
 
   test('should handle disabled strategies', () => {
-    const mockStrategy2 = new MockLoggerStrategy();
-    const logger2 = new LoggerStrategy([
+    const mockStrategy2 = new MockEmitIoStrategy();
+    const logger2 = new EmitIoStrategy([
       { class: mockStrategy, enabled: true },
       { class: mockStrategy2, enabled: false }
     ]);
@@ -250,7 +250,7 @@ describe('LoggerStrategy — Legacy API (backward compat)', () => {
   });
 });
 
-describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
+describe('EmitIoStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
   test('should emit log entries to transports', () => {
     const transportLog = vi.fn();
     const transport: Transport = {
@@ -259,7 +259,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       log: transportLog,
     };
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
     });
@@ -282,7 +282,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       log: transportLog,
     };
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
     });
@@ -307,7 +307,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       log: transportLog,
     };
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       plugins: [addEnv],
       emitAppOpenOnInit: false,
@@ -328,7 +328,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       log: transportLog,
     };
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       plugins: [dropAll],
       emitAppOpenOnInit: false,
@@ -349,7 +349,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       log: transportLog,
     };
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       plugins: [addA, addB],
       emitAppOpenOnInit: false,
@@ -369,7 +369,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       log: transportLog,
     };
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
     });
@@ -392,7 +392,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       log: transportLog,
     };
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
     });
@@ -412,7 +412,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       error: providerError,
     };
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
     });
@@ -430,7 +430,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       event: providerEvent,
     };
 
-    const logger = new LoggerStrategy({ emitAppOpenOnInit: false });
+    const logger = new EmitIoStrategy({ emitAppOpenOnInit: false });
     logger.addProvider(provider);
     logger.event('test-event');
     expect(providerEvent).toHaveBeenCalledWith('test-event', undefined);
@@ -444,7 +444,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       log: transportLog,
     };
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
     });
@@ -464,7 +464,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       log: transportLog,
     };
 
-    const logger = new LoggerStrategy({ emitAppOpenOnInit: false });
+    const logger = new EmitIoStrategy({ emitAppOpenOnInit: false });
     logger.addTransport(transport);
     logger.info('hello');
     expect(transportLog).toHaveBeenCalled();
@@ -485,7 +485,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       event: providerEvent,
     };
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       transports: [transport],
       emitAppOpenOnInit: false,
@@ -504,7 +504,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       flush: transportFlush,
     };
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
     });
@@ -521,7 +521,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       event: () => { throw new Error('fail'); },
     };
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       providers: [provider],
       emitAppOpenOnInit: false,
     });
@@ -540,7 +540,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       log: transportLog,
     }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
     })
@@ -557,7 +557,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       log: transportLog,
     }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
     })
@@ -575,7 +575,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       log: transportLog,
     }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
     })
@@ -597,7 +597,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
       log: transportLog,
     }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [transport],
       emitAppOpenOnInit: false,
     })
@@ -616,7 +616,7 @@ describe('LoggerStrategy — v2 API (Transports, Plugins, LogLevel)', () => {
     const t1: Transport = { name: 'a', minLevel: LogLevelEnum.DEBUG, enabled: true, log: logA }
     const t2: Transport = { name: 'b', minLevel: LogLevelEnum.DEBUG, enabled: false, log: logB }
 
-    const logger = new LoggerStrategy({
+    const logger = new EmitIoStrategy({
       transports: [t1, t2],
       emitAppOpenOnInit: false,
     })

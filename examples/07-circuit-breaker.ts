@@ -1,4 +1,4 @@
-import { LoggerStrategy, circuitBreaker, type AnalyticsProvider } from 'emit-io-core'
+import { EmitIoStrategy, circuitBreaker, type AnalyticsProvider } from 'emit-io-core'
 
 // circuitBreaker wraps any AnalyticsProvider. After failureThreshold consecutive
 // errors, the circuit opens and calls are dropped for cooldownMs milliseconds.
@@ -23,9 +23,9 @@ const wrapped = circuitBreaker(flakyProvider, {
   },
 })
 
-const logger = new LoggerStrategy({ providers: [wrapped] })
+const emit = new EmitIoStrategy({ providers: [wrapped] })
 
 // Simulate traffic — circuit opens automatically after 5 consecutive failures
 for (let i = 0; i < 20; i++) {
-  logger.event('test-event', { i })
+  emit.event('test-event', { i })
 }

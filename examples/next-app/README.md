@@ -6,7 +6,7 @@ Next.js 15 App Router with `emit-io-next`.
 
 - `middleware.ts` wraps Next.js middleware with `withLogger` — auto requestId, pageview events, durationMs
 - `app/api/health/route.ts` and `app/api/users/[id]/route.ts` use `instrumentRoute` — auto timings + status logging
-- `lib/logger.ts` singleton with JSONTransport + ConsoleTransport + redact plugin
+- `lib/emit.ts` singleton with JSONTransport + ConsoleTransport + redact plugin
 
 ## Run
 

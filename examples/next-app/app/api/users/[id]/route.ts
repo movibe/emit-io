@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { instrumentRoute } from 'emit-io-next'
-import { logger } from '../../../../lib/logger.js'
+import { emit } from '../../../../lib/emit.js'
 
 interface Params {
   id: string
@@ -9,8 +9,8 @@ interface Params {
 export const GET = instrumentRoute<Params>(
   async (_req, ctx) => {
     const { id } = await ctx.params
-    logger.info('fetching user', { userId: id })
+    emit.info('fetching user', { userId: id })
     return NextResponse.json({ id, name: 'Demo User' })
   },
-  { logger, eventName: 'user-fetched' }
+  { logger: emit, eventName: 'user-fetched' }
 )

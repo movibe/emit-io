@@ -3,12 +3,12 @@ import { View, Text, Button, StyleSheet } from 'react-native'
 import {
   AnalyticsProvider,
   AnalyticsErrorBoundary,
-} from '@emit-io/react-native'
-import { logger } from '../src/logger'
+} from 'emit-io-react-native'
+import { emit } from '../src/logger'
 
 export default function RootLayout() {
   return (
-    <AnalyticsProvider client={logger} trackAppState>
+    <AnalyticsProvider client={emit} trackAppState>
       <AnalyticsErrorBoundary
         fallback={(err, reset) => (
           <View style={styles.errorContainer}>

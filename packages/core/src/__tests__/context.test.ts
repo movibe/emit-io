@@ -1,5 +1,5 @@
 import { test, expect, describe, vi } from 'vitest'
-import { LoggerStrategy, LogLevelEnum, runWithContext, getContext } from '../index.js'
+import { EmitIoStrategy, LogLevelEnum, runWithContext, getContext } from '../index.js'
 import type { Transport, LogEntry } from '../index.js'
 
 function makeTransport() {
@@ -19,7 +19,7 @@ describe('context propagation via AsyncLocalStorage', () => {
 
   test('runWithContext sync — context applied in log inside', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
 
     runWithContext({ requestId: 'abc', traceId: 'xyz' }, () => {
       log.info('hello')
@@ -31,7 +31,7 @@ describe('context propagation via AsyncLocalStorage', () => {
 
   test('runWithContext async — context propagates through await', async () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
 
     await runWithContext({ requestId: 'async-req' }, async () => {
       await Promise.resolve()
@@ -47,7 +47,7 @@ describe('context propagation via AsyncLocalStorage', () => {
 
   test('nested runWithContext — child ctx merges with parent', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
 
     runWithContext({ requestId: 'parent-req', level: 'outer' }, () => {
       runWithContext({ traceId: 'child-trace', level: 'inner' }, () => {
@@ -66,7 +66,7 @@ describe('context propagation via AsyncLocalStorage', () => {
 
   test('direct context argument overrides ALS context', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
 
     runWithContext({ requestId: 'from-als', extra: 'als-extra' }, () => {
       log.info('msg', { requestId: 'from-arg', direct: true })
@@ -81,7 +81,7 @@ describe('context propagation via AsyncLocalStorage', () => {
 
   test('bindings override ALS but direct context arg overrides bindings', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
     const child = log.child({ requestId: 'from-binding', svc: 'api' })
 
     runWithContext({ requestId: 'from-als', traceId: 'tid' }, () => {
@@ -97,7 +97,7 @@ describe('context propagation via AsyncLocalStorage', () => {
 
   test('parallel runWithContext — no leak between branches', async () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
 
     await Promise.all([
       runWithContext({ requestId: 'branch-A' }, async () => {
@@ -127,7 +127,7 @@ describe('context propagation via AsyncLocalStorage', () => {
 
   test('log without runWithContext does not add ALS context', () => {
     const { transport, entries } = makeTransport()
-    const log = new LoggerStrategy({ transports: [transport] })
+    const log = new EmitIoStrategy({ transports: [transport] })
 
     log.info('no context')
 

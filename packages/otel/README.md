@@ -19,7 +19,7 @@ import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
 import { LoggerProvider, SimpleLogRecordProcessor } from '@opentelemetry/sdk-logs'
 
-import { LoggerStrategy, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, LogLevelEnum } from 'emit-io-core'
 import { OTelProvider, OTelTransport } from 'emit-io-otel'
 
 // 1. Init OTel SDK externally
@@ -34,7 +34,7 @@ loggerProvider.addLogRecordProcessor(
 )
 
 // 2. Wire into emit-io-core
-const emit = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [
     new OTelTransport({
       minLevel: LogLevelEnum.INFO,

@@ -12,7 +12,7 @@ npm install emit-io-core
 
 ```typescript
 import {
-  LoggerStrategy,
+  EmitIoStrategy,
   ConsoleTransport,
   JSONTransport,
   HTTPTransport,
@@ -21,7 +21,7 @@ import {
   LogLevelEnum,
 } from 'emit-io-core'
 
-const emit = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [
     new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG, pretty: true }),
     new JSONTransport({ minLevel: LogLevelEnum.INFO }),
@@ -52,10 +52,10 @@ emit.logFeature('Checkout', 'step_completed', { step: 2 })
 
 ## API
 
-### `new LoggerStrategy(config?)`
+### `new EmitIoStrategy(config?)`
 
 ```typescript
-interface LoggerConfig {
+interface EmitIoStrategyConfig {
   transports?: Transport[]
   providers?: AnalyticsProvider[]
   plugins?: Plugin[]
@@ -209,13 +209,13 @@ const safe = circuitBreaker(myProvider, {
   cooldownMs: 30_000,
   onStateChange: (state, name) => emit.warn('circuit', { state, name }),
 })
-new LoggerStrategy({ providers: [safe] })
+new EmitIoStrategy({ providers: [safe] })
 ```
 
 ## Pre-Init Buffer
 
 ```typescript
-const emit = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   preInitBuffer: { size: 100 },
 })
 
@@ -228,9 +228,9 @@ emit.init()              // flushes buffer → providers
 ## Test Helpers
 
 ```typescript
-import { createTestLogger } from 'emit-io-core/test'
+import { createTestEmitter } from 'emit-io-core/test'
 
-const { logger, entries } = createTestLogger()
+const { emit, entries } = createTestEmitter()
 emit.info('hello', { x: 1 })
 // entries() returns all LogEntry objects captured so far
 ```

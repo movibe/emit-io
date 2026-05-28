@@ -1,5 +1,5 @@
 import { Bench } from 'tinybench'
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from '../src/index.js'
+import { EmitIoStrategy, ConsoleTransport, LogLevelEnum } from '../src/index.js'
 
 async function main() {
   const bench = new Bench({ time: 1000 })
@@ -10,23 +10,23 @@ async function main() {
     log: () => {},
   }
 
-  const logger = new LoggerStrategy({
+  const emit = new EmitIoStrategy({
     transports: [noopTransport],
     emitAppOpenOnInit: false,
   })
 
   bench
     .add('info no context', () => {
-      logger.info('hello')
+      emit.info('hello')
     })
     .add('info with context', () => {
-      logger.info('hello', { userId: 'abc', requestId: 'xyz' })
+      emit.info('hello', { userId: 'abc', requestId: 'xyz' })
     })
     .add('error with stack', () => {
-      logger.error('boom', { err: new Error('x').stack })
+      emit.error('boom', { err: new Error('x').stack })
     })
     .add('event analytics noop', () => {
-      logger.event('user-login', { method: 'email' })
+      emit.event('user-login', { method: 'email' })
     })
 
   await bench.run()

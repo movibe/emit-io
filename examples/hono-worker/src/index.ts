@@ -1,15 +1,15 @@
 /**
  * Cloudflare Worker example using Hono + emit-io-hono.
  *
- * - LoggerStrategy with HTTPTransport ships log batches to a remote ingest URL.
+ * - EmitIoStrategy with HTTPTransport ships log batches to a remote ingest URL.
  * - loggerMiddleware attaches a request-scoped child logger to each request.
- * - executionCtx.waitUntil(logger.close()) lets the Worker finish flushing
+ * - executionCtx.waitUntil(emit.close()) lets the Worker finish flushing
  *   buffered log batches after returning the response.
  */
 
 import { Hono } from 'hono'
 import {
-  LoggerStrategy,
+  EmitIoStrategy,
   HTTPTransport,
   LogLevelEnum,
 } from 'emit-io-core'
@@ -21,12 +21,12 @@ export interface Env {
 }
 
 type Variables = {
-  logger: LoggerStrategy
+  logger: EmitIoStrategy
   requestId: string
 }
 
-function buildLogger(env: Env): LoggerStrategy {
-  return new LoggerStrategy({
+function buildLogger(env: Env): EmitIoStrategy {
+  return new EmitIoStrategy({
     transports: [
       new HTTPTransport({
         url: env.LOG_INGEST_URL,
@@ -49,13 +49,13 @@ const app = new Hono<{ Bindings: Env; Variables: Variables }>()
 // Build & attach a per-request logger middleware. We rebuild the logger
 // per Worker invocation so each isolate-bound batch is bounded by waitUntil.
 app.use('*', async (c, next) => {
-  const logger = buildLogger(c.env)
+  const emit = buildLogger(c.env)
   // Inject middleware on the fly so it has the current logger instance.
-  const handler = loggerMiddleware({ logger })
+  const handler = loggerMiddleware({ logger: emit })
   await handler(c, async () => {
     await next()
     // Schedule flush after the response is sent.
-    c.executionCtx.waitUntil(logger.close())
+    c.executionCtx.waitUntil(emit.close())
   })
 })
 

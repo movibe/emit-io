@@ -2,7 +2,7 @@
 //
 // NOTE: This transport does NOT filter by minLevel in log().
 // Filtering is the responsibility of the upstream emitToTransports
-// in LoggerStrategy (which compares entry.level >= transport.minLevel).
+// in EmitIoStrategy (which compares entry.level >= transport.minLevel).
 // This matches the behaviour of ConsoleTransport.
 
 import type { LogEntry, Transport } from './types.js'

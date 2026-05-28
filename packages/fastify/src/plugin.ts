@@ -1,17 +1,17 @@
 import fp from 'fastify-plugin'
 import type { FastifyPluginAsync } from 'fastify'
-import { type LoggerStrategy } from 'emit-io-core'
+import { type EmitIoStrategy } from 'emit-io-core'
 import { randomUUID } from 'node:crypto'
 
 declare module 'fastify' {
   interface FastifyRequest {
-    log_: LoggerStrategy
+    log_: EmitIoStrategy
     requestId: string
   }
 }
 
 export interface LoggerPluginOptions {
-  logger: LoggerStrategy
+  logger: EmitIoStrategy
   /** Header name for request id (default 'x-request-id') */
   requestIdHeader?: string
   /** Auto log request start/end (default true) */

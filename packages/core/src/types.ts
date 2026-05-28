@@ -62,7 +62,7 @@ export interface ConsentState {
   errors?: boolean
 }
 
-export interface LoggerConfig<
+export interface EmitIoStrategyConfig<
   TEvent extends Record<string, any> = EVENT_TAGS,
   TUser extends { id: string } = User
 > {
@@ -136,7 +136,7 @@ export interface PaymentData extends CheckoutData {
   type: string;
 }
 
-/** @deprecated Use AnalyticsProvider + LoggerConfig */
+/** @deprecated Use AnalyticsProvider +EmitIoStrategyConfig */
 export interface LoggerStrategyConstructor<
   TLogTags extends string = LOG_TAGS,
   TNetworkTags extends string = NETWORK_ANALYTICS_TAGS,

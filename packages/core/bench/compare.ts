@@ -1,5 +1,5 @@
 import { Bench } from 'tinybench'
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from '../src/index.js'
+import { EmitIoStrategy, JSONTransport, LogLevelEnum } from '../src/index.js'
 import pino from 'pino'
 import winston from 'winston'
 import { createWriteStream } from 'node:fs'
@@ -7,7 +7,7 @@ import { devNull } from 'node:os'
 
 const devNullStream = createWriteStream(devNull)
 
-const emitLogger = new LoggerStrategy({
+const emitLogger = new EmitIoStrategy({
   transports: [new JSONTransport({
     minLevel: LogLevelEnum.INFO,
     write: (line) => devNullStream.write(line),

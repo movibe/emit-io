@@ -42,15 +42,15 @@ npx emit-io-codegen generate analytics-schema.yaml --out src/analytics
 
 Outputs:
 - `src/analytics/analytics-events.types.ts` — `EventRegistry` augmentation + per-event interfaces
-- `src/analytics/analytics-tracker.ts` — typed wrapper around `LoggerStrategy`
+- `src/analytics/analytics-tracker.ts` — typed wrapper around `EmitIoStrategy`
 
 ### 3. Use the generated tracker
 
 ```typescript
 import { createAnalyticsTracker } from './analytics/analytics-tracker'
-import { LoggerStrategy } from 'emit-io-core'
+import { EmitIoStrategy } from 'emit-io-core'
 
-const logger = new LoggerStrategy({ /* ... */ })
+const emit = new EmitIoStrategy({ /* ... */ })
 const tracker = createAnalyticsTracker(logger)
 
 tracker.purchase({ orderId: 'x', total: 99 })      // typed

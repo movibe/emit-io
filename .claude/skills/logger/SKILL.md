@@ -43,8 +43,8 @@ When a user asks to install or use the logger, first identify the project type t
 
 **Node / plain TypeScript:**
 ```typescript
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
-const logger = new LoggerStrategy({
+import { EmitIoStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
+const emit = new EmitIoStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
 })
 emit.info('started', { port: 3000 })
@@ -53,27 +53,27 @@ emit.info('started', { port: 3000 })
 **Next.js App Router:**
 ```typescript
 // lib/emit.ts
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
-export const logger = new LoggerStrategy({
+import { EmitIoStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
+export const emit = new EmitIoStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
 })
 
 // middleware.ts
 import { withLogger } from 'emit-io-next'
-export default withLogger(async (req) => NextResponse.next(), { logger, trackPageviews: true })
+export default withLogger(async (req) => NextResponse.next(), { logger: emit, trackPageviews: true })
 ```
 
 **Next.js + React (hybrid — logger in middleware + context in client):**
 ```typescript
 // middleware.ts — server-side logging via emit-io-next
-// app/layout.tsx — wrap with <AnalyticsProvider client={logger}> from emit-io-react
+// app/layout.tsx — wrap with <AnalyticsProvider client={emit}> from emit-io-react
 ```
 
 **React SPA:**
 ```tsx
 import { AnalyticsProvider, useAnalytics, usePageTracking } from 'emit-io-react'
 function App() {
-  return <AnalyticsProvider client={logger} autoTrack><Routes /></AnalyticsProvider>
+  return <AnalyticsProvider client={emit} autoTrack><Routes /></AnalyticsProvider>
 }
 ```
 
@@ -81,28 +81,28 @@ function App() {
 ```tsx
 import { AnalyticsProvider, useAnalytics, useScreenTracking } from 'emit-io-react-native'
 export default function App() {
-  return <AnalyticsProvider client={logger} trackAppState><RootStack /></AnalyticsProvider>
+  return <AnalyticsProvider client={emit} trackAppState><RootStack /></AnalyticsProvider>
 }
 ```
 
 **Fastify:**
 ```typescript
 import { loggerPlugin } from 'emit-io-fastify'
-app.register(loggerPlugin, { logger })
+app.register(loggerPlugin, { logger: emit })
 // request.log_.info('handling') — child logger with requestId auto-bound
 ```
 
 **Hono:**
 ```typescript
 import { loggerMiddleware } from 'emit-io-hono'
-app.use('*', loggerMiddleware({ logger }))
+app.use('*', loggerMiddleware({ logger: emit }))
 // c.get('log').info('handling')
 ```
 
 **OTel:**
 ```typescript
 import { OTelTransport, OTelProvider } from 'emit-io-otel'
-new LoggerStrategy({
+new EmitIoStrategy({
   transports: [new OTelTransport()],  // logs → LogRecords
   providers: [new OTelProvider()],    // events → spans
 })
@@ -121,7 +121,7 @@ All packages published on npm under the `@emit` scope.
 
 ```
 packages/
-  core/         emit-io-core              — LoggerStrategy, transports, plugins, types
+  core/         emit-io-core              — EmitIoStrategy, transports, plugins, types
   react/        emit-io-react         — React hooks, provider + RSC server
   react-native/ emit-io-react-native   — RN hooks, provider, navigation, AppState
   fastify/      emit-io-fastify       — Fastify plugin (per-request logging)

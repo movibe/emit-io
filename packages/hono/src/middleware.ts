@@ -1,8 +1,8 @@
 import type { MiddlewareHandler } from 'hono'
-import { runWithContext, type LoggerStrategy } from 'emit-io-core'
+import { runWithContext, type EmitIoStrategy } from 'emit-io-core'
 
 export interface LoggerMiddlewareOptions {
-  logger: LoggerStrategy
+  logger: EmitIoStrategy
   /** Header name for request id (default 'x-request-id') */
   requestIdHeader?: string
   /** Auto log request start/end (default true) */

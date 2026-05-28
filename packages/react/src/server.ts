@@ -1,9 +1,9 @@
 // No 'use client' — this module is safe to import in server context (Next.js server actions, etc.)
-import type { LoggerStrategy } from 'emit-io-core'
+import type { EmitIoStrategy } from 'emit-io-core'
 
 /**
  * withAnalytics — wraps a Next.js server action (or any async function) to
- * automatically track success/error events with duration via a LoggerStrategy.
+ * automatically track success/error events with duration via a EmitIoStrategy.
  *
  * Usage:
  *   const myAction = withAnalytics(originalAction, {
@@ -14,14 +14,14 @@ import type { LoggerStrategy } from 'emit-io-core'
  *
  * @param action - The async function / server action to wrap.
  * @param options.eventName - Base event name. Logged with status='success'|'error'.
- * @param options.logger - Optional LoggerStrategy instance to fire events on.
+ * @param options.logger - Optional EmitIoStrategy instance to fire events on.
  * @param options.extractProps - Optional function to extract additional properties from args.
  */
 export function withAnalytics<TArgs extends any[], TResult>(
   action: (...args: TArgs) => Promise<TResult>,
   options: {
     eventName: string
-    logger?: LoggerStrategy
+    logger?: EmitIoStrategy
     extractProps?: (...args: TArgs) => Record<string, unknown>
   }
 ): (...args: TArgs) => Promise<TResult> {

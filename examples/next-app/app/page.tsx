@@ -1,11 +1,11 @@
-import { logger } from '../lib/logger.js'
+import { emit } from '../lib/emit.js'
 
 export default async function HomePage() {
-  logger.info('rendering HomePage (RSC)')
+  emit.info('rendering HomePage (RSC)')
 
   return (
     <main style={{ padding: 24, fontFamily: 'system-ui' }}>
-      <h1>@emit-io/next example</h1>
+      <h1>emit-io-next example</h1>
       <p>Middleware emits request logs with auto requestId + pageview events.</p>
       <ul>
         <li>

@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { AnalyticsProvider } from '@emit-io/react'
-import { logger } from './logger'
+import { AnalyticsProvider } from 'emit-io-react'
+import { emit } from './logger'
 import { App } from './App'
 
 const container = document.getElementById('root')
@@ -11,7 +11,7 @@ if (!container) {
 
 createRoot(container).render(
   <StrictMode>
-    <AnalyticsProvider client={logger} autoTrack>
+    <AnalyticsProvider client={emit} autoTrack>
       <App />
     </AnalyticsProvider>
   </StrictMode>,

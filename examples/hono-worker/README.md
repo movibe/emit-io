@@ -4,12 +4,12 @@ Cloudflare Worker example using [Hono](https://hono.dev) and `emit-io-hono`.
 
 The Worker:
 
-- Builds a `LoggerStrategy` per request with an `HTTPTransport` that POSTs
+- Builds an `EmitIoStrategy` per request with an `HTTPTransport` that POSTs
   batched log entries to a remote ingest endpoint.
 - Uses `loggerMiddleware` from `emit-io-hono` to attach a request-scoped
   child logger (with `requestId`, `method`, `path`) to every Hono context.
 - Defers the final batch flush with
-  `c.executionCtx.waitUntil(logger.close())` so the response returns
+  `c.executionCtx.waitUntil(emit.close())` so the response returns
   immediately while pending log batches finish in the background.
 
 ## Routes
@@ -17,7 +17,7 @@ The Worker:
 - `GET /` — minimal hello response, logs `hello-handler`.
 - `GET /api/data` — returns a static list, logs `fetching-data`.
 - `POST /api/event` — accepts JSON `{ name, ...properties }` and calls
-  `logger.event(name, body)` plus `logger.info('event-received')`.
+  `emit.event(name, body)` plus `emit.info('event-received')`.
 
 ## Run locally
 
@@ -62,7 +62,7 @@ the token to `wrangler.toml`.
 - `nodejs_compat` is enabled in `wrangler.toml` only to keep TypeScript types
   permissive across `emit-io-core`'s shared core; runtime code paths used
   here do not require it.
-- Each request constructs its own logger so that `waitUntil(logger.close())`
+- Each request constructs its own logger so that `waitUntil(emit.close())`
   has a well-defined lifecycle. For higher throughput you can hoist the logger
-  to module scope and call `logger.flush()` (instead of `close()`) inside
+  to module scope and call `emit.flush()` (instead of `close()`) inside
   `waitUntil`.

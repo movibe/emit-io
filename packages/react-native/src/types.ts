@@ -1,8 +1,8 @@
-import type { LoggerStrategy, AnalyticsProvider } from 'emit-io-core'
+import type { EmitIoStrategy, AnalyticsProvider } from 'emit-io-core'
 import type { ReactNode } from 'react'
 
 export interface AnalyticsContextValue {
-  client: LoggerStrategy
+  client: EmitIoStrategy
   providers: AnalyticsProvider[]
   event: (name: string, properties?: Record<string, unknown>) => void
   screen: (name: string, params?: Record<string, unknown>) => void
@@ -11,7 +11,7 @@ export interface AnalyticsContextValue {
 }
 
 export interface AnalyticsProviderProps {
-  client: LoggerStrategy
+  client: EmitIoStrategy
   children: ReactNode
   /** Auto-track AppState transitions (foreground/background) — default true */
   trackAppState?: boolean

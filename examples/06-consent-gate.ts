@@ -1,4 +1,4 @@
-import { LoggerStrategy, ConsoleTransport, type AnalyticsProvider, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, ConsoleTransport, type AnalyticsProvider, LogLevelEnum } from 'emit-io-core'
 
 // The consent gate blocks analytics calls when analytics: false.
 // Structural log output (transports) is never blocked.
@@ -15,17 +15,17 @@ const analyticsProvider: AnalyticsProvider = {
   },
 }
 
-const logger = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG })],
   providers: [analyticsProvider],
   consent: { analytics: false, errors: true },
 })
 
-logger.event('user-login', { method: 'oauth' })         // BLOCKED by consent
-logger.captureError('Auth', 'fail', false, new Error()) // ALLOWED (errors: true)
+emit.event('user-login', { method: 'oauth' })         // BLOCKED by consent
+emit.captureError('Auth', 'fail', false, new Error()) // ALLOWED (errors: true)
 
 // User accepts cookies in the UI
-logger.setConsent({ analytics: true })
+emit.setConsent({ analytics: true })
 
-logger.event('user-login', { method: 'oauth' })         // NOW allowed
-console.log(logger.getConsent())                        // { analytics: true, errors: true }
+emit.event('user-login', { method: 'oauth' })         // NOW allowed
+console.log(emit.getConsent())                        // { analytics: true, errors: true }

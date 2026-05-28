@@ -8,14 +8,14 @@
  * the example self-contained when started without the `--import` flag.
  */
 import './tracing.js'
-import { logger } from './logger.js'
+import { emit } from './emit.js'
 
 async function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 async function main(): Promise<void> {
-  logger.info('service starting', { pid: process.pid })
+  emit.info('service starting', { pid: process.pid })
 
   // Simulate 5 analytics events + accompanying structured logs.
   const orders = [
@@ -27,8 +27,8 @@ async function main(): Promise<void> {
   ] as const
 
   for (const order of orders) {
-    logger.info('order received', { orderId: order.id, total: order.total })
-    logger.event('order.created', {
+    emit.info('order received', { orderId: order.id, total: order.total })
+    emit.event('order.created', {
       orderId: order.id,
       sku: order.sku,
       total: order.total,
@@ -40,19 +40,19 @@ async function main(): Promise<void> {
   try {
     throw new Error('downstream payment provider timed out')
   } catch (err) {
-    logger.captureError('Payments', 'charge_timeout', true, err as Error, {
+    emit.captureError('Payments', 'charge_timeout', true, err as Error, {
       orderId: 'ord-005',
       provider: 'stripe',
     })
   }
 
-  logger.info('service finished simulation', { events: orders.length, errors: 1 })
+  emit.info('service finished simulation', { events: orders.length, errors: 1 })
 
   // Give exporters a moment to flush before process exit.
   await sleep(2000)
 }
 
 main().catch((err) => {
-  logger.captureError('Bootstrap', 'main_failed', true, err as Error)
+  emit.captureError('Bootstrap', 'main_failed', true, err as Error)
   process.exitCode = 1
 })

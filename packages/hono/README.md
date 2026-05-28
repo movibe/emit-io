@@ -12,10 +12,10 @@ npm install emit-io-core emit-io-hono
 
 ```typescript
 import { Hono } from 'hono'
-import { LoggerStrategy, JSONTransport, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, JSONTransport, LogLevelEnum } from 'emit-io-core'
 import { loggerMiddleware } from 'emit-io-hono'
 
-const emit = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [new JSONTransport({ minLevel: LogLevelEnum.INFO })],
 })
 
@@ -24,7 +24,7 @@ const app = new Hono()
 app.use('*', loggerMiddleware({ logger }))
 
 app.get('/orders', (c) => {
-  const log = c.get('logger')   // child LoggerStrategy with { requestId, method, path }
+  const log = c.get('logger')   // child EmitIoStrategy with { requestId, method, path }
   const requestId = c.get('requestId')
 
   log.info('fetching orders')
@@ -43,7 +43,7 @@ import { loggerMiddleware } from 'emit-io-hono'
 import type { LoggerMiddlewareOptions } from 'emit-io-hono'
 
 const options: LoggerMiddlewareOptions = {
-  logger,                          // required: LoggerStrategy instance
+  logger: emit, // required: EmitIoStrategy instance
   requestIdHeader: 'x-request-id', // default: 'x-request-id'
   autoLog: true,                   // default: true
   contextKey: 'logger',            // default: 'logger' — key for c.get()
@@ -58,7 +58,7 @@ After the middleware runs, the Hono context exposes:
 
 | Key | Type | Description |
 |---|---|---|
-| `c.get('logger')` | `LoggerStrategy` | Child logger with `{ requestId, method, path }` |
+| `c.get('logger')` | `EmitIoStrategy` | Child logger with `{ requestId, method, path }` |
 | `c.get('requestId')` | `string` | Request ID from header or generated UUID |
 
 ### Behaviour

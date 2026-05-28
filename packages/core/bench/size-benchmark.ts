@@ -18,12 +18,12 @@ function getSize(dir: string): number {
 }
 
 async function main() {
-  const { LoggerStrategy, LogLevelEnum } = await import('../dist/index.js')
+  const { EmitIoStrategy, LogLevelEnum } = await import('../dist/index.js')
   const pino = (await import('pino')).default
   const winston = await import('winston')
 
   // emit-io-core — noop transport
-  const emitIoLogger = new LoggerStrategy({
+  const emitIoLogger = new EmitIoStrategy({
     transports: [{ name: 'noop', minLevel: LogLevelEnum.DEBUG, log: () => {} }],
     emitAppOpenOnInit: false,
   })

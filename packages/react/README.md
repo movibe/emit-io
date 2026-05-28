@@ -12,15 +12,15 @@ npm install emit-io-core emit-io-react
 
 ```tsx
 import { AnalyticsProvider, useAnalytics, usePageTracking, useTrackEvent } from 'emit-io-react'
-import { LoggerStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
+import { EmitIoStrategy, ConsoleTransport, LogLevelEnum } from 'emit-io-core'
 
-const logger = new LoggerStrategy({
+const emit = new EmitIoStrategy({
   transports: [new ConsoleTransport({ minLevel: LogLevelEnum.INFO })],
 })
 
 export default function App() {
   return (
-    <AnalyticsProvider client={logger} autoTrack>
+    <AnalyticsProvider client={emit} autoTrack>
       <Router />
     </AnalyticsProvider>
   )
@@ -42,14 +42,14 @@ function ProductPage() {
 
 ```tsx
 <AnalyticsProvider
-  client={logger}
+  client={emit}
   autoTrack   // auto-fire screen view on location changes
 >
   {children}
 </AnalyticsProvider>
 ```
 
-**Props:** `client: LoggerStrategy`, `autoTrack?: boolean`, `children: ReactNode`
+**Props:** `client: EmitIoStrategy`, `autoTrack?: boolean`, `children: ReactNode`
 
 ## Hooks
 
@@ -91,7 +91,7 @@ Safe to import in server components and server actions — no `'use client'` dir
 
 ```typescript
 import { withAnalytics } from 'emit-io-react/server'
-import { logger } from '@/lib/logger'
+import { emit } from './lib/emit'
 
 export const submitForm = withAnalytics(
   async (formData: FormData) => {
@@ -111,7 +111,7 @@ Fires `eventName` with `status: 'success' | 'error'` and `durationMs` automatica
 
 ```typescript
 interface AnalyticsContextValue {
-  client: LoggerStrategy
+  client: EmitIoStrategy
   providers: AnalyticsProvider[]
   event(name: string, properties?: Record<string, unknown>): void
   screen(name: string, params?: Record<string, unknown>): void
