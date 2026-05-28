@@ -182,6 +182,13 @@ function HomeScreen() {
 
 ## Transports
 
+All transports support `enabled?: boolean` (default `true`). Toggle at runtime via feature flags:
+
+```typescript
+const devtools = new DevToolsTransport({ enabled: false }) // off in production
+// later: devtools.enabled = true   // enable for debugging
+```
+
 | Transport | Description |
 |---|---|
 | `ConsoleTransport` | Pretty or plain console output |
@@ -195,6 +202,7 @@ import { HTTPTransport } from 'emit-io-core'
 new HTTPTransport({
   url: 'https://logs.example.com/ingest',
   minLevel: LogLevelEnum.WARN,
+  enabled: process.env.NODE_ENV === 'production',
   batchSize: 50,
   flushIntervalMs: 5000,
   maxRetries: 3,

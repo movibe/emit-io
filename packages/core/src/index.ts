@@ -160,7 +160,7 @@ export class LoggerStrategy<
     if (processed === null) return
 
     for (const transport of this.transports) {
-      if (processed.level >= transport.minLevel) {
+      if (transport.enabled !== false && processed.level >= transport.minLevel) {
         transport.log(processed)
       }
     }

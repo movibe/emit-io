@@ -18,9 +18,10 @@ export interface LogEntry {
   error?: Error
 }
 
-export interface Transport {
+export type Transport = {
   readonly name: string
   readonly minLevel: LogLevel
+  enabled?: boolean
   log(entry: LogEntry): void | Promise<void>
   flush?(): void | Promise<void>
 }

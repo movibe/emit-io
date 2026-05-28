@@ -208,4 +208,14 @@ describe('JSONTransport', () => {
     const transport = new JSONTransport()
     expect(() => transport.flush()).not.toThrow()
   })
+
+  test('enabled defaults to true', () => {
+    const transport = new JSONTransport()
+    expect(transport.enabled).toBe(true)
+  })
+
+  test('enabled: false', () => {
+    const transport = new JSONTransport({ enabled: false })
+    expect(transport.enabled).toBe(false)
+  })
 })

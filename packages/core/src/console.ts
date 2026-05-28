@@ -29,17 +29,20 @@ export interface ConsoleTransportOptions {
   name?: string
   minLevel?: LogLevel
   pretty?: boolean
+  enabled?: boolean
 }
 
 export class ConsoleTransport implements Transport {
   readonly name: string
   readonly minLevel: LogLevel
+  enabled: boolean
   private pretty: boolean
 
   constructor(options?: ConsoleTransportOptions) {
     this.name = options?.name ?? 'console'
     this.minLevel = options?.minLevel ?? LogLevel.DEBUG
     this.pretty = options?.pretty ?? true
+    this.enabled = options?.enabled ?? true
   }
 
   log(entry: LogEntry): void {

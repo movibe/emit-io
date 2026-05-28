@@ -107,10 +107,14 @@ interface LoggerConfig {
 
 ## Transports
 
+All transports accept `enabled?: boolean` (default `true`). Set to `false` at construction or toggle at runtime to control delivery via feature flags.
+
 ### `ConsoleTransport`
 
 ```typescript
 new ConsoleTransport({ minLevel: LogLevelEnum.DEBUG, pretty: true })
+// Disable console logging in production:
+new ConsoleTransport({ enabled: process.env.NODE_ENV !== 'production' })
 ```
 
 ### `JSONTransport`
@@ -127,6 +131,7 @@ new JSONTransport({ write: (line) => fs.appendFileSync('app.log', line) })
 new HTTPTransport({
   url: 'https://logs.example.com/ingest',
   minLevel: LogLevelEnum.WARN,
+  enabled: process.env.NODE_ENV === 'production',
   batchSize: 50,
   flushIntervalMs: 5000,
   maxRetries: 3,
@@ -139,6 +144,8 @@ new HTTPTransport({
 
 ```typescript
 new DevToolsTransport({ url: 'ws://localhost:9999' })
+// Only active in development:
+new DevToolsTransport({ enabled: __DEV__ })
 ```
 
 Connects via WebSocket to a devtools panel. Buffers entries while disconnected and drains on reconnect.
