@@ -1,5 +1,14 @@
 # emit-io-otel
 
+## 1.0.4
+
+### Patch Changes
+
+- Auto patch release
+
+- Updated dependencies []:
+  - emit-io-core@1.0.4
+
 ## 1.0.3
 
 ### Patch Changes

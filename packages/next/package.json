@@ -1,6 +1,6 @@
 {
   "name": "emit-io-next",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Next.js bindings for emit-io — middleware, route handlers, RSC support",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -31,7 +31,7 @@
     "prepack": "bun run build:all"
   },
   "peerDependencies": {
-    "emit-io-core": "^1.0.3",
+    "emit-io-core": "^1.0.4",
     "next": "^14.0.0 || ^15.0.0"
   },
   "devDependencies": {
