@@ -23,7 +23,7 @@ const emit = new EmitIoStrategy({
 
 const app = Fastify({ logger: false })
 
-await app.register(loggerPlugin, { logger })
+await app.register(loggerPlugin, { logger: emit })
 
 app.get('/orders', async (req) => {
   req.log_.info('fetching orders')
@@ -45,7 +45,7 @@ import { loggerPlugin } from 'emit-io-fastify'
 import type { LoggerPluginOptions } from 'emit-io-fastify'
 
 await app.register(loggerPlugin, {
-  logger,                          // required: EmitIoStrategy instance
+  logger: emit, // required: EmitIoStrategy instance
   requestIdHeader: 'x-request-id', // default: 'x-request-id'
   autoLog: true,                   // default: true — logs request-start and request-complete
 })

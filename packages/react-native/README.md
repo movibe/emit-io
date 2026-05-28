@@ -22,7 +22,7 @@ const emit = new EmitIoStrategy({
 
 export default function App() {
   return (
-    <AnalyticsProvider client={logger} trackAppState>
+    <AnalyticsProvider client={emit} trackAppState>
       <RootStack />
     </AnalyticsProvider>
   )
@@ -40,7 +40,7 @@ function HomeScreen() {
 
 ```tsx
 <AnalyticsProvider
-  client={logger}
+  client={emit}
   trackAppState   // auto-track foreground/background via AppState (default: true)
 >
   {children}

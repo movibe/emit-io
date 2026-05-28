@@ -20,7 +20,7 @@ const emit = new EmitIoStrategy({
 
 export default function App() {
   return (
-    <AnalyticsProvider client={logger} autoTrack>
+    <AnalyticsProvider client={emit} autoTrack>
       <Router />
     </AnalyticsProvider>
   )
@@ -42,7 +42,7 @@ function ProductPage() {
 
 ```tsx
 <AnalyticsProvider
-  client={logger}
+  client={emit}
   autoTrack   // auto-fire screen view on location changes
 >
   {children}
@@ -91,7 +91,7 @@ Safe to import in server components and server actions — no `'use client'` dir
 
 ```typescript
 import { withAnalytics } from 'emit-io-react/server'
-import { logger } from '@/lib/logger'
+import { emit } from './lib/emit'
 
 export const submitForm = withAnalytics(
   async (formData: FormData) => {

@@ -10,7 +10,7 @@ export function useAnalytics(): AnalyticsContextValue {
   if (!ctx) {
     throw new Error(
       'useAnalytics() must be used within an <AnalyticsProvider>. ' +
-      'Wrap your component tree with <AnalyticsProvider client={logger}> first.'
+      'Wrap your component tree with <AnalyticsProvider client={emit}> first.'
     )
   }
   return ctx

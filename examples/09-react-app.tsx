@@ -7,7 +7,7 @@ import {
   AnalyticsErrorBoundary,
 } from 'emit-io-react'
 
-// Create the logger once at module level — share via context
+// Create the EmitIoStrategy once at module level — share via context
 const consoleProvider: AnalyticsProvider = {
   name: 'console',
   enabled: true,

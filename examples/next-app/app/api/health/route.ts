@@ -6,5 +6,5 @@ export const GET = instrumentRoute(
   async () => {
     return NextResponse.json({ ok: true, ts: Date.now() })
   },
-  { logger, eventName: 'health-checked' }
+  { logger: emit, eventName: 'health-checked' }
 )

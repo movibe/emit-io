@@ -17,7 +17,7 @@ export const middleware = withLogger(
     return NextResponse.next()
   },
   {
-    logger,
+    logger: emit,
     trackPageviews: true,
   }
 )

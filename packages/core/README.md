@@ -230,7 +230,7 @@ emit.init()              // flushes buffer → providers
 ```typescript
 import { createTestEmitter } from 'emit-io-core/test'
 
-const { logger, entries } = createTestEmitter()
+const { emit, entries } = createTestEmitter()
 emit.info('hello', { x: 1 })
 // entries() returns all LogEntry objects captured so far
 ```

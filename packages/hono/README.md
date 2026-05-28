@@ -43,7 +43,7 @@ import { loggerMiddleware } from 'emit-io-hono'
 import type { LoggerMiddlewareOptions } from 'emit-io-hono'
 
 const options: LoggerMiddlewareOptions = {
-  logger,                          // required: EmitIoStrategy instance
+  logger: emit, // required: EmitIoStrategy instance
   requestIdHeader: 'x-request-id', // default: 'x-request-id'
   autoLog: true,                   // default: true
   contextKey: 'logger',            // default: 'logger' — key for c.get()

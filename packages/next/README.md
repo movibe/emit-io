@@ -23,11 +23,11 @@ export const emit = new EmitIoStrategy({
 // middleware.ts
 import { withLogger } from 'emit-io-next'
 import { NextResponse } from 'next/server'
-import { logger } from './lib/logger'
+import { emit } from './lib/emit'
 
 export default withLogger(
   async (req) => NextResponse.next(),
-  { logger, trackPageviews: true }
+  { logger: emit, trackPageviews: true }
 )
 
 export const config = { matcher: ['/((?!_next|favicon).*)'] }
@@ -36,11 +36,11 @@ export const config = { matcher: ['/((?!_next|favicon).*)'] }
 ```typescript
 // app/api/orders/route.ts
 import { instrumentRoute } from 'emit-io-next'
-import { logger } from '@/lib/logger'
+import { emit } from './lib/emit'
 
 export const GET = instrumentRoute(
   async (req) => Response.json({ orders: [] }),
-  { logger, eventName: 'get-orders' }
+  { logger: emit, eventName: 'get-orders' }
 )
 ```
 
@@ -60,7 +60,7 @@ import { withLogger } from 'emit-io-next'
 import type { MiddlewareOptions } from 'emit-io-next'
 
 const options: MiddlewareOptions = {
-  logger,
+  logger: emit,
   extractRequestId: (req) => req.headers.get('x-trace-id') ?? undefined,
   trackPageviews: true,   // default: true
 }
@@ -84,7 +84,7 @@ export const POST = instrumentRoute(
     const { id } = await ctx.params
     return Response.json({ id })
   },
-  { logger, eventName: 'create-order' }
+  { logger: emit, eventName: 'create-order' }
 )
 ```
 

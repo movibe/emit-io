@@ -12,5 +12,5 @@ export const GET = instrumentRoute<Params>(
     emit.info('fetching user', { userId: id })
     return NextResponse.json({ id, name: 'Demo User' })
   },
-  { logger, eventName: 'user-fetched' }
+  { logger: emit, eventName: 'user-fetched' }
 )

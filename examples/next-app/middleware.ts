@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server'
 import { withLogger } from 'emit-io-next'
-import { logger } from './lib/emit.js'
+import { emit } from './lib/emit.js'
 
 export const middleware = withLogger(
   async (_req) => {
     return NextResponse.next()
   },
-  { logger, trackPageviews: true }
+  { logger: emit, trackPageviews: true }
 )
 
 export const config = {
