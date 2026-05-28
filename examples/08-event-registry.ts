@@ -5,7 +5,7 @@ import { EmitIoStrategy, type AnalyticsProvider } from 'emit-io-core'
 // Place this augmentation in a .d.ts file or any file included by tsconfig.
 
 declare module 'emit-io-core' {
-  type EventRegistry = {
+  interface EventRegistry {
     'purchase': { orderId: string; total: number; currency: 'USD' | 'EUR' }
     'pageview': { path: string; referrer?: string }
     'signup': { method: 'email' | 'oauth'; plan: string }
