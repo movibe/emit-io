@@ -8,7 +8,7 @@ export {
   useCaptureError,
 } from './hooks.js'
 export { useAppStateAnalytics } from './app-state.js'
-export { useNavigationAnalytics } from './navigation.js'
+export { useExpoRouterTracking, useNavigationTracking, useNavigationAnalytics } from './navigation.js'
 export type {
   AnalyticsContextValue,
   AnalyticsProviderProps,
