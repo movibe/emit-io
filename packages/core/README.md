@@ -55,7 +55,7 @@ emit.logFeature('Checkout', 'step_completed', { step: 2 })
 ### `new EmitIoStrategy(config?)`
 
 ```typescript
-interfaceEmitIoStrategyConfig {
+interface EmitIoStrategyConfig {
   transports?: Transport[]
   providers?: AnalyticsProvider[]
   plugins?: Plugin[]

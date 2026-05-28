@@ -1,11 +1,11 @@
 import React from 'react'
-import { LoggerStrategy, type AnalyticsProvider } from '@emit-io/core'
+import { EmitIoStrategy, type AnalyticsProvider } from 'emit-io-core'
 import {
   AnalyticsProvider as AnalyticsContext,
   useAnalytics,
   useEventTracking,
   AnalyticsErrorBoundary,
-} from '@emit-io/react'
+} from 'emit-io-react'
 
 // Create the logger once at module level — share via context
 const consoleProvider: AnalyticsProvider = {
@@ -15,12 +15,12 @@ const consoleProvider: AnalyticsProvider = {
   error(feature, name, critical, err) { console.error('[error]', feature, name, err) },
 }
 
-const emit = new LoggerStrategy({ providers: [consoleProvider] })
+const emit = new EmitIoStrategy({ providers: [consoleProvider] })
 
 // Root — wrap with AnalyticsContext and AnalyticsErrorBoundary
 export function App() {
   return (
-    <AnalyticsContext client={logger} autoTrack>
+    <AnalyticsContext client={emit} autoTrack>
       <AnalyticsErrorBoundary
         onError={(err, info) => emit.captureError('App', 'render-error', true, err)}
       >

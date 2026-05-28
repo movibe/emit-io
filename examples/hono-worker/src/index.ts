@@ -51,7 +51,7 @@ const app = new Hono<{ Bindings: Env; Variables: Variables }>()
 app.use('*', async (c, next) => {
   const emit = buildLogger(c.env)
   // Inject middleware on the fly so it has the current logger instance.
-  const handler = loggerMiddleware({ logger })
+  const handler = loggerMiddleware({ logger: emit })
   await handler(c, async () => {
     await next()
     // Schedule flush after the response is sent.

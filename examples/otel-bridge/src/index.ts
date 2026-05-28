@@ -8,7 +8,7 @@
  * the example self-contained when started without the `--import` flag.
  */
 import './tracing.js'
-import { logger } from './emit.js'
+import { emit } from './emit.js'
 
 async function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))

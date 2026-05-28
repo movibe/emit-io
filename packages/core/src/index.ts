@@ -2,7 +2,7 @@ import type {
   EVENT_TAGS, LOG_TAGS, NETWORK_ANALYTICS_TAGS, User,
   BeginCheckoutEvent, LoggerStrategyConstructor, LoggerStrategyType,
   PurchaseLogEvent, LogLevel, LogEntry, Transport, Plugin,
-  AnalyticsProvider,EmitIoStrategyConfig, RegisteredEvents, ConsentState
+  AnalyticsProvider, EmitIoStrategyConfig, RegisteredEvents, ConsentState
 } from './types.js'
 
 import { LogLevel as LogLevelEnum } from './types.js'
@@ -33,16 +33,16 @@ export class EmitIoStrategy<
   private isBuffering = false
   private consent: ConsentState = { analytics: true, errors: true }
 
-  constructor(config?:EmitIoStrategyConfig<TEvent, TUser> | LoggerStrategyConstructor<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>[])
+  constructor(config?: EmitIoStrategyConfig<TEvent, TUser> | LoggerStrategyConstructor<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>[])
   constructor(
-    config?:EmitIoStrategyConfig<TEvent, TUser> | LoggerStrategyConstructor<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>[]
+    config?: EmitIoStrategyConfig<TEvent, TUser> | LoggerStrategyConstructor<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>[]
   ) {
     this.emitAppOpenOnInit = true
 
     if (!config) return
 
     if (Array.isArray(config)) {
-      console.warn('[EmitIoStrategy] LoggerStrategyConstructor array is deprecated; passEmitIoStrategyConfig with AnalyticsProvider instances. Will be removed in v4.')
+      console.warn('[EmitIoStrategy] LoggerStrategyConstructor array is deprecated; pass EmitIoStrategyConfig with AnalyticsProvider instances. Will be removed in v4.')
       for (const injector of config) {
         if (injector.enabled) {
           this.legacyStrategies.push(injector.class)

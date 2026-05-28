@@ -1,6 +1,6 @@
 import Fastify from 'fastify'
 import { loggerPlugin } from 'emit-io-fastify'
-import { logger } from './emit.js'
+import { emit } from './emit.js'
 import { userRoutes } from './routes/users.js'
 
 const app = Fastify({ disableRequestLogging: true })

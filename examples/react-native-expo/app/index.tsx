@@ -4,7 +4,7 @@ import {
   useScreenTracking,
   useAnalytics,
   useTrackEvent,
-} from '@emit-io/react-native'
+} from 'emit-io-react-native'
 
 export default function HomeScreen() {
   useScreenTracking('Home')
@@ -20,7 +20,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>@emit-io/react-native</Text>
+      <Text style={styles.title}>emit-io-react-native</Text>
       <Text style={styles.subtitle}>
         Open the dev console to see analytics events.
       </Text>

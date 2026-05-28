@@ -4,7 +4,7 @@ Cloudflare Worker example using [Hono](https://hono.dev) and `emit-io-hono`.
 
 The Worker:
 
-- Builds a `EmitIoStrategy` per request with an `HTTPTransport` that POSTs
+- Builds an `EmitIoStrategy` per request with an `HTTPTransport` that POSTs
   batched log entries to a remote ingest endpoint.
 - Uses `loggerMiddleware` from `emit-io-hono` to attach a request-scoped
   child logger (with `requestId`, `method`, `path`) to every Hono context.

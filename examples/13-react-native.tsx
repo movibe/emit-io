@@ -1,13 +1,13 @@
 import React from 'react'
 import { Button, View } from 'react-native'
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native'
-import { LoggerStrategy, type AnalyticsProvider } from '@emit-io/core'
+import { EmitIoStrategy, type AnalyticsProvider } from 'emit-io-core'
 import {
   AnalyticsProvider as AnalyticsContext,
   useAnalytics,
   useScreenTracking,
   useNavigationAnalytics,
-} from '@emit-io/react-native'
+} from 'emit-io-react-native'
 
 const provider: AnalyticsProvider = {
   name: 'console',
@@ -16,15 +16,15 @@ const provider: AnalyticsProvider = {
   screen(name) { console.log('[screen]', name) },
 }
 
-const emit = new LoggerStrategy({ providers: [provider] })
+const emit = new EmitIoStrategy({ providers: [provider] })
 
 // Root component — useNavigationAnalytics auto-tracks screen changes
 export function App() {
   const navRef = useNavigationContainerRef()
-  useNavigationAnalytics(navRef, logger)
+  useNavigationAnalytics(navRef, emit)
 
   return (
-    <AnalyticsContext client={logger} trackAppState>
+    <AnalyticsContext client={emit} trackAppState>
       <NavigationContainer ref={navRef}>
         <RootStack />
       </NavigationContainer>
