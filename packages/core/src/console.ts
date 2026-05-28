@@ -1,5 +1,5 @@
 import type { LogEntry, Transport, AnalyticsProvider } from './types.js'
-import { LogLevel } from './types.js'
+import { LogLevel, resolveEnabled } from './types.js'
 
 const RESET = '\x1b[0m'
 const LEVEL_COLORS: Record<LogLevel, string> = {
@@ -42,7 +42,7 @@ export class ConsoleTransport implements Transport {
     this.name = options?.name ?? 'console'
     this.minLevel = options?.minLevel ?? LogLevel.DEBUG
     this.pretty = options?.pretty ?? true
-    this.enabled = options?.enabled ?? true
+    this.enabled = resolveEnabled(options)
   }
 
   log(entry: LogEntry): void {

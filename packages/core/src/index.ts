@@ -470,6 +470,7 @@ export type {
 } from './types.js'
 
 export { LogLevel as LogLevelEnum } from './types.js'
+export { resolveEnabled } from './types.js'
 
 // Built-in transports and providers
 export {

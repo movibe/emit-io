@@ -18,12 +18,16 @@ export interface LogEntry {
   error?: Error
 }
 
-export type Transport = {
+export interface Transport {
   readonly name: string
   readonly minLevel: LogLevel
   enabled?: boolean
   log(entry: LogEntry): void | Promise<void>
   flush?(): void | Promise<void>
+}
+
+export function resolveEnabled(options?: { enabled?: boolean }): boolean {
+  return options?.enabled ?? true
 }
 
 export type Plugin = (entry: LogEntry) => LogEntry | null
