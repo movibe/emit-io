@@ -1,5 +1,12 @@
 # logger-rn-example
 
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`d958e7b`](https://github.com/movibe/emit-io/commit/d958e7babfabec4cd0dbb4d78a9b73be75f85097)]:
+  - emit-io-react-native@3.0.0
+
 ## 1.0.1
 
 ### Patch Changes
