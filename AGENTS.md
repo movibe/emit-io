@@ -2,27 +2,25 @@
 
 ## TL;DR
 
-Bun workspace monorepo. 8 packages published as `emit-io-*` (no `@` scope). Core class is `EmitIoStrategy` (was `LoggerStrategy`). Zero runtime deps in core. Build with `bun build`, test with vitest (not bun test).
+Bun workspace monorepo. 8 packages published as `emit-io-*` (no `@` scope). Core class is `EmitIoStrategy` (was `LoggerStrategy`). Zero runtime deps in core. Build uses `bun build` for core/codegen and `esbuild --bundle` for all other packages. Test with vitest (not bun test).
 
 ## Commands
 
 ```bash
-bun install              # install all workspace deps
-bun run test             # vitest run (all packages)
+bun install              # install all workspace deps (examples included as workspace members)
+bun run test             # vitest run (34 test files, ~415 tests)
 bun run test:watch       # vitest watch mode
 bun run test:coverage    # vitest + v8 coverage
 bun run build            # build all 8 packages sequentially (core first)
 bun run bench            # core benchmark (tsx tinybench)
 bun run bench:compare    # vs pino + winston
-bun run lint             # ESLint on core only
+bun run lint             # Biome lint across ALL packages
+bun run format           # Biome format --write across ALL packages
+bun run changeset        # create a changeset for release
 
 # Build a single package:
 bun run --filter emit-io-core build:all     # build + types
 bun run --filter emit-io-react build:all
-
-# Test a single package:
-bun test packages/core/src/__tests__/LoggerStrategy.test.ts   # bun test directly
-bun run --filter emit-io-fastify test                          # vitest via script
 ```
 
 ## Architecture
@@ -35,7 +33,7 @@ No `@` scope: `emit-io-core`, `emit-io-react`, `emit-io-react-native`, `emit-io-
 
 - `EmitIoStrategy` — main class (generics: TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent)
 - `EmitIoStrategyConfig` — constructor config (was `LoggerConfig`)
-- `Transport` — interface with `name`, `minLevel`, `enabled?: boolean`, `log()`, `flush()?`
+- `Transport` — interface with `name`, `minLevel`, `enabled?: boolean`, `log()`, `flush?()`, `close?()`
 - `AnalyticsProvider` — interface with `name`, `enabled: boolean`, `event()`, `identify()`, `screen()`, `error()`
 - `Plugin` — `(entry: LogEntry) => LogEntry | null`
 - `LogEntry` — `{ level, message, timestamp, context?, error? }`
@@ -52,18 +50,21 @@ No `@` scope: `emit-io-core`, `emit-io-react`, `emit-io-react-native`, `emit-io-
 ## Build system
 
 ```
-packages/core/          → 6 bundles (Node ESM/CJS, browser ESM, worker ESM, test-utils ESM/CJS)
-packages/react/         → 2 bundles (browser ESM/CJS)
-packages/react-native/  → 2 bundles (browser ESM/CJS)
-packages/next/          → 2 bundles (Node ESM/CJS)
-packages/fastify/       → 2 bundles (Node ESM/CJS)
-packages/hono/          → 2 bundles (Node ESM/CJS)
-packages/otel/          → 2 bundles (Node ESM/CJS)
-packages/codegen/       → 1 bundle (CLI Node ESM)
+packages/core/          → 6 bundles (Node ESM/CJS, browser ESM, worker ESM, test-utils ESM/CJS) — bun build
+packages/codegen/       → 1 bundle (CLI Node ESM) — bun build
+packages/react/         → 2 bundles (browser ESM/CJS) — esbuild --bundle
+packages/react-native/  → 2 bundles (browser ESM/CJS) — esbuild --bundle
+packages/next/          → 2 bundles (Node ESM/CJS) — esbuild --bundle
+packages/fastify/       → 2 bundles (Node ESM/CJS) — esbuild --bundle
+packages/hono/          → 2 bundles (Node ESM/CJS) — esbuild --bundle
+packages/otel/          → 2 bundles (Node ESM/CJS) — esbuild --bundle
 ```
 
+**Why esbuild for most packages:** Bun's bundler does not resolve `.js` → `.ts` extensions in barrel re-export files, producing broken ~260B stubs. Only `emit-io-core` and `emit-io-codegen` use `bun build` because their entry points are not barrel re-exports.
+
+**react-native special case:** Uses `src/_bundle.ts` as build entry (explicit import+export pattern) instead of `src/index.ts` (re-export barrel) to work around the same Bun limitation.
+
 Every package has `build`, `build:types`, `build:all`, and `prepack` scripts.
-Build uses `bun build` with `--minify`.
 `--external` for all peer/runtime dependencies.
 `build:types` uses `bun x tsc --emitDeclarationOnly`.
 
@@ -72,29 +73,52 @@ Build uses `bun build` with `--minify`.
 - **Runner:** vitest v2 at root (`vitest.config.ts`)
 - **Config:** `globals: false` — always `import { test, expect, vi, describe } from 'vitest'`
 - **Environment:** `node`
-- **Pattern:** `packages/*/src/**/*.test.ts` (colocated)
+- **Pattern:** `packages/*/src/**/*.test.ts` (colocated) + example smoke tests
+- **Smoke tests included:** `examples/fastify-server/src/__tests__/smoke.test.ts` and `examples/hono-worker/src/__tests__/smoke.test.ts`
 - **Alias:** `emit-io-core` → `packages/core/src/index.ts` (frameworks resolve to source)
-- **Exceptions:** `packages/react` and `packages/codegen` use `bun test` instead of vitest
+- **All packages use vitest** — `packages/react` and `packages/codegen` no longer use bun test
+- **Deduplication:** `resolve.dedupe: ['react', 'react-dom', 'react-native']` prevents multiple React instances when the react-native-expo example is a workspace member
 - **Mocking:** `vi.fn()`, `vi.spyOn()`, inline transport objects with `vi.fn()` as `log`
 
 ### Test gotchas
 
-- Some tests use `vi.resetModules()` and `vi.advanceTimersByTimeAsync()` — these ONLY work with vitest, not bun test
-- Tests at `packages/core/src/__tests__/runtime-guards.test.ts` and `http-transport.test.ts` fail under bun test — expected
-- `react-native` tests crash under bun test (require native modules) — expected
-- Use `bun test packages/core/src/__tests__/LoggerStrategy.test.ts` for fast feedback on a single file
+- Some tests use `vi.resetModules()` and `vi.advanceTimersByTimeAsync()` — these ONLY work with vitest
+- `react-native` tests require react-native module mocking — handled via vitest config
 
 ## Release workflow
 
-On every push to main:
-1. Auto-generates `.changeset/auto-patch-*.md` with `"pkg-name": patch` for all packages
-2. `changeset version` bumps versions + writes CHANGELOGs
-3. `bun run release` (build + `changeset publish`)
-4. Creates GitHub Release with aggregated changelogs
-5. Commits version bump with `[skip ci]`
+The old auto-patch-on-every-push approach is gone. The current flow uses Changesets properly:
 
-**All 8 packages are linked** — they version-bump together.
+1. **Create a changeset** while working on your branch:
+   ```bash
+   bun run changeset   # select packages + bump type (patch/minor/major)
+   git add .changeset/
+   git commit -m "chore: add changeset"
+   ```
+2. **Commit the changeset file** alongside your code changes.
+3. **Push to main** (or merge a PR into main).
+4. `changesets/action` in `release.yml` automatically opens a **"Version Packages"** PR.
+5. **Merge that PR** → all linked packages are published to npm at the new version.
+
+**All 8 packages are linked** — bumping one bumps all.
+
+- `NPM_CONFIG_PROVENANCE=true` is set in CI for npm provenance attestations.
+- **RULE: `feat/*` and `fix/*` branches MUST have a changeset before pushing.** The lefthook pre-push hook blocks without one. Skip with `git push --no-verify` only for non-release changes (docs, CI fixes, typos).
+
 Changesets config: `commit: false` (CI handles commits), `updateInternalDependencies: "patch"`.
+
+## Lint and formatting
+
+- **Biome** (`biome.json` at root) replaces ESLint 8 — covers ALL 8 packages.
+- **lefthook** for git hooks:
+  - `pre-commit`: Biome check on staged files
+  - `pre-push`: typecheck + tests + changeset check
+
+## CI
+
+- Node 20 + 22 matrix, `bun install --frozen-lockfile`
+- Steps: lint (Biome) → build → test:coverage (uploads to Codecov) → typecheck examples
+- `NPM_CONFIG_PROVENANCE=true` set for npm provenance on publish
 
 ## Conventions
 
@@ -105,6 +129,7 @@ Changesets config: `commit: false` (CI handles commits), `updateInternalDependen
 - Transport `enabled` uses `!== false` check (not `=== true`) — allows `undefined` = enabled
 - ConsoleTransport `log()` applies `enabled` internally; other transports rely on upstream `emitToTransports()` filter
 - React Native `require()` pattern for optional deps: `declare function require` + `require('expo-router')` at module scope
+- `Transport.close?()` — optional method to clean up timers/sockets; `EmitIoStrategy.close()` calls flush then close on all transports
 
 ### Error method gotcha
 
@@ -117,10 +142,3 @@ Changesets config: `commit: false` (CI handles commits), `updateInternalDependen
 `new EmitIoStrategy(config?)` accepts either:
 - `EmitIoStrategyConfig` (new API: providers, transports, plugins)
 - `LoggerStrategyConstructor[]` (legacy, deprecated — array of `{ class, enabled }`)
-
-## CI
-
-- Node 20 + 22 matrix
-- `bun install --frozen-lockfile`
-- `npm test` then `npm run build`
-- No coverage/lint step in CI

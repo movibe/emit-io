@@ -9,6 +9,22 @@ pre-commit:
 pre-push:
   parallel: false
   commands:
+    changeset-required:
+      run: |
+        BRANCH=$(git branch --show-current)
+        if [[ "$BRANCH" == "feat/"* ]] || [[ "$BRANCH" == "fix/"* ]]; then
+          if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v README)" ]; then
+            echo ""
+            echo "❌ No changeset found on branch: $BRANCH"
+            echo ""
+            echo "   Create one: bun run changeset"
+            echo "   Then commit the .changeset/*.md file."
+            echo ""
+            echo "   No release needed? Skip with: git push --no-verify"
+            echo ""
+            exit 1
+          fi
+        fi
     typecheck:
       run: cd /Users/movibe/sites/libs/logger && bun run typecheck 2>/dev/null || bun run --filter '*' tsc --noEmit 2>&1 | head -30
     tests:
