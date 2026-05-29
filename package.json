@@ -24,7 +24,7 @@
     "format:check": "biome check .",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "bun run build && changeset publish --provenance",
+    "release": "bun run build && changeset publish",
     "postinstall": "lefthook install"
   },
   "devDependencies": {
