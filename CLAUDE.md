@@ -38,6 +38,12 @@ bun run lint              # Biome across all packages
 bun run format            # Biome format --write
 ```
 
+## CI / GitHub Actions
+
+- `LEFTHOOK=0` is set in release.yml — prevents git hooks from running during `changesets/action` git push
+- GitHub Actions workflow permissions: `default_workflow_permissions: write` + `can_approve_pull_request_reviews: true` (repo setting, not in code)
+- Release flow: push to main → changesets/action opens "Version Packages" PR → merge that PR → packages published
+
 ## Key patterns
 
 - `Transport` interface requires `close?()` — implement to clean up timers/sockets
