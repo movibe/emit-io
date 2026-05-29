@@ -1,6 +1,7 @@
 'use client'
 
-import { useContext, useCallback, useEffect, useRef } from 'react'
+import type { RegisteredEvents } from 'emit-io-core'
+import { useCallback, useContext, useEffect, useRef } from 'react'
 import { useFormStatus } from 'react-dom'
 import { AnalyticsReactContext } from './context.js'
 import type { AnalyticsContextValue } from './types.js'
@@ -10,22 +11,25 @@ export function useAnalytics(): AnalyticsContextValue {
   if (!ctx) {
     throw new Error(
       'useAnalytics() must be used within an <AnalyticsProvider>. ' +
-      'Wrap your component tree with <AnalyticsProvider client={emit}> first.'
+        'Wrap your component tree with <AnalyticsProvider client={emit}> first.',
     )
   }
   return ctx
 }
 
-export type TrackEventOptions = {
+export type TrackEventOptions<K extends keyof RegisteredEvents = keyof RegisteredEvents> = {
   /** Properties to send with the event */
-  properties?: Record<string, unknown>
+  properties?: RegisteredEvents[K]
   /** Only fire once per session (uses a ref) */
   once?: boolean
   /** Skip tracking when condition is true */
   unless?: boolean
 }
 
-export function useEventTracking(eventName: string, options?: TrackEventOptions) {
+export function useEventTracking<K extends keyof RegisteredEvents>(
+  eventName: K,
+  options?: TrackEventOptions<K>,
+) {
   const analytics = useAnalytics()
   const hasFired = useRef(false)
 
@@ -56,7 +60,7 @@ export function useIdentify() {
     (user: { id: string; [key: string]: unknown }) => {
       analytics.identify(user)
     },
-    [analytics]
+    [analytics],
   )
 }
 
@@ -64,10 +68,10 @@ export function useTrackEvent() {
   const analytics = useAnalytics()
 
   return useCallback(
-    (eventName: string, properties?: Record<string, unknown>) => {
+    <K extends keyof RegisteredEvents>(eventName: K, properties?: RegisteredEvents[K]) => {
       analytics.event(eventName, properties)
     },
-    [analytics]
+    [analytics],
   )
 }
 

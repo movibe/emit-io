@@ -1,5 +1,5 @@
-import { test, expect, describe, vi } from 'vitest'
 import Fastify from 'fastify'
+import { describe, expect, test, vi } from 'vitest'
 import { loggerPlugin } from '../plugin.js'
 
 function createMockEmitIoStrategy() {
@@ -41,7 +41,11 @@ describe('loggerPlugin', () => {
       expect(req.requestId).toBe('test-id')
       reply.send({ ok: true })
     })
-    const res = await app.inject({ method: 'GET', url: '/', headers: { 'x-request-id': 'test-id' } })
+    const res = await app.inject({
+      method: 'GET',
+      url: '/',
+      headers: { 'x-request-id': 'test-id' },
+    })
     expect(res.headers['x-request-id']).toBe('test-id')
     await app.close()
   })
@@ -69,7 +73,9 @@ describe('loggerPlugin', () => {
     const logger = createMockEmitIoStrategy()
     const app = Fastify()
     await app.register(loggerPlugin, { logger })
-    app.get('/', () => { throw new Error('boom') })
+    app.get('/', () => {
+      throw new Error('boom')
+    })
     const res = await app.inject({ method: 'GET', url: '/' })
     expect(res.statusCode).toBe(500)
     await app.close()
@@ -80,7 +86,11 @@ describe('loggerPlugin', () => {
     const app = Fastify()
     await app.register(loggerPlugin, { logger, requestIdHeader: 'x-trace-id' })
     app.get('/', (_req, reply) => reply.send({ ok: true }))
-    const res = await app.inject({ method: 'GET', url: '/', headers: { 'x-trace-id': 'trace-123' } })
+    const res = await app.inject({
+      method: 'GET',
+      url: '/',
+      headers: { 'x-trace-id': 'trace-123' },
+    })
     expect(res.headers['x-trace-id']).toBe('trace-123')
     await app.close()
   })

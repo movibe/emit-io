@@ -1,5 +1,5 @@
-import { test, expect, describe, vi } from 'vitest'
 import { Hono } from 'hono'
+import { describe, expect, test, vi } from 'vitest'
 import { loggerMiddleware } from '../middleware.js'
 
 function createMockEmitIoStrategy() {
@@ -8,7 +8,7 @@ function createMockEmitIoStrategy() {
     info: vi.fn(),
     error: vi.fn(),
     warn: vi.fn(),
-    child: vi.fn(function(this: any, bindings: any) {
+    child: vi.fn(function (this: any, bindings: any) {
       childCalls.push(bindings)
       const m = createMock()
       m.bindings = bindings
@@ -71,8 +71,10 @@ describe('loggerMiddleware', () => {
     const logger = createMockEmitIoStrategy()
     const app = new Hono()
     app.use('*', loggerMiddleware({ logger }))
-    app.get('/', () => { throw new Error('boom') })
-    app.onError((err, c) => c.text('handled: ' + err.message, 500))
+    app.get('/', () => {
+      throw new Error('boom')
+    })
+    app.onError((err, c) => c.text(`handled: ${err.message}`, 500))
     const res = await app.request('/')
     expect(res.status).toBe(500)
   })

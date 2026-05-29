@@ -1,4 +1,4 @@
-import { test, expect, describe, vi, beforeEach } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 import { EmitIoStrategy } from '../index.js'
 import type { AnalyticsProvider, Transport } from '../types.js'
 import { LogLevel } from '../types.js'
@@ -67,7 +67,9 @@ describe('pre-init buffer — enabled', () => {
     const provider: AnalyticsProvider = {
       name: 'ordered',
       enabled: true,
-      event: (name: any) => { order.push(String(name)) },
+      event: (name: any) => {
+        order.push(String(name))
+      },
     }
 
     const logger = new EmitIoStrategy({
@@ -92,7 +94,9 @@ describe('pre-init buffer — enabled', () => {
     const provider: AnalyticsProvider = {
       name: 'sized',
       enabled: true,
-      event: (name: any) => { received.push(String(name)) },
+      event: (name: any) => {
+        received.push(String(name))
+      },
     }
 
     const logger = new EmitIoStrategy({
@@ -144,7 +148,7 @@ describe('pre-init buffer — enabled', () => {
   })
 
   test('network is buffered', () => {
-    const strategy = {
+    const _strategy = {
       init: vi.fn(),
       log: vi.fn(),
       event: vi.fn(),

@@ -1,4 +1,4 @@
-import { test, expect, describe, vi, beforeEach, afterEach } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { circuitBreaker } from '../circuit-breaker.js'
 import type { AnalyticsProvider } from '../types.js'
 
@@ -35,7 +35,9 @@ describe('circuitBreaker', () => {
 
   test('5 consecutive errors open the circuit and call onStateChange', () => {
     const provider = makeProvider({
-      event: vi.fn().mockImplementation(() => { throw new Error('fail') }),
+      event: vi.fn().mockImplementation(() => {
+        throw new Error('fail')
+      }),
     })
     const onStateChange = vi.fn()
     const wrapped = circuitBreaker(provider, { failureThreshold: 5, onStateChange })
@@ -51,7 +53,9 @@ describe('circuitBreaker', () => {
 
   test('OPEN state blocks subsequent calls', () => {
     const provider = makeProvider({
-      event: vi.fn().mockImplementation(() => { throw new Error('fail') }),
+      event: vi.fn().mockImplementation(() => {
+        throw new Error('fail')
+      }),
     })
     const wrapped = circuitBreaker(provider, { failureThreshold: 3 })
 
@@ -67,11 +71,16 @@ describe('circuitBreaker', () => {
   })
 
   test('after cooldownMs transitions to HALF_OPEN', () => {
-    const eventFn = vi.fn()
-      .mockImplementation(() => { throw new Error('fail') })
+    const eventFn = vi.fn().mockImplementation(() => {
+      throw new Error('fail')
+    })
     const provider = makeProvider({ event: eventFn })
     const onStateChange = vi.fn()
-    const wrapped = circuitBreaker(provider, { failureThreshold: 3, cooldownMs: 5000, onStateChange })
+    const wrapped = circuitBreaker(provider, {
+      failureThreshold: 3,
+      cooldownMs: 5000,
+      onStateChange,
+    })
 
     for (let i = 0; i < 3; i++) {
       expect(() => wrapped.event?.('app-open')).toThrow('fail')
@@ -91,15 +100,26 @@ describe('circuitBreaker', () => {
   })
 
   test('HALF_OPEN: success transitions back to CLOSED', () => {
-    const eventFn = vi.fn()
-      .mockImplementationOnce(() => { throw new Error('fail') }) // 1
-      .mockImplementationOnce(() => { throw new Error('fail') }) // 2
-      .mockImplementationOnce(() => { throw new Error('fail') }) // 3 -> OPEN
+    const eventFn = vi
+      .fn()
+      .mockImplementationOnce(() => {
+        throw new Error('fail')
+      }) // 1
+      .mockImplementationOnce(() => {
+        throw new Error('fail')
+      }) // 2
+      .mockImplementationOnce(() => {
+        throw new Error('fail')
+      }) // 3 -> OPEN
       .mockImplementation(() => undefined) // subsequent calls succeed
 
     const provider = makeProvider({ event: eventFn })
     const onStateChange = vi.fn()
-    const wrapped = circuitBreaker(provider, { failureThreshold: 3, cooldownMs: 5000, onStateChange })
+    const wrapped = circuitBreaker(provider, {
+      failureThreshold: 3,
+      cooldownMs: 5000,
+      onStateChange,
+    })
 
     for (let i = 0; i < 3; i++) {
       expect(() => wrapped.event?.('app-open')).toThrow('fail')
@@ -115,10 +135,16 @@ describe('circuitBreaker', () => {
   })
 
   test('HALF_OPEN: failure transitions back to OPEN and resets cooldown', () => {
-    const eventFn = vi.fn().mockImplementation(() => { throw new Error('fail') })
+    const eventFn = vi.fn().mockImplementation(() => {
+      throw new Error('fail')
+    })
     const provider = makeProvider({ event: eventFn })
     const onStateChange = vi.fn()
-    const wrapped = circuitBreaker(provider, { failureThreshold: 3, cooldownMs: 5000, onStateChange })
+    const wrapped = circuitBreaker(provider, {
+      failureThreshold: 3,
+      cooldownMs: 5000,
+      onStateChange,
+    })
 
     for (let i = 0; i < 3; i++) {
       expect(() => wrapped.event?.('app-open')).toThrow('fail')
@@ -167,10 +193,16 @@ describe('circuitBreaker', () => {
   test('onStateChange receives correct state and provider name', () => {
     const provider = makeProvider({
       name: 'analytics-provider',
-      event: vi.fn().mockImplementation(() => { throw new Error('fail') }),
+      event: vi.fn().mockImplementation(() => {
+        throw new Error('fail')
+      }),
     })
     const onStateChange = vi.fn()
-    const wrapped = circuitBreaker(provider, { failureThreshold: 2, cooldownMs: 1000, onStateChange })
+    const wrapped = circuitBreaker(provider, {
+      failureThreshold: 2,
+      cooldownMs: 1000,
+      onStateChange,
+    })
 
     expect(() => wrapped.event?.('app-open')).toThrow()
     expect(() => wrapped.event?.('app-open')).toThrow()
@@ -180,7 +212,9 @@ describe('circuitBreaker', () => {
 
   test('custom threshold is respected', () => {
     const provider = makeProvider({
-      event: vi.fn().mockImplementation(() => { throw new Error('fail') }),
+      event: vi.fn().mockImplementation(() => {
+        throw new Error('fail')
+      }),
     })
     const onStateChange = vi.fn()
     const wrapped = circuitBreaker(provider, { failureThreshold: 2, onStateChange })
@@ -194,12 +228,24 @@ describe('circuitBreaker', () => {
 
   test('all provider methods are wrapped (init, identify, screen, error, flush, reset)', () => {
     const provider = makeProvider({
-      init: vi.fn().mockImplementation(() => { throw new Error('fail') }),
-      identify: vi.fn().mockImplementation(() => { throw new Error('fail') }),
-      screen: vi.fn().mockImplementation(() => { throw new Error('fail') }),
-      error: vi.fn().mockImplementation(() => { throw new Error('fail') }),
-      flush: vi.fn().mockImplementation(() => { throw new Error('fail') }),
-      reset: vi.fn().mockImplementation(() => { throw new Error('fail') }),
+      init: vi.fn().mockImplementation(() => {
+        throw new Error('fail')
+      }),
+      identify: vi.fn().mockImplementation(() => {
+        throw new Error('fail')
+      }),
+      screen: vi.fn().mockImplementation(() => {
+        throw new Error('fail')
+      }),
+      error: vi.fn().mockImplementation(() => {
+        throw new Error('fail')
+      }),
+      flush: vi.fn().mockImplementation(() => {
+        throw new Error('fail')
+      }),
+      reset: vi.fn().mockImplementation(() => {
+        throw new Error('fail')
+      }),
     })
     const onStateChange = vi.fn()
     const wrapped = circuitBreaker(provider, { failureThreshold: 6, onStateChange })

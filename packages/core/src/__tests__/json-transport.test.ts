@@ -1,7 +1,7 @@
-import { test, expect, describe, vi } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { JSONTransport } from '../json-transport.js'
-import { LogLevel } from '../types.js'
 import type { LogEntry } from '../types.js'
+import { LogLevel } from '../types.js'
 
 function makeEntry(overrides?: Partial<LogEntry>): LogEntry {
   return {
@@ -149,7 +149,7 @@ describe('JSONTransport', () => {
 
   test('circular reference does not crash — writes fallback line', () => {
     const lines: string[] = []
-    const transport = new JSONTransport({ write: (l) => lines.push(l) })
+    const _transport = new JSONTransport({ write: (l) => lines.push(l) })
 
     // Build a circular object
     const circular: Record<string, unknown> = { a: 1 }

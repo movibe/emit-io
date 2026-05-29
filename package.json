@@ -8,7 +8,9 @@
     "packages/fastify",
     "packages/next",
     "packages/hono",
-    "packages/otel"
+    "packages/otel",
+    "examples/fastify-server",
+    "examples/react-native-expo"
   ],
   "scripts": {
     "build": "bun run --filter emit-io-core build:all && bun run --filter emit-io-react build:all && bun run --filter emit-io-react-native build:all && bun run --filter emit-io-next build:all && bun run --filter emit-io-fastify build:all && bun run --filter emit-io-hono build:all && bun run --filter emit-io-otel build:all && bun run --filter emit-io-codegen build",
@@ -17,15 +19,20 @@
     "test:coverage": "vitest run --coverage",
     "bench": "tsx packages/core/bench/index.ts",
     "bench:compare": "tsx packages/core/bench/compare.ts",
-    "lint": "bun run --filter emit-io-core lint",
+    "lint": "biome lint .",
+    "format": "biome format . --write",
+    "format:check": "biome check .",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "bun run build && changeset publish"
+    "release": "bun run build && changeset publish --provenance",
+    "postinstall": "lefthook install"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.16",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.0",
     "@vitest/coverage-v8": "^2.1.0",
+    "lefthook": "2.1.8",
     "pino": "^9.0.0",
     "tinybench": "^3.0.0",
     "tsx": "^4.19.0",

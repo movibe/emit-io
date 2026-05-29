@@ -24,7 +24,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --external=fastify --external=fastify-plugin --external=emit-io-core --minify && bun build ./src/index.ts --target=node --format=cjs --outfile=dist/index.cjs --external=fastify --external=fastify-plugin --external=emit-io-core --minify",
+    "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --platform=node --external:fastify --external:fastify-plugin --external:emit-io-core --minify && esbuild src/index.ts --bundle --outfile=dist/index.cjs --format=cjs --platform=node --external:fastify --external:fastify-plugin --external:emit-io-core --minify",
     "build:types": "bun x tsc --emitDeclarationOnly",
     "build:all": "bun run build && bun run build:types",
     "test": "vitest run",

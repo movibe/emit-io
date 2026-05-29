@@ -1,13 +1,15 @@
-import { test, expect, describe, vi } from 'vitest'
+import { describe, expect, test } from 'vitest'
+import type { LogEntry, Transport } from '../index.js'
 import { EmitIoStrategy, LogLevelEnum } from '../index.js'
-import type { Transport, LogEntry } from '../index.js'
 
 function makeTransport() {
   const entries: LogEntry[] = []
   const transport: Transport = {
     name: 'test',
     minLevel: LogLevelEnum.DEBUG,
-    log: (entry) => { entries.push(entry) },
+    log: (entry) => {
+      entries.push(entry)
+    },
   }
   return { transport, entries }
 }

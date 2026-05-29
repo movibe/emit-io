@@ -1,5 +1,5 @@
-import { NextResponse, type NextRequest } from 'next/server'
-import { runWithContext, type EmitIoStrategy } from 'emit-io-core'
+import { type EmitIoStrategy, runWithContext } from 'emit-io-core'
+import type { NextRequest, NextResponse } from 'next/server'
 
 export type MiddlewareOptions = {
   logger: EmitIoStrategy
@@ -10,12 +10,11 @@ export type MiddlewareOptions = {
 
 export function withLogger(
   handler: (req: NextRequest) => Promise<NextResponse> | NextResponse,
-  options: MiddlewareOptions
+  options: MiddlewareOptions,
 ) {
   return async (req: NextRequest): Promise<NextResponse> => {
-    const requestId = options.extractRequestId?.(req)
-      ?? req.headers.get('x-request-id')
-      ?? crypto.randomUUID()
+    const requestId =
+      options.extractRequestId?.(req) ?? req.headers.get('x-request-id') ?? crypto.randomUUID()
 
     return runWithContext({ requestId, path: req.nextUrl.pathname }, async () => {
       const start = Date.now()

@@ -6,15 +6,7 @@
 // This matches the behaviour of ConsoleTransport.
 
 import type { LogEntry, Transport } from './types.js'
-import { LogLevel, resolveEnabled } from './types.js'
-
-const LEVEL_LABELS: Record<LogLevel, string> = {
-  [LogLevel.DEBUG]: 'DEBUG',
-  [LogLevel.INFO]: 'INFO',
-  [LogLevel.WARN]: 'WARN',
-  [LogLevel.ERROR]: 'ERROR',
-  [LogLevel.FATAL]: 'FATAL',
-}
+import { LEVEL_LABELS, LogLevel, resolveEnabled } from './types.js'
 
 const defaultWrite: (line: string) => void =
   typeof process !== 'undefined' && process.stdout
@@ -59,7 +51,7 @@ export class JSONTransport implements Transport {
 
     let line: string
     try {
-      line = JSON.stringify(obj) + '\n'
+      line = `${JSON.stringify(obj)}\n`
     } catch {
       // Circular reference or other stringify error — write fallback
       const fallback: Record<string, unknown> = {
@@ -70,7 +62,7 @@ export class JSONTransport implements Transport {
         originalMsg: entry.message,
       }
       try {
-        line = JSON.stringify(fallback) + '\n'
+        line = `${JSON.stringify(fallback)}\n`
       } catch {
         line = '{"level":"ERROR","msg":"serialize failed"}\n'
       }

@@ -1,4 +1,4 @@
-import { trace, type Tracer } from '@opentelemetry/api'
+import { type Tracer, trace } from '@opentelemetry/api'
 import type { AnalyticsProvider } from 'emit-io-core'
 
 export type OTelProviderOptions = {
@@ -52,7 +52,13 @@ export class OTelProvider implements AnalyticsProvider {
     span.end()
   }
 
-  error(feature: string, name: string, critical: boolean, err: Error, extra?: Record<string, any>): void {
+  error(
+    feature: string,
+    name: string,
+    critical: boolean,
+    err: Error,
+    extra?: Record<string, any>,
+  ): void {
     const span = this.tracer.startSpan(`analytics.error.${feature}.${name}`, {
       attributes: {
         'analytics.error.feature': feature,
@@ -71,7 +77,10 @@ export class OTelProvider implements AnalyticsProvider {
   reset(): void {}
 }
 
-function flatten(obj: Record<string, unknown> | undefined, prefix = ''): Record<string, string | number | boolean> {
+function flatten(
+  obj: Record<string, unknown> | undefined,
+  prefix = '',
+): Record<string, string | number | boolean> {
   if (!obj) return {}
   const result: Record<string, string | number | boolean> = {}
   for (const [k, v] of Object.entries(obj)) {

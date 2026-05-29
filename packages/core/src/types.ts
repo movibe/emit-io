@@ -24,6 +24,15 @@ export type Transport = {
   enabled?: boolean
   log(entry: LogEntry): void | Promise<void>
   flush?(): void | Promise<void>
+  close?(): void | Promise<void>
+}
+
+export const LEVEL_LABELS: Record<LogLevel, string> = {
+  [LogLevel.DEBUG]: 'DEBUG',
+  [LogLevel.INFO]: 'INFO',
+  [LogLevel.WARN]: 'WARN',
+  [LogLevel.ERROR]: 'ERROR',
+  [LogLevel.FATAL]: 'FATAL',
 }
 
 export function resolveEnabled(options?: { enabled?: boolean }): boolean {
@@ -34,7 +43,7 @@ export type Plugin = (entry: LogEntry) => LogEntry | null
 
 export interface AnalyticsProvider<
   TEvent extends Record<string, any> = Record<string, any>,
-  TUser extends { id: string } = { id: string }
+  TUser extends { id: string } = { id: string },
 > {
   readonly name: string
   enabled: boolean
@@ -42,7 +51,13 @@ export interface AnalyticsProvider<
   event?<K extends keyof TEvent>(name: K, properties?: TEvent[K]): void
   identify?(user: TUser): void
   screen?(name: string, params?: Record<string, any>): void
-  error?(feature: string, name: string, critical: boolean, error: Error, extra?: Record<string, unknown>): void
+  error?(
+    feature: string,
+    name: string,
+    critical: boolean,
+    error: Error,
+    extra?: Record<string, unknown>,
+  ): void
   flush?(): void
   reset?(): void
 }
@@ -51,11 +66,9 @@ export interface AnalyticsProvider<
 // Event Registry — module-augmentation hook
 // ============================================================
 
-export interface EventRegistry {}
+export type EventRegistry = {}
 
-export type RegisteredEvents = keyof EventRegistry extends never
-  ? EVENT_TAGS
-  : EventRegistry
+export type RegisteredEvents = keyof EventRegistry extends never ? EVENT_TAGS : EventRegistry
 
 export type ConsentState = {
   analytics?: boolean
@@ -64,7 +77,7 @@ export type ConsentState = {
 
 export interface EmitIoStrategyConfig<
   TEvent extends Record<string, any> = EVENT_TAGS,
-  TUser extends { id: string } = User
+  TUser extends { id: string } = User,
 > {
   providers?: AnalyticsProvider<TEvent, TUser>[]
   transports?: Transport[]
@@ -90,7 +103,7 @@ export type LOG_TAGS =
   | 'remove_from_cart'
   | 'begin_checkout'
   | 'purchase'
-  | string;
+  | string
 
 export type EVENT_TAGS = Record<string, Record<string, unknown>>
 
@@ -103,37 +116,37 @@ export type NETWORK_ANALYTICS_TAGS =
   | 'RestApi_request'
   | 'WebSocket_error'
   | 'WebSocket_info'
-  | 'WebSocket_request';
+  | 'WebSocket_request'
 
 export type User = {
-  id: string;
-  email?: string;
-  name?: string;
-  phone?: string;
-  status?: string;
-  [key: string]: any;
+  id: string
+  email?: string
+  name?: string
+  phone?: string
+  status?: string
+  [key: string]: any
 }
 
 export type LogItem = {
-  item_id: string;
-  item_name: string;
-  price: number;
-  quantity: number;
-  [key: string]: any;
+  item_id: string
+  item_name: string
+  price: number
+  quantity: number
+  [key: string]: any
 }
 
 export type CheckoutData = {
-  currency: string;
-  value: number;
-  items: LogItem[];
-  [key: string]: any;
+  currency: string
+  value: number
+  items: LogItem[]
+  [key: string]: any
 }
 
 export type PaymentData = CheckoutData & {
-  tax?: number;
-  shipping?: number;
-  transaction_id: string;
-  type: string;
+  tax?: number
+  shipping?: number
+  transaction_id: string
+  type: string
 }
 
 /** @deprecated Use AnalyticsProvider +EmitIoStrategyConfig */
@@ -143,10 +156,10 @@ export interface LoggerStrategyConstructor<
   TUser extends { id: string } = User,
   TBeginCheckout extends { currency?: string; value?: number } = BeginCheckoutEvent,
   TPurchase extends { type: string } = PurchaseLogEvent,
-  TEvent extends Record<string, any> = EVENT_TAGS
+  TEvent extends Record<string, any> = EVENT_TAGS,
 > {
-  class: LoggerStrategyType<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>;
-  enabled: boolean;
+  class: LoggerStrategyType<TLogTags, TNetworkTags, TUser, TBeginCheckout, TPurchase, TEvent>
+  enabled: boolean
 }
 
 /** @deprecated Use AnalyticsProvider interface instead */
@@ -156,15 +169,25 @@ export abstract class LoggerStrategyType<
   TUser extends { id: string } = User,
   TBeginCheckout extends { currency?: string; value?: number } = BeginCheckoutEvent,
   TPurchase extends { type: string } = PurchaseLogEvent,
-  TEvent extends Record<string, any> = EVENT_TAGS
+  TEvent extends Record<string, any> = EVENT_TAGS,
 > {
   abstract init(): void
   abstract log?(name: TLogTags, properties?: Record<string, any>): void
   abstract event?<T extends keyof TEvent>(name: T, properties?: TEvent[T]): void
   abstract network?(name: TNetworkTags, properties?: Record<string, any>): void
 
-  abstract info?(feature: string, name: string, properties?: Record<string, any> | string | boolean): void
-  abstract error?(feature: string, name: string, critical: boolean, error: Error, extra?: Record<string, unknown>): void
+  abstract info?(
+    feature: string,
+    name: string,
+    properties?: Record<string, any> | string | boolean,
+  ): void
+  abstract error?(
+    feature: string,
+    name: string,
+    critical: boolean,
+    error: Error,
+    extra?: Record<string, unknown>,
+  ): void
 
   abstract reset?(): void
   abstract logScreen?(screenName: string, params?: Record<string, any>): void

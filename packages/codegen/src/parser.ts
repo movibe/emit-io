@@ -12,9 +12,7 @@ export function parseSchema(filePath: string): ParsedEvent[] {
     throw new Error(`Invalid schema: expected top-level "events" key`)
   }
 
-  return Object.entries(schema.events).map(([name, event]) =>
-    parseEvent(name, event)
-  )
+  return Object.entries(schema.events).map(([name, event]) => parseEvent(name, event))
 }
 
 function parseFieldValue(key: string, value: string): ParsedField {

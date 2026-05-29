@@ -1,5 +1,5 @@
 import type { LogEntry, Transport } from './types.js'
-import { LogLevel, resolveEnabled } from './types.js'
+import { LEVEL_LABELS, LogLevel, resolveEnabled } from './types.js'
 
 export type DevToolsTransportOptions = {
   name?: string
@@ -39,9 +39,10 @@ export class DevToolsTransport implements Transport {
     this.name = opts?.name ?? 'devtools'
     this.minLevel = opts?.minLevel ?? LogLevel.DEBUG
     this.url = opts?.url ?? 'ws://localhost:9999'
-    this.WSClass = (opts && 'WebSocketClass' in opts)
-      ? (opts.WebSocketClass as typeof WebSocket)
-      : (globalThis as any).WebSocket
+    this.WSClass =
+      opts && 'WebSocketClass' in opts
+        ? (opts.WebSocketClass as typeof WebSocket)
+        : (globalThis as any).WebSocket
     this.reconnect = opts?.reconnect ?? true
     this.baseReconnectMs = opts?.reconnectMs ?? 1000
     this.currentReconnectMs = this.baseReconnectMs
@@ -61,7 +62,7 @@ export class DevToolsTransport implements Transport {
     this.onState?.('connecting')
     try {
       this.ws = new this.WSClass(this.url)
-    } catch (err) {
+    } catch (_err) {
       this.onState?.('error')
       this.scheduleReconnect()
       return
@@ -101,7 +102,7 @@ export class DevToolsTransport implements Transport {
   }
 
   private send(entry: LogEntry): void {
-    if (!this.ws || this.ws.readyState !== 1) {
+    if (this.ws?.readyState !== 1) {
       this.enqueue(entry)
       return
     }
@@ -140,8 +141,6 @@ export class DevToolsTransport implements Transport {
   }
 }
 
-const LEVEL_LABELS = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL']
-
 function serializeEntry(entry: LogEntry): Record<string, unknown> {
   return {
     level: LEVEL_LABELS[entry.level] ?? 'UNKNOWN',
@@ -149,10 +148,12 @@ function serializeEntry(entry: LogEntry): Record<string, unknown> {
     msg: entry.message,
     time: entry.timestamp.toISOString(),
     context: entry.context && Object.keys(entry.context).length > 0 ? entry.context : undefined,
-    error: entry.error ? {
-      name: entry.error.name,
-      message: entry.error.message,
-      stack: entry.error.stack,
-    } : undefined,
+    error: entry.error
+      ? {
+          name: entry.error.name,
+          message: entry.error.message,
+          stack: entry.error.stack,
+        }
+      : undefined,
   }
 }

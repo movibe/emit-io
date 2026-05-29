@@ -14,21 +14,25 @@ export type AvroRecord = {
   fields: AvroField[]
 }
 
-function typeToAvro(
-  type: string
-): string | { type: string; items: string } {
+function typeToAvro(type: string): string | { type: string; items: string } {
   switch (type) {
-    case 'string': return 'string'
-    case 'number': return 'double'
-    case 'integer': return 'long'
-    case 'boolean': return 'boolean'
-    case 'array': return { type: 'array', items: 'string' }
-    default: return 'string'
+    case 'string':
+      return 'string'
+    case 'number':
+      return 'double'
+    case 'integer':
+      return 'long'
+    case 'boolean':
+      return 'boolean'
+    case 'array':
+      return { type: 'array', items: 'string' }
+    default:
+      return 'string'
   }
 }
 
 export function eventToAvro(event: ParsedEvent): AvroRecord {
-  const fields: AvroField[] = event.fields.map(field => {
+  const fields: AvroField[] = event.fields.map((field) => {
     const avroType = typeToAvro(field.type)
 
     if (field.optional) {
@@ -67,10 +71,10 @@ export function eventToAvro(event: ParsedEvent): AvroRecord {
 }
 
 export function eventsToAvroFiles(
-  events: ParsedEvent[]
+  events: ParsedEvent[],
 ): Array<{ filename: string; content: string }> {
-  return events.map(e => ({
+  return events.map((e) => ({
     filename: `${e.name}.avsc`,
-    content: JSON.stringify(eventToAvro(e), null, 2) + '\n',
+    content: `${JSON.stringify(eventToAvro(e), null, 2)}\n`,
   }))
 }

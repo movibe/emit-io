@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { withLogger } from 'emit-io-next'
-import { emit } from './lib/emit.js'
+import { emit } from './lib/logger.js'
 
 export const middleware = withLogger(
   async (_req) => {

@@ -1,5 +1,5 @@
-import { type NextRequest } from 'next/server'
-import { runWithContext, type EmitIoStrategy } from 'emit-io-core'
+import { type EmitIoStrategy, runWithContext } from 'emit-io-core'
+import type { NextRequest } from 'next/server'
 
 export type RouteHandlerOptions = {
   logger: EmitIoStrategy
@@ -8,31 +8,34 @@ export type RouteHandlerOptions = {
 
 export type RouteHandler<TParams = unknown> = (
   req: NextRequest,
-  ctx: { params: Promise<TParams> }
+  ctx: { params: Promise<TParams> },
 ) => Promise<Response> | Response
 
 export function instrumentRoute<TParams>(
   handler: RouteHandler<TParams>,
-  options: RouteHandlerOptions
+  options: RouteHandlerOptions,
 ): RouteHandler<TParams> {
   return async (req, ctx) => {
     const requestId = req.headers.get('x-request-id') ?? crypto.randomUUID()
-    return runWithContext({ requestId, path: req.nextUrl.pathname, method: req.method }, async () => {
-      const start = Date.now()
-      try {
-        const res = await handler(req, ctx)
-        options.logger.info(options.eventName ?? 'route-handled', {
-          status: res.status,
-          durationMs: Date.now() - start,
-        })
-        return res
-      } catch (err) {
-        options.logger.error('route-failed', {
-          durationMs: Date.now() - start,
-          error: (err as Error).message,
-        })
-        throw err
-      }
-    })
+    return runWithContext(
+      { requestId, path: req.nextUrl.pathname, method: req.method },
+      async () => {
+        const start = Date.now()
+        try {
+          const res = await handler(req, ctx)
+          options.logger.info(options.eventName ?? 'route-handled', {
+            status: res.status,
+            durationMs: Date.now() - start,
+          })
+          return res
+        } catch (err) {
+          options.logger.error('route-failed', {
+            durationMs: Date.now() - start,
+            error: (err as Error).message,
+          })
+          throw err
+        }
+      },
+    )
   }
 }

@@ -1,7 +1,7 @@
-import { test, expect, describe } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { normalizeStack } from '../plugins/normalize-stack.js'
-import { LogLevel } from '../types.js'
 import type { LogEntry } from '../types.js'
+import { LogLevel } from '../types.js'
 
 function makeEntry(overrides: Partial<LogEntry> = {}): LogEntry {
   return {
@@ -52,7 +52,9 @@ describe('normalizeStack', () => {
 
   test('parses WebKit stack with named function', () => {
     const plugin = normalizeStack()
-    const entry = makeEntry({ error: { name: 'Error', message: 'boom', stack: WEBKIT_STACK } as Error })
+    const entry = makeEntry({
+      error: { name: 'Error', message: 'boom', stack: WEBKIT_STACK } as Error,
+    })
     const result = plugin(entry)!
     const frames = result.context?.stackFrames as any[]
 

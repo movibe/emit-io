@@ -82,7 +82,7 @@ export class HTTPTransport implements Transport {
       }, this.flushIntervalMs)
       // unref so this timer doesn't keep Node.js alive
       if (typeof this.timer === 'object' && this.timer !== null && 'unref' in this.timer) {
-        (this.timer as { unref(): void }).unref()
+        ;(this.timer as { unref(): void }).unref()
       }
     }
 
@@ -115,11 +115,14 @@ export class HTTPTransport implements Transport {
     // Only clear inflight if it still points to this promise (i.e. no subsequent
     // batch has replaced it with a new chain). This prevents a second scheduleFlush
     // from appearing to be done when the first send resolves.
-    p.then(() => {
-      if (this.inflight === p) this.inflight = null
-    }, () => {
-      if (this.inflight === p) this.inflight = null
-    })
+    p.then(
+      () => {
+        if (this.inflight === p) this.inflight = null
+      },
+      () => {
+        if (this.inflight === p) this.inflight = null
+      },
+    )
   }
 
   async flush(): Promise<void> {

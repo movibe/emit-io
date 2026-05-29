@@ -1,4 +1,4 @@
-import { useContext, useCallback, useEffect, useRef } from 'react'
+import { useCallback, useContext, useEffect, useRef } from 'react'
 import { AnalyticsReactContext } from './context.js'
 import type { AnalyticsContextValue } from './types.js'
 
@@ -7,7 +7,7 @@ export function useAnalytics(): AnalyticsContextValue {
   if (!ctx) {
     throw new Error(
       'useAnalytics() must be used within an <AnalyticsProvider>. ' +
-      'Wrap your component tree with <AnalyticsProvider client={emit}> first.'
+        'Wrap your component tree with <AnalyticsProvider client={emit}> first.',
     )
   }
   return ctx
@@ -40,24 +40,25 @@ export function useScreenTracking(screenName: string, params?: Record<string, un
 
 export function useIdentify(): (user: { id: string; [key: string]: unknown }) => void {
   const analytics = useAnalytics()
-  return useCallback(
-    (user) => analytics.identify(user),
-    [analytics]
-  )
+  return useCallback((user) => analytics.identify(user), [analytics])
 }
 
 export function useTrackEvent(): (eventName: string, properties?: Record<string, unknown>) => void {
   const analytics = useAnalytics()
-  return useCallback(
-    (eventName, properties) => analytics.event(eventName, properties),
-    [analytics]
-  )
+  return useCallback((eventName, properties) => analytics.event(eventName, properties), [analytics])
 }
 
-export function useCaptureError(): (feature: string, name: string, critical: boolean, err: Error, extra?: Record<string, unknown>) => void {
+export function useCaptureError(): (
+  feature: string,
+  name: string,
+  critical: boolean,
+  err: Error,
+  extra?: Record<string, unknown>,
+) => void {
   const analytics = useAnalytics()
   return useCallback(
-    (feature, name, critical, err, extra) => analytics.captureError(feature, name, critical, err, extra),
-    [analytics]
+    (feature, name, critical, err, extra) =>
+      analytics.captureError(feature, name, critical, err, extra),
+    [analytics],
   )
 }

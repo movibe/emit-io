@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
 import type { EmitIoStrategy } from 'emit-io-core'
+import { useEffect, useRef } from 'react'
 
 declare function require(module: string): any
 
@@ -11,7 +11,7 @@ export function useExpoRouterTracking(client: EmitIoStrategy): void {
 
   useEffect(() => {
     client.logScreen?.(pathname, params as Record<string, unknown>)
-  }, [pathname, params])
+  }, [pathname, params, client.logScreen])
 }
 
 /**
@@ -32,7 +32,11 @@ export function useExpoRouterTracking(client: EmitIoStrategy): void {
  *   }
  */
 export function useNavigationTracking(client: EmitIoStrategy): {
-  ref: { current: { getCurrentRoute(): { name: string; params?: Record<string, unknown> } | undefined } | null }
+  ref: {
+    current: {
+      getCurrentRoute(): { name: string; params?: Record<string, unknown> } | undefined
+    } | null
+  }
   onReady: () => void
   onStateChange: () => void
 } {
@@ -58,8 +62,12 @@ export function useNavigationTracking(client: EmitIoStrategy): {
 
 /** @deprecated Use useNavigationTracking instead — it uses onReady/onStateChange (no polling). */
 export function useNavigationAnalytics(
-  navigationRef: { current: { getCurrentRoute(): { name: string; params?: Record<string, unknown> } | undefined } | null } | null,
-  client: EmitIoStrategy
+  navigationRef: {
+    current: {
+      getCurrentRoute(): { name: string; params?: Record<string, unknown> } | undefined
+    } | null
+  } | null,
+  client: EmitIoStrategy,
 ): void {
   useEffect(() => {
     if (!navigationRef?.current) return

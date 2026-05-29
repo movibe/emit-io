@@ -1,14 +1,18 @@
-export { AnalyticsProvider } from './provider.js'
+export { useAppStateAnalytics } from './app-state.js'
 export {
   useAnalytics,
-  useEventTracking,
-  useScreenTracking,
-  useIdentify,
-  useTrackEvent,
   useCaptureError,
+  useEventTracking,
+  useIdentify,
+  useScreenTracking,
+  useTrackEvent,
 } from './hooks.js'
-export { useAppStateAnalytics } from './app-state.js'
-export { useExpoRouterTracking, useNavigationTracking, useNavigationAnalytics } from './navigation.js'
+export {
+  useExpoRouterTracking,
+  useNavigationAnalytics,
+  useNavigationTracking,
+} from './navigation.js'
+export { AnalyticsProvider } from './provider.js'
 export type {
   AnalyticsContextValue,
   AnalyticsProviderProps,

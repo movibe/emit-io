@@ -1,6 +1,7 @@
 // @vitest-environment happy-dom
-import { test, expect, describe, vi, beforeEach } from 'vitest'
+
 import { renderHook } from '@testing-library/react'
+import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 // Mock react-native AppState
 vi.mock('react-native', () => {
@@ -8,7 +9,7 @@ vi.mock('react-native', () => {
   return {
     AppState: {
       currentState: 'active',
-      addEventListener: vi.fn((event: string, cb: (s: string) => void) => {
+      addEventListener: vi.fn((_event: string, cb: (s: string) => void) => {
         listeners.push(cb)
         return {
           remove: vi.fn(() => {
@@ -17,7 +18,7 @@ vi.mock('react-native', () => {
           }),
         }
       }),
-      __triggerChange: (next: string) => listeners.forEach(l => l(next)),
+      __triggerChange: (next: string) => listeners.forEach((l) => l(next)),
     },
   }
 })

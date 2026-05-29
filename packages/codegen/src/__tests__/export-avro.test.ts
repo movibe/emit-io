@@ -1,16 +1,16 @@
-import { test, expect, describe } from 'vitest'
-import { eventToAvro, eventsToAvroFiles } from '../export-avro.js'
+import { describe, expect, test } from 'vitest'
+import { eventsToAvroFiles, eventToAvro } from '../export-avro.js'
 import type { ParsedEvent } from '../types.js'
 
 function makeEvent(
   name: string,
   fields: Array<{ name: string; type: string; optional?: boolean; description?: string }>,
-  description?: string
+  description?: string,
 ): ParsedEvent {
   return {
     name,
     description,
-    fields: fields.map(f => ({
+    fields: fields.map((f) => ({
       name: f.name,
       type: f.type,
       optional: f.optional ?? false,
@@ -64,7 +64,9 @@ describe('eventToAvro', () => {
   })
 
   test('optional field maps to union ["null", T] with default null', () => {
-    const event = makeEvent('user_login', [{ name: 'remember_me', type: 'boolean', optional: true }])
+    const event = makeEvent('user_login', [
+      { name: 'remember_me', type: 'boolean', optional: true },
+    ])
     const avro = eventToAvro(event)
     expect(avro.fields[0].type).toEqual(['null', 'boolean'])
     expect(avro.fields[0].default).toBeNull()
@@ -110,7 +112,7 @@ describe('eventToAvro', () => {
       { name: 'session_id', type: 'string' },
     ])
     const avro = eventToAvro(event)
-    expect(avro.fields.map(f => f.name)).toEqual(['method', 'remember_me', 'session_id'])
+    expect(avro.fields.map((f) => f.name)).toEqual(['method', 'remember_me', 'session_id'])
   })
 
   test('unknown type defaults to "string"', () => {

@@ -1,5 +1,5 @@
-import { test, expect, describe, vi } from 'vitest'
-import { ConsoleTransport, ConsoleProvider } from '../console'
+import { describe, expect, test, vi } from 'vitest'
+import { ConsoleProvider, ConsoleTransport } from '../console'
 import { LogLevel } from '../types'
 
 describe('ConsoleTransport', () => {
@@ -49,7 +49,12 @@ describe('ConsoleTransport', () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {})
     const t = new ConsoleTransport({ pretty: false })
 
-    t.log({ level: LogLevel.INFO, message: 'with context', timestamp: new Date(), context: { key: 'val' } })
+    t.log({
+      level: LogLevel.INFO,
+      message: 'with context',
+      timestamp: new Date(),
+      context: { key: 'val' },
+    })
     const arg = spy.mock.calls[0][0]
     expect(arg).toContain('with context')
 

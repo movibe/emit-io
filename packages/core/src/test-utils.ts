@@ -1,6 +1,6 @@
-import type { LogEntry, Transport, AnalyticsProvider } from './types.js'
-import { LogLevel } from './types.js'
 import { EmitIoStrategy } from './index.js'
+import type { AnalyticsProvider, LogEntry, Transport } from './types.js'
+import { LogLevel } from './types.js'
 
 export type MockTransport = Transport & {
   readonly entries: LogEntry[]
@@ -12,22 +12,39 @@ export type MockProvider = AnalyticsProvider & {
   readonly events: Array<{ name: string; properties: unknown }>
   readonly identifies: Array<unknown>
   readonly screens: Array<{ name: string; params?: unknown }>
-  readonly errors: Array<{ feature: string; name: string; critical: boolean; error: Error; extra?: unknown }>
+  readonly errors: Array<{
+    feature: string
+    name: string
+    critical: boolean
+    error: Error
+    extra?: unknown
+  }>
   readonly initCalls: number
   readonly flushCalls: number
   readonly resetCalls: number
   clear(): void
 }
 
-export function createMockTransport(options?: { name?: string; minLevel?: LogLevel }): MockTransport {
+export function createMockTransport(options?: {
+  name?: string
+  minLevel?: LogLevel
+}): MockTransport {
   const _entries: LogEntry[] = []
   let _flushCalls = 0
 
   const transport: MockTransport = {
-    get name() { return options?.name ?? 'mock-transport' },
-    get minLevel() { return options?.minLevel ?? LogLevel.DEBUG },
-    get entries() { return _entries },
-    get flushCalls() { return _flushCalls },
+    get name() {
+      return options?.name ?? 'mock-transport'
+    },
+    get minLevel() {
+      return options?.minLevel ?? LogLevel.DEBUG
+    },
+    get entries() {
+      return _entries
+    },
+    get flushCalls() {
+      return _flushCalls
+    },
     log(entry: LogEntry): void {
       _entries.push(entry)
     },
@@ -47,21 +64,43 @@ export function createMockProvider(options?: { name?: string; enabled?: boolean 
   const _events: Array<{ name: string; properties: unknown }> = []
   const _identifies: Array<unknown> = []
   const _screens: Array<{ name: string; params?: unknown }> = []
-  const _errors: Array<{ feature: string; name: string; critical: boolean; error: Error; extra?: unknown }> = []
+  const _errors: Array<{
+    feature: string
+    name: string
+    critical: boolean
+    error: Error
+    extra?: unknown
+  }> = []
   let _initCalls = 0
   let _flushCalls = 0
   let _resetCalls = 0
 
   const provider: MockProvider = {
-    get name() { return options?.name ?? 'mock-provider' },
+    get name() {
+      return options?.name ?? 'mock-provider'
+    },
     enabled: options?.enabled ?? true,
-    get events() { return _events },
-    get identifies() { return _identifies },
-    get screens() { return _screens },
-    get errors() { return _errors },
-    get initCalls() { return _initCalls },
-    get flushCalls() { return _flushCalls },
-    get resetCalls() { return _resetCalls },
+    get events() {
+      return _events
+    },
+    get identifies() {
+      return _identifies
+    },
+    get screens() {
+      return _screens
+    },
+    get errors() {
+      return _errors
+    },
+    get initCalls() {
+      return _initCalls
+    },
+    get flushCalls() {
+      return _flushCalls
+    },
+    get resetCalls() {
+      return _resetCalls
+    },
     init(): void {
       _initCalls++
     },
@@ -97,7 +136,11 @@ export function createMockProvider(options?: { name?: string; enabled?: boolean 
   return provider
 }
 
-export function createTestEmitter(): { emit: EmitIoStrategy; transport: MockTransport; provider: MockProvider } {
+export function createTestEmitter(): {
+  emit: EmitIoStrategy
+  transport: MockTransport
+  provider: MockProvider
+} {
   const transport = createMockTransport()
   const provider = createMockProvider()
   const emit = new EmitIoStrategy({

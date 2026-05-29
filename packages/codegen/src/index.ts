@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-import { writeFileSync, existsSync, mkdirSync } from 'node:fs'
-import { resolve, dirname } from 'node:path'
-import { parseSchema } from './parser.js'
-import { generate } from './generator.js'
-import { detectPII } from './pii.js'
-import { loadSnapshot, saveSnapshot, buildSnapshot, diffSnapshots } from './check.js'
-import { eventsToJSONSchemaFiles } from './export-json-schema.js'
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { buildSnapshot, diffSnapshots, loadSnapshot, saveSnapshot } from './check.js'
 import { eventsToAvroFiles } from './export-avro.js'
+import { eventsToJSONSchemaFiles } from './export-json-schema.js'
+import { generate } from './generator.js'
+import { parseSchema } from './parser.js'
+import { detectPII } from './pii.js'
 
 function main() {
   const args = process.argv.slice(2)
@@ -70,7 +70,9 @@ EXAMPLES
     if (detectPIIFlag || strictPIIFlag) {
       const matches = detectPII(events)
       for (const m of matches) {
-        process.stderr.write(`[PII WARN] event '${m.event}' property '${m.property}' suspected PII (matched: ${m.pattern})\n`)
+        process.stderr.write(
+          `[PII WARN] event '${m.event}' property '${m.property}' suspected PII (matched: ${m.pattern})\n`,
+        )
       }
       if (strictPIIFlag && matches.length > 0) {
         process.exit(1)
@@ -109,7 +111,9 @@ EXAMPLES
     if (detectPIIFlag || strictPIIFlag) {
       const matches = detectPII(events)
       for (const m of matches) {
-        process.stderr.write(`[PII WARN] event '${m.event}' property '${m.property}' suspected PII (matched: ${m.pattern})\n`)
+        process.stderr.write(
+          `[PII WARN] event '${m.event}' property '${m.property}' suspected PII (matched: ${m.pattern})\n`,
+        )
       }
       if (strictPIIFlag && matches.length > 0) {
         process.exit(1)
@@ -188,9 +192,8 @@ EXAMPLES
     }
 
     const events = parseSchema(schemaPath)
-    const files = format === 'json-schema'
-      ? eventsToJSONSchemaFiles(events)
-      : eventsToAvroFiles(events)
+    const files =
+      format === 'json-schema' ? eventsToJSONSchemaFiles(events) : eventsToAvroFiles(events)
 
     for (const f of files) {
       const p = resolve(outDir, f.filename)

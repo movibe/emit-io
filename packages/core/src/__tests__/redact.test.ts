@@ -1,7 +1,7 @@
-import { test, expect, describe } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { redact } from '../plugins/redact.js'
-import { LogLevel } from '../types.js'
 import type { LogEntry } from '../types.js'
+import { LogLevel } from '../types.js'
 
 function makeEntry(context?: Record<string, unknown>): LogEntry {
   return {
@@ -17,25 +17,25 @@ describe('redact', () => {
     const plugin = redact({ paths: ['password'] })
     const entry = makeEntry({ password: 'secret123', name: 'alice' })
     const result = plugin(entry)!
-    expect(result.context!.password).toBe('[REDACTED]')
-    expect(result.context!.name).toBe('alice')
+    expect(result.context?.password).toBe('[REDACTED]')
+    expect(result.context?.name).toBe('alice')
   })
 
   test('path aninhado: redacta campo profundo, preserva vizinhos', () => {
     const plugin = redact({ paths: ['user.token'] })
     const entry = makeEntry({ user: { token: 'tok', name: 'bob' } })
     const result = plugin(entry)!
-    expect((result.context!.user as any).token).toBe('[REDACTED]')
-    expect((result.context!.user as any).name).toBe('bob')
+    expect((result.context?.user as any).token).toBe('[REDACTED]')
+    expect((result.context?.user as any).name).toBe('bob')
   })
 
   test('wildcard *.secret atinge todas as chaves de nível 1', () => {
     const plugin = redact({ paths: ['*.secret'] })
     const entry = makeEntry({ a: { secret: 'x' }, b: { secret: 'y' }, c: { other: 'z' } })
     const result = plugin(entry)!
-    expect((result.context!.a as any).secret).toBe('[REDACTED]')
-    expect((result.context!.b as any).secret).toBe('[REDACTED]')
-    expect((result.context!.c as any).other).toBe('z')
+    expect((result.context?.a as any).secret).toBe('[REDACTED]')
+    expect((result.context?.b as any).secret).toBe('[REDACTED]')
+    expect((result.context?.c as any).other).toBe('z')
   })
 
   test('path inexistente: no-op silencioso', () => {
@@ -49,7 +49,7 @@ describe('redact', () => {
     const plugin = redact({ paths: ['token'], censor: '***' })
     const entry = makeEntry({ token: 'abc' })
     const result = plugin(entry)!
-    expect(result.context!.token).toBe('***')
+    expect(result.context?.token).toBe('***')
   })
 
   test('remove: true deleta o campo em vez de substituir', () => {
@@ -57,7 +57,7 @@ describe('redact', () => {
     const entry = makeEntry({ password: 'pw', name: 'carol' })
     const result = plugin(entry)!
     expect('password' in result.context!).toBe(false)
-    expect(result.context!.name).toBe('carol')
+    expect(result.context?.name).toBe('carol')
   })
 
   test('remove: false (default) substitui pelo censor', () => {
@@ -65,7 +65,7 @@ describe('redact', () => {
     const entry = makeEntry({ password: 'pw' })
     const result = plugin(entry)!
     expect('password' in result.context!).toBe(true)
-    expect(result.context!.password).toBe('[REDACTED]')
+    expect(result.context?.password).toBe('[REDACTED]')
   })
 
   test('não muta o context original', () => {
@@ -95,20 +95,20 @@ describe('redact', () => {
       headers: { authorization: 'Bearer xyz', accept: 'application/json' },
     })
     const result = plugin(entry)!
-    expect(result.context!.password).toBe('[REDACTED]')
-    expect((result.context!.user as any).token).toBe('[REDACTED]')
-    expect((result.context!.user as any).name).toBe('n')
-    expect((result.context!.foo as any).secret).toBe('[REDACTED]')
-    expect((result.context!.headers as any).authorization).toBe('[REDACTED]')
-    expect((result.context!.headers as any).accept).toBe('application/json')
+    expect(result.context?.password).toBe('[REDACTED]')
+    expect((result.context?.user as any).token).toBe('[REDACTED]')
+    expect((result.context?.user as any).name).toBe('n')
+    expect((result.context?.foo as any).secret).toBe('[REDACTED]')
+    expect((result.context?.headers as any).authorization).toBe('[REDACTED]')
+    expect((result.context?.headers as any).accept).toBe('application/json')
   })
 
   test('wildcard com remove: true deleta os campos afetados', () => {
     const plugin = redact({ paths: ['*.secret'], remove: true })
     const entry = makeEntry({ a: { secret: 'x', keep: 1 }, b: { secret: 'y' } })
     const result = plugin(entry)!
-    expect('secret' in (result.context!.a as any)).toBe(false)
-    expect((result.context!.a as any).keep).toBe(1)
-    expect('secret' in (result.context!.b as any)).toBe(false)
+    expect('secret' in (result.context?.a as any)).toBe(false)
+    expect((result.context?.a as any).keep).toBe(1)
+    expect('secret' in (result.context?.b as any)).toBe(false)
   })
 })

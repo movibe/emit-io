@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import type { ParsedEvent } from './types.js'
 
 export type Snapshot = {
@@ -19,7 +19,7 @@ export function loadSnapshot(path: string): Snapshot | null {
 }
 
 export function saveSnapshot(path: string, snapshot: Snapshot): void {
-  writeFileSync(path, JSON.stringify(snapshot, null, 2) + '\n', 'utf-8')
+  writeFileSync(path, `${JSON.stringify(snapshot, null, 2)}\n`, 'utf-8')
 }
 
 export function buildSnapshot(events: ParsedEvent[]): Snapshot {

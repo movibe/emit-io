@@ -1,4 +1,8 @@
-# Migration Guide: v2 to v3
+# Migration Guide: Internal Logger v2 to emit-io v1.x (v3 API)
+
+> **Note:** This migration guide applies to teams migrating from the pre-release internal logger to emit-io v1.x. New projects should start directly with emit-io.
+
+This document covers the breaking changes when moving FROM the previous internal/private logger library (v2) TO the emit-io public library suite. The "v2 → v3" version numbers refer to the old private library's version numbering, not emit-io versions. The destination of this migration is emit-io v1.x (which exposes what was internally called the v3 API).
 
 ## Summary of breaking changes
 
@@ -87,7 +91,7 @@ Place this augmentation in a `.d.ts` file (e.g. `src/analytics.d.ts`) or in a fi
 
 ### 4. Switch to AnalyticsProvider interface
 
-The `LoggerStrategyConstructor[]` array config still works in v3 but emits a deprecation warning and will be removed in v4. Migrate to the `EmitIoStrategyConfig` object with `AnalyticsProvider` instances.
+The `LoggerStrategyConstructor[]` array config still works in v3 but emits a deprecation warning and will be removed in emit-io v2.0. Migrate to the `EmitIoStrategyConfig` object with `AnalyticsProvider` instances.
 
 v2:
 
@@ -220,7 +224,7 @@ const safeProvider = circuitBreaker(myProvider, {
 
 ## React migration
 
-The `emit-io-react` package exposes `captureError` on `AnalyticsContextValue`. The old `error` method is kept as a deprecated alias and will be removed in v4.
+The `emit-io-react` package exposes `captureError` on `AnalyticsContextValue`. The old `error` method is kept as a deprecated alias and will be removed in emit-io v2.0.
 
 ```typescript
 // v2
@@ -251,7 +255,7 @@ const emit = new EmitIoStrategy({
 })
 ```
 
-**`LoggerStrategyType` abstract class is deprecated**. It still works in v3 but will be removed in v4. Migrate implementing classes to the `AnalyticsProvider` plain-object interface.
+**`LoggerStrategyType` abstract class is deprecated**. It still works in v3 but will be removed in emit-io v2.0. Migrate implementing classes to the `AnalyticsProvider` plain-object interface.
 
 **`close()` is async**. Call `await emit.close()` for graceful shutdown to ensure HTTP transport queues are flushed before the process exits.
 

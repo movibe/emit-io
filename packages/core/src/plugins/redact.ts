@@ -1,4 +1,4 @@
-import type { LogEntry, Plugin } from '../types.js'
+import type { Plugin } from '../types.js'
 
 export type RedactOptions = {
   paths: string[]
@@ -16,46 +16,59 @@ export function redact(opts: RedactOptions): Plugin {
 
   return (entry) => {
     if (!entry.context) return entry
-    const cloned = deepClone(entry.context)
+    // Copy-on-write (COW): start with a shallow copy of context, then for each
+    // redact path clone only the minimal chain of objects needed to reach the
+    // target key. Objects/arrays NOT on a redact path are never cloned, making
+    // this O(depth * path_count) instead of O(total_keys).
+    let context: Record<string, unknown> = { ...entry.context }
     for (const path of compiled) {
-      applyPath(cloned, path.segments, 0, censor, remove)
+      context = applyPathCow(context, path.segments, 0, censor, remove)
     }
-    return { ...entry, context: cloned }
+    return { ...entry, context }
   }
 }
 
-function deepClone(obj: Record<string, unknown>): Record<string, unknown> {
-  if (typeof structuredClone === 'function') return structuredClone(obj)
-  return JSON.parse(JSON.stringify(obj))
-}
-
-function applyPath(
+/**
+ * Recursively applies copy-on-write along `segments` starting at index `i`.
+ * Returns a new object with only the affected branch shallow-copied; all
+ * sibling subtrees are shared with the original.
+ */
+function applyPathCow(
   obj: any,
   segments: string[],
   i: number,
   censor: string,
-  remove: boolean
-): void {
-  if (i >= segments.length || obj == null) return
+  remove: boolean,
+): any {
+  if (i >= segments.length || obj == null || typeof obj !== 'object') return obj
   const seg = segments[i]
   const isLast = i === segments.length - 1
+
   if (seg === '*') {
-    if (typeof obj !== 'object') return
-    for (const k of Object.keys(obj)) {
+    // Wildcard: iterate all keys; shallow-copy obj once, then process each key.
+    const copy: Record<string, unknown> = { ...obj }
+    for (const k of Object.keys(copy)) {
       if (isLast) {
-        if (remove) delete obj[k]
-        else obj[k] = censor
+        if (remove) delete copy[k]
+        else copy[k] = censor
       } else {
-        applyPath(obj[k], segments, i + 1, censor, remove)
+        copy[k] = applyPathCow(copy[k], segments, i + 1, censor, remove)
       }
     }
+    return copy
   } else {
-    if (typeof obj !== 'object' || !(seg in obj)) return
+    if (!(seg in obj)) return obj
     if (isLast) {
-      if (remove) delete obj[seg]
-      else obj[seg] = censor
+      // Shallow-copy obj and mutate only the target key.
+      const copy: Record<string, unknown> = { ...obj }
+      if (remove) delete copy[seg]
+      else copy[seg] = censor
+      return copy
     } else {
-      applyPath(obj[seg], segments, i + 1, censor, remove)
+      // Shallow-copy obj and recurse into the child branch.
+      const copy: Record<string, unknown> = { ...obj }
+      copy[seg] = applyPathCow(copy[seg], segments, i + 1, censor, remove)
+      return copy
     }
   }
 }

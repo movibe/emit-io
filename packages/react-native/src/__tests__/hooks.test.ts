@@ -1,8 +1,15 @@
 // @vitest-environment happy-dom
-import { test, expect, describe, vi } from 'vitest'
+
 import { renderHook } from '@testing-library/react'
 import { createElement, type ReactNode } from 'react'
-import { useAnalytics, useTrackEvent, useEventTracking, useScreenTracking, useCaptureError } from '../hooks.js'
+import { describe, expect, test, vi } from 'vitest'
+import {
+  useAnalytics,
+  useCaptureError,
+  useEventTracking,
+  useScreenTracking,
+  useTrackEvent,
+} from '../hooks.js'
 import { AnalyticsProvider } from '../provider.js'
 
 // Mock react-native for AppStateTracker

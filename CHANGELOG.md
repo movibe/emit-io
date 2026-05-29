@@ -2,7 +2,7 @@
 
 ## [1.0.0] - 2026-05-26
 
-First release under the `@emit` scope.
+First public release of the emit-io library suite (emit-io-core, emit-io-react, emit-io-react-native, emit-io-next, emit-io-fastify, emit-io-hono, emit-io-otel, emit-io-codegen).
 
 ### Packages
 

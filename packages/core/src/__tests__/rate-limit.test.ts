@@ -1,7 +1,7 @@
-import { test, expect, describe, vi, beforeEach, afterEach } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { rateLimit } from '../plugins/rate-limit.js'
-import { LogLevel } from '../types.js'
 import type { LogEntry } from '../types.js'
+import { LogLevel } from '../types.js'
 
 function makeEntry(userId?: string): LogEntry {
   return {
@@ -24,8 +24,8 @@ describe('rateLimit plugin', () => {
   test('max=3, windowMs=1000: 5 sequential calls → 3 pass, 2 drop', () => {
     const plugin = rateLimit({ max: 3, windowMs: 1000 })
     const results = Array.from({ length: 5 }, () => plugin(makeEntry()))
-    const passed = results.filter(r => r !== null).length
-    const dropped = results.filter(r => r === null).length
+    const passed = results.filter((r) => r !== null).length
+    const dropped = results.filter((r) => r === null).length
     expect(passed).toBe(3)
     expect(dropped).toBe(2)
   })

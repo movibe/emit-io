@@ -1,6 +1,6 @@
-import { test, expect, describe } from 'vitest'
-import { createMockTransport, createMockProvider, createTestEmitter } from '../test-utils.js'
+import { describe, expect, test } from 'vitest'
 import { EmitIoStrategy } from '../index.js'
+import { createMockProvider, createMockTransport, createTestEmitter } from '../test-utils.js'
 import { LogLevel } from '../types.js'
 
 describe('createMockTransport', () => {

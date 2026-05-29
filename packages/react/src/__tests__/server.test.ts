@@ -1,6 +1,6 @@
-import { test, expect, describe, vi } from 'vitest'
-import { withAnalytics } from '../server.js'
 import type { EmitIoStrategy } from 'emit-io-core'
+import { describe, expect, test, vi } from 'vitest'
+import { withAnalytics } from '../server.js'
 
 describe('withAnalytics', () => {
   test('calls the action and returns the result', async () => {

@@ -1,12 +1,12 @@
-import { test, expect, describe, vi } from 'vitest'
+import { describe, expect, test, vi } from 'vitest'
 import { EmitIoStrategy } from '../index.js'
 import type { AnalyticsProvider, EventRegistry } from '../types.js'
 
 // Module augmentation — extend EventRegistry inline for this test file
 declare module '../types.js' {
   interface EventRegistry {
-    'purchase': { orderId: string; total: number }
-    'view': { page: string }
+    purchase: { orderId: string; total: number }
+    view: { page: string }
   }
 }
 
@@ -45,7 +45,12 @@ describe('event registry — type-safe augmentation', () => {
 
     // Use explicit generic to bypass augmentation for this test
     const logger = new EmitIoStrategy<
-      string, string, { id: string }, any, any, { 'app-open': Record<string, never> }
+      string,
+      string,
+      { id: string },
+      any,
+      any,
+      { 'app-open': Record<string, never> }
     >({
       providers: [provider],
       emitAppOpenOnInit: false,
@@ -60,8 +65,8 @@ describe('event registry — type-safe augmentation', () => {
     // Compile-time proof: if EventRegistry is importable, augmentation is possible.
     // This is a no-op runtime test; the real check is that TypeScript compiles this file.
     const registry: EventRegistry = {
-      'purchase': { orderId: 'x', total: 0 },
-      'view': { page: '/' },
+      purchase: { orderId: 'x', total: 0 },
+      view: { page: '/' },
     }
     expect(Object.keys(registry)).toContain('purchase')
     expect(Object.keys(registry)).toContain('view')

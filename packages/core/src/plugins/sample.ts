@@ -1,5 +1,4 @@
-import type { LogEntry, Plugin } from '../types.js'
-import { LogLevel } from '../types.js'
+import type { LogLevel, Plugin } from '../types.js'
 
 export type SampleOptions = {
   rate: number

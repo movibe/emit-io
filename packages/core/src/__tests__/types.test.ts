@@ -1,5 +1,16 @@
-import { test, expect, describe } from 'vitest'
-import type { LOG_TAGS, EVENT_TAGS, NETWORK_ANALYTICS_TAGS, User, LogItem, CheckoutData, PaymentData, BeginCheckoutEvent, PurchaseLogEvent, Item } from '../types';
+import { describe, expect, test } from 'vitest'
+import type {
+  BeginCheckoutEvent,
+  CheckoutData,
+  EVENT_TAGS,
+  Item,
+  LOG_TAGS,
+  LogItem,
+  NETWORK_ANALYTICS_TAGS,
+  PaymentData,
+  PurchaseLogEvent,
+  User,
+} from '../types'
 
 describe('Types', () => {
   test('should validate LOG_TAGS type', () => {
@@ -15,12 +26,12 @@ describe('Types', () => {
       'remove_from_cart',
       'begin_checkout',
       'purchase',
-      'custom_tag' // string literal is valid
-    ];
-    
+      'custom_tag', // string literal is valid
+    ]
+
     // TypeScript will catch invalid types at compile time
-    expect(validTags.length).toBe(12);
-  });
+    expect(validTags.length).toBe(12)
+  })
 
   test('should validate EVENT_TAGS type', () => {
     const validEvents: {
@@ -32,11 +43,11 @@ describe('Types', () => {
       'add-to-cart': { product_id: '123', quantity: 1 },
       'remove-from-cart': { product_id: '123', quantity: 1 },
       'begin-checkout': { total: 100, items: 2 },
-      'purchase-complete': { order_id: '123', total: 100 }
-    };
+      'purchase-complete': { order_id: '123', total: 100 },
+    }
 
-    expect(Object.keys(validEvents).length).toBe(7);
-  });
+    expect(Object.keys(validEvents).length).toBe(7)
+  })
 
   test('should validate NETWORK_ANALYTICS_TAGS type', () => {
     const validTags: NETWORK_ANALYTICS_TAGS[] = [
@@ -48,11 +59,11 @@ describe('Types', () => {
       'RestApi_request',
       'WebSocket_error',
       'WebSocket_info',
-      'WebSocket_request'
-    ];
+      'WebSocket_request',
+    ]
 
-    expect(validTags.length).toBe(9);
-  });
+    expect(validTags.length).toBe(9)
+  })
 
   test('should validate User interface', () => {
     const validUser: User = {
@@ -61,12 +72,12 @@ describe('Types', () => {
       name: 'Test User',
       phone: '1234567890',
       status: 'active',
-      customField: 'value'
-    };
+      customField: 'value',
+    }
 
-    expect(validUser.id).toBeDefined();
-    expect(typeof validUser.id).toBe('string');
-  });
+    expect(validUser.id).toBeDefined()
+    expect(typeof validUser.id).toBe('string')
+  })
 
   test('should validate LogItem interface', () => {
     const validItem: LogItem = {
@@ -74,12 +85,12 @@ describe('Types', () => {
       item_name: 'Test Item',
       price: 10.99,
       quantity: 1,
-      customField: 'value'
-    };
+      customField: 'value',
+    }
 
-    expect(validItem.item_id).toBeDefined();
-    expect(validItem.price).toBeDefined();
-  });
+    expect(validItem.item_id).toBeDefined()
+    expect(validItem.price).toBeDefined()
+  })
 
   test('should validate CheckoutData interface', () => {
     const validCheckout: CheckoutData = {
@@ -90,14 +101,14 @@ describe('Types', () => {
           item_id: '123',
           item_name: 'Test Item',
           price: 100,
-          quantity: 1
-        }
-      ]
-    };
+          quantity: 1,
+        },
+      ],
+    }
 
-    expect(validCheckout.currency).toBeDefined();
-    expect(validCheckout.items.length).toBe(1);
-  });
+    expect(validCheckout.currency).toBeDefined()
+    expect(validCheckout.items.length).toBe(1)
+  })
 
   test('should validate PaymentData interface', () => {
     const validPayment: PaymentData = {
@@ -108,18 +119,18 @@ describe('Types', () => {
           item_id: '123',
           item_name: 'Test Item',
           price: 100,
-          quantity: 1
-        }
+          quantity: 1,
+        },
       ],
       transaction_id: '123',
       type: 'credit_card',
       tax: 10,
-      shipping: 5
-    };
+      shipping: 5,
+    }
 
-    expect(validPayment.transaction_id).toBeDefined();
-    expect(validPayment.type).toBeDefined();
-  });
+    expect(validPayment.transaction_id).toBeDefined()
+    expect(validPayment.type).toBeDefined()
+  })
 
   test('should validate BeginCheckoutEvent interface', () => {
     const validEvent: BeginCheckoutEvent = {
@@ -131,14 +142,14 @@ describe('Types', () => {
           item_id: '123',
           item_name: 'Test Item',
           price: 100,
-          quantity: 1
-        }
-      ]
-    };
+          quantity: 1,
+        },
+      ],
+    }
 
-    expect(validEvent.currency).toBeDefined();
-    expect(validEvent.items?.length).toBe(1);
-  });
+    expect(validEvent.currency).toBeDefined()
+    expect(validEvent.items?.length).toBe(1)
+  })
 
   test('should validate PurchaseLogEvent interface', () => {
     const validEvent: PurchaseLogEvent = {
@@ -155,14 +166,14 @@ describe('Types', () => {
           item_id: '123',
           item_name: 'Test Item',
           price: 100,
-          quantity: 1
-        }
-      ]
-    };
+          quantity: 1,
+        },
+      ],
+    }
 
-    expect(validEvent.type).toBe('credit_card');
-    expect(validEvent.items?.length).toBe(1);
-  });
+    expect(validEvent.type).toBe('credit_card')
+    expect(validEvent.items?.length).toBe(1)
+  })
 
   test('should validate Item interface', () => {
     const validItem: Item = {
@@ -179,17 +190,17 @@ describe('Types', () => {
       item_location_id: 'store-123',
       item_variant: 'Red',
       quantity: 1,
-      price: 100
-    };
+      price: 100,
+    }
 
-    expect(validItem.item_id).toBeDefined();
-    expect(validItem.item_name).toBeDefined();
-  });
+    expect(validItem.item_id).toBeDefined()
+    expect(validItem.item_name).toBeDefined()
+  })
 
   test('should validate optional fields in User interface', () => {
     const minimalUser: User = {
-      id: '123'
-    };
+      id: '123',
+    }
 
     const fullUser: User = {
       id: '123',
@@ -200,13 +211,13 @@ describe('Types', () => {
       customField: 'value',
       address: {
         street: 'Test St',
-        city: 'Test City'
-      }
-    };
+        city: 'Test City',
+      },
+    }
 
-    expect(minimalUser.id).toBeDefined();
-    expect(fullUser.address?.street).toBeDefined();
-  });
+    expect(minimalUser.id).toBeDefined()
+    expect(fullUser.address?.street).toBeDefined()
+  })
 
   test('should validate nested objects in LogItem', () => {
     const itemWithMetadata: LogItem = {
@@ -216,12 +227,12 @@ describe('Types', () => {
       quantity: 1,
       metadata: {
         color: 'red',
-        size: 'M'
-      }
-    };
+        size: 'M',
+      },
+    }
 
-    expect(itemWithMetadata.metadata).toBeDefined();
-  });
+    expect(itemWithMetadata.metadata).toBeDefined()
+  })
 
   test('should validate array fields in CheckoutData', () => {
     const checkoutWithMultipleItems: CheckoutData = {
@@ -232,23 +243,23 @@ describe('Types', () => {
           item_id: '123',
           item_name: 'Item 1',
           price: 100,
-          quantity: 1
+          quantity: 1,
         },
         {
           item_id: '456',
           item_name: 'Item 2',
           price: 100,
-          quantity: 1
-        }
+          quantity: 1,
+        },
       ],
       metadata: {
-        source: 'web'
-      }
-    };
+        source: 'web',
+      },
+    }
 
-    expect(checkoutWithMultipleItems.items.length).toBe(2);
-    expect(checkoutWithMultipleItems.metadata).toBeDefined();
-  });
+    expect(checkoutWithMultipleItems.items.length).toBe(2)
+    expect(checkoutWithMultipleItems.metadata).toBeDefined()
+  })
 
   test('should validate all payment types in PaymentData', () => {
     const paymentTypes: PaymentData['type'][] = [
@@ -256,60 +267,64 @@ describe('Types', () => {
       'debit_card',
       'pix',
       'bank_slip',
-      'bank_transfer'
-    ];
+      'bank_transfer',
+    ]
 
-    const payments = paymentTypes.map(type => ({
+    const payments = paymentTypes.map((type) => ({
       currency: 'USD',
       value: 100,
       transaction_id: '123',
       type,
-      items: [{
-        item_id: '123',
-        item_name: 'Test Item',
-        price: 100,
-        quantity: 1
-      }]
-    }));
+      items: [
+        {
+          item_id: '123',
+          item_name: 'Test Item',
+          price: 100,
+          quantity: 1,
+        },
+      ],
+    }))
 
-    payments.forEach(payment => {
-      expect(paymentTypes).toContain(payment.type);
-    });
-  });
+    payments.forEach((payment) => {
+      expect(paymentTypes).toContain(payment.type)
+    })
+  })
 
   test('should validate optional fields in BeginCheckoutEvent', () => {
     const minimalCheckout: BeginCheckoutEvent = {
       currency: 'USD',
-      value: 100
-    };
+      value: 100,
+    }
 
     const fullCheckout: BeginCheckoutEvent = {
       currency: 'USD',
       value: 100,
       coupon: 'TEST10',
-      items: [{
-        item_id: '123',
-        item_name: 'Test Item',
-        price: 100,
-        quantity: 1
-      }]
-    };
+      items: [
+        {
+          item_id: '123',
+          item_name: 'Test Item',
+          price: 100,
+          quantity: 1,
+        },
+      ],
+    }
 
-    expect(minimalCheckout.currency).toBeDefined();
-    expect(fullCheckout.items).toBeDefined();
-  });
+    expect(minimalCheckout.currency).toBeDefined()
+    expect(fullCheckout.items).toBeDefined()
+  })
 
   test('should validate all required fields in PurchaseLogEvent', () => {
-    const requiredFields: (keyof PurchaseLogEvent)[] = ['type', 'currency', 'value'];
-    
+    const requiredFields: (keyof PurchaseLogEvent)[] = ['type', 'currency', 'value']
+
     const purchase: PurchaseLogEvent = {
       type: 'credit_card',
       currency: 'USD',
-      value: 100
-    };
+      value: 100,
+    }
 
-    requiredFields.forEach(field => {
-      expect(purchase[field]).toBeDefined();
-    });
-  });
-}); 
+    requiredFields.forEach((field) => {
+      expect(purchase[field]).toBeDefined()
+    })
+  })
+})

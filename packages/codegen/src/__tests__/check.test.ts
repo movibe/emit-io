@@ -1,27 +1,25 @@
-import { test, expect, describe, beforeEach, afterEach } from 'vitest'
-import { mkdtempSync, rmSync, readFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { afterEach, beforeEach, describe, expect, test } from 'vitest'
+import type { Snapshot } from '../check.js'
 import { buildSnapshot, diffSnapshots, loadSnapshot, saveSnapshot } from '../check.js'
 import type { ParsedEvent } from '../types.js'
-import type { Snapshot } from '../check.js'
 
 function makeEvent(name: string, fields: Array<{ name: string; type: string }>): ParsedEvent {
   return {
     name,
-    fields: fields.map(f => ({ name: f.name, type: f.type, optional: false })),
+    fields: fields.map((f) => ({ name: f.name, type: f.type, optional: false })),
   }
 }
 
 describe('buildSnapshot', () => {
   test('builds correct structure for events with fields', () => {
-    const events = [
-      makeEvent('user-login', [{ name: 'method', type: 'string' }]),
-    ]
+    const events = [makeEvent('user-login', [{ name: 'method', type: 'string' }])]
     const snapshot = buildSnapshot(events)
     expect(snapshot.version).toBe(1)
     expect(snapshot.events['user-login']).toBeDefined()
-    expect(snapshot.events['user-login'].properties['method']).toEqual({ type: 'string' })
+    expect(snapshot.events['user-login'].properties.method).toEqual({ type: 'string' })
   })
 
   test('builds snapshot for event with no fields', () => {
@@ -34,12 +32,15 @@ describe('buildSnapshot', () => {
   test('builds snapshot for multiple events', () => {
     const events = [
       makeEvent('page-view', [{ name: 'page', type: 'string' }]),
-      makeEvent('click', [{ name: 'target', type: 'string' }, { name: 'x', type: 'number' }]),
+      makeEvent('click', [
+        { name: 'target', type: 'string' },
+        { name: 'x', type: 'number' },
+      ]),
     ]
     const snapshot = buildSnapshot(events)
     expect(Object.keys(snapshot.events)).toHaveLength(2)
-    expect(snapshot.events['page-view'].properties['page']).toEqual({ type: 'string' })
-    expect(snapshot.events['click'].properties['x']).toEqual({ type: 'number' })
+    expect(snapshot.events['page-view'].properties.page).toEqual({ type: 'string' })
+    expect(snapshot.events.click.properties.x).toEqual({ type: 'number' })
   })
 
   test('returns empty events map for empty input', () => {
@@ -182,9 +183,9 @@ describe('snapshot save/load round-trip', () => {
     saveSnapshot(filePath, snapshot)
     const loaded = loadSnapshot(filePath)
     expect(loaded).not.toBeNull()
-    expect(loaded!.version).toBe(1)
-    expect(loaded!.events['user-login'].properties['method']).toEqual({ type: 'string' })
-    expect(loaded!.events['page-view'].properties['count']).toEqual({ type: 'number' })
+    expect(loaded?.version).toBe(1)
+    expect(loaded?.events['user-login'].properties.method).toEqual({ type: 'string' })
+    expect(loaded?.events['page-view'].properties.count).toEqual({ type: 'number' })
   })
 
   test('saved file ends with newline', () => {
@@ -196,9 +197,7 @@ describe('snapshot save/load round-trip', () => {
   })
 
   test('buildSnapshot + save + load + diff shows no drift', () => {
-    const events = [
-      makeEvent('user-login', [{ name: 'method', type: 'string' }]),
-    ]
+    const events = [makeEvent('user-login', [{ name: 'method', type: 'string' }])]
     const snapshot = buildSnapshot(events)
     const filePath = join(tmpDir, '.analytics-schema.snapshot.json')
     saveSnapshot(filePath, snapshot)

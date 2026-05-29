@@ -1,5 +1,5 @@
-import { logs, type LoggerProvider, SeverityNumber } from '@opentelemetry/api-logs'
-import type { LogEntry, Transport, LogLevel } from 'emit-io-core'
+import { type LoggerProvider, logs, SeverityNumber } from '@opentelemetry/api-logs'
+import type { LogEntry, LogLevel, Transport } from 'emit-io-core'
 import { LogLevelEnum } from 'emit-io-core'
 
 function getSeverityMap(): Record<number, SeverityNumber> {
@@ -39,11 +39,13 @@ export class OTelTransport implements Transport {
       timestamp: entry.timestamp.getTime() * 1_000_000, // ns
       attributes: {
         ...(entry.context as Record<string, any> | undefined),
-        ...(entry.error ? {
-          'error.message': entry.error.message,
-          'error.stack': entry.error.stack ?? '',
-          'error.name': entry.error.name,
-        } : {}),
+        ...(entry.error
+          ? {
+              'error.message': entry.error.message,
+              'error.stack': entry.error.stack ?? '',
+              'error.name': entry.error.name,
+            }
+          : {}),
       },
     })
   }

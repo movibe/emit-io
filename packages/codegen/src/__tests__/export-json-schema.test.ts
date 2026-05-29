@@ -1,16 +1,16 @@
-import { test, expect, describe } from 'vitest'
-import { eventToJSONSchema, eventsToJSONSchemaFiles } from '../export-json-schema.js'
+import { describe, expect, test } from 'vitest'
+import { eventsToJSONSchemaFiles, eventToJSONSchema } from '../export-json-schema.js'
 import type { ParsedEvent } from '../types.js'
 
 function makeEvent(
   name: string,
   fields: Array<{ name: string; type: string; optional?: boolean; description?: string }>,
-  description?: string
+  description?: string,
 ): ParsedEvent {
   return {
     name,
     description,
-    fields: fields.map(f => ({
+    fields: fields.map((f) => ({
       name: f.name,
       type: f.type,
       optional: f.optional ?? false,
@@ -23,49 +23,49 @@ describe('eventToJSONSchema', () => {
   test('string prop maps to type string', () => {
     const event = makeEvent('user_login', [{ name: 'method', type: 'string' }])
     const schema = eventToJSONSchema(event)
-    expect(schema.properties['method']).toEqual({ type: 'string' })
+    expect(schema.properties.method).toEqual({ type: 'string' })
   })
 
   test('number prop maps to type number', () => {
     const event = makeEvent('page_view', [{ name: 'duration', type: 'number' }])
     const schema = eventToJSONSchema(event)
-    expect(schema.properties['duration']).toEqual({ type: 'number' })
+    expect(schema.properties.duration).toEqual({ type: 'number' })
   })
 
   test('integer prop maps to type integer', () => {
     const event = makeEvent('page_view', [{ name: 'count', type: 'integer' }])
     const schema = eventToJSONSchema(event)
-    expect(schema.properties['count']).toEqual({ type: 'integer' })
+    expect(schema.properties.count).toEqual({ type: 'integer' })
   })
 
   test('boolean prop maps to type boolean', () => {
     const event = makeEvent('user_login', [{ name: 'remember_me', type: 'boolean' }])
     const schema = eventToJSONSchema(event)
-    expect(schema.properties['remember_me']).toEqual({ type: 'boolean' })
+    expect(schema.properties.remember_me).toEqual({ type: 'boolean' })
   })
 
   test('array prop maps to type array', () => {
     const event = makeEvent('user_login', [{ name: 'tags', type: 'array' }])
     const schema = eventToJSONSchema(event)
-    expect(schema.properties['tags']).toEqual({ type: 'array' })
+    expect(schema.properties.tags).toEqual({ type: 'array' })
   })
 
   test('object prop maps to type object', () => {
     const event = makeEvent('user_login', [{ name: 'meta', type: 'object' }])
     const schema = eventToJSONSchema(event)
-    expect(schema.properties['meta']).toEqual({ type: 'object' })
+    expect(schema.properties.meta).toEqual({ type: 'object' })
   })
 
   test('enum prop (TS union literals) maps to type string with enum array', () => {
     const event = makeEvent('user_login', [{ name: 'method', type: "'email' | 'sso'" }])
     const schema = eventToJSONSchema(event)
-    expect(schema.properties['method']).toEqual({ type: 'string', enum: ['email', 'sso'] })
+    expect(schema.properties.method).toEqual({ type: 'string', enum: ['email', 'sso'] })
   })
 
   test('unknown type maps to {} (any)', () => {
     const event = makeEvent('user_login', [{ name: 'data', type: 'SomeCustomType' }])
     const schema = eventToJSONSchema(event)
-    expect(schema.properties['data']).toEqual({})
+    expect(schema.properties.data).toEqual({})
   })
 
   test('required array populated for non-optional fields', () => {
@@ -79,9 +79,7 @@ describe('eventToJSONSchema', () => {
   })
 
   test('optional fields are not required', () => {
-    const event = makeEvent('user_login', [
-      { name: 'opt_field', type: 'string', optional: true },
-    ])
+    const event = makeEvent('user_login', [{ name: 'opt_field', type: 'string', optional: true }])
     const schema = eventToJSONSchema(event)
     expect(schema.required).toHaveLength(0)
   })

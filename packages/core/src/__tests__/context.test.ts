@@ -1,13 +1,15 @@
-import { test, expect, describe, vi } from 'vitest'
-import { EmitIoStrategy, LogLevelEnum, runWithContext, getContext } from '../index.js'
-import type { Transport, LogEntry } from '../index.js'
+import { describe, expect, test } from 'vitest'
+import type { LogEntry, Transport } from '../index.js'
+import { EmitIoStrategy, getContext, LogLevelEnum, runWithContext } from '../index.js'
 
 function makeTransport() {
   const entries: LogEntry[] = []
   const transport: Transport = {
     name: 'test',
     minLevel: LogLevelEnum.DEBUG,
-    log: (entry) => { entries.push(entry) },
+    log: (entry) => {
+      entries.push(entry)
+    },
   }
   return { transport, entries }
 }
@@ -73,8 +75,8 @@ describe('context propagation via AsyncLocalStorage', () => {
     })
 
     expect(entries[0].context).toMatchObject({
-      requestId: 'from-arg',  // arg wins
-      extra: 'als-extra',     // als key preserved
+      requestId: 'from-arg', // arg wins
+      extra: 'als-extra', // als key preserved
       direct: true,
     })
   })
@@ -90,8 +92,8 @@ describe('context propagation via AsyncLocalStorage', () => {
 
     expect(entries[0].context).toMatchObject({
       requestId: 'from-context', // arg wins over binding wins over als
-      svc: 'api',                // binding preserved
-      traceId: 'tid',            // als preserved (not overridden by binding or arg)
+      svc: 'api', // binding preserved
+      traceId: 'tid', // als preserved (not overridden by binding or arg)
     })
   })
 
@@ -111,8 +113,8 @@ describe('context propagation via AsyncLocalStorage', () => {
     ])
 
     expect(entries).toHaveLength(2)
-    const msgA = entries.find(e => e.message === 'from A')
-    const msgB = entries.find(e => e.message === 'from B')
+    const msgA = entries.find((e) => e.message === 'from A')
+    const msgB = entries.find((e) => e.message === 'from B')
     expect(msgA?.context?.requestId).toBe('branch-A')
     expect(msgB?.context?.requestId).toBe('branch-B')
   })
