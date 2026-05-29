@@ -86,10 +86,12 @@ Most TypeScript stacks bolt together **three separate systems**: a logger (pino/
 | GDPR consent gate | — | — | partial | partial | ✅ |
 | YAML-driven codegen | — | — | — | — | ✅ |
 | Runs on edge / Cloudflare Workers | — | — | partial | — | ✅ |
-| Runs on React Native | — | — | partial | partial | ✅ |
-| Zero runtime deps (core) | ✅ | — | — | — | ✅ |
+| Runs on React Native | — | — | ✅ | ✅ | ✅ |
+| Zero runtime deps (core) | — | — | — | — | ✅ |
 | Pre-init analytics buffer | — | — | — | — | ✅ |
 | Circuit breaker for providers | — | — | — | — | ✅ |
+
+> **Note:** pino and winston are best-in-class loggers; Sentry and Segment are category leaders in error tracking and analytics. This table shows **breadth** — one API covering all four areas — not depth in any single niche.
 
 ```typescript
 import { EmitIoStrategy, JSONTransport, ConsoleTransport, redact, sample, LogLevelEnum } from 'emit-io-core'
@@ -153,17 +155,23 @@ All 8 packages share a single linked version and are released together on every 
 
 ## Features
 
+**Logging**
+
 - **Log levels** — DEBUG, INFO, WARN, ERROR, FATAL with per-transport `minLevel` filtering
-- **Transport system** — ConsoleTransport, JSONTransport, HTTPTransport, DevToolsTransport; pluggable
-- **Plugin pipeline** — transform or drop entries before transport (redact, sample, rateLimit, normalizeStack)
-- **Analytics providers** — unified interface for GA4, PostHog, Sentry, etc. via `AnalyticsProvider`
-- **Type-safe events** — `EventRegistry` module augmentation for compile-time event names + payloads
-- **Child loggers** — `emit.child({ requestId })` inherits transports, merges bindings
-- **AsyncLocalStorage context** — `runWithContext` propagates trace data automatically (Node + edge)
-- **Consent gate** — `setConsent({ analytics, errors })` for GDPR compliance
-- **Pre-init buffer** — queue events before providers are ready, flush on `init()`
-- **Circuit breaker** — wraps any provider to open on repeated failures
-- **Zero runtime dependencies** in core
+- **Transport system** — `ConsoleTransport`, `JSONTransport`, `HTTPTransport` (batched, retried), `DevToolsTransport`; fully pluggable
+- **Plugin pipeline** — `(entry) => entry | null` functions run before every transport: `redact`, `sample`, `rateLimit`, `normalizeStack`
+- **Child loggers** — `emit.child({ requestId })` inherits all transports and providers, merges bindings
+- **AsyncLocalStorage context** — `runWithContext` auto-propagates trace data to every log call in scope (Node + edge)
+- **Zero runtime dependencies** in `emit-io-core`
+
+**Analytics & errors**
+
+- **Bring-your-own providers** — implement the `AnalyticsProvider` interface once (GA4, PostHog, Sentry, custom…) and emit-io fans out to all of them via `event()`, `logScreen()`, `setUser()`, `captureError()`
+- **Type-safe events** — `EventRegistry` module augmentation gives compile-time-checked event names + payloads; falls back to loose strings without augmentation
+- **`captureError`** — writes to transports always (consent-independent) and fires analytics providers only if `consent.errors !== false`
+- **Consent gate** — `setConsent({ analytics, errors })` for GDPR; queued events replay on consent via pre-init buffer
+- **Pre-init buffer** — analytics events queued before `init()` flush automatically when providers are ready
+- **Circuit breaker** — wraps any flaky provider; opens after N failures, self-recovers after cooldown
 
 ## Quick Start
 
