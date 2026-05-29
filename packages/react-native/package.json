@@ -1,6 +1,6 @@
 {
   "name": "emit-io-react-native",
-  "version": "1.0.6",
+  "version": "2.0.0",
   "description": "React Native bindings for emit-io — hooks, provider, AppState + navigation tracking",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -33,7 +33,7 @@
     "prepack": "bun run build:all"
   },
   "peerDependencies": {
-    "emit-io-core": "^1.0.6",
+    "emit-io-core": "^2.0.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-native": ">=0.72.0"
   },
