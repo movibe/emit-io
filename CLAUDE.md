@@ -44,6 +44,13 @@ bun run format            # Biome format --write
 - GitHub Actions workflow permissions: `default_workflow_permissions: write` + `can_approve_pull_request_reviews: true` (repo setting, not in code)
 - Release flow: push to main → changesets/action opens "Version Packages" PR → merge that PR → packages published
 
+## Tag scheme
+
+- Canonical format: **aggregate `vX.Y.Z`** (all 8 packages share one linked version)
+- Tags + GitHub Releases created automatically by `release.yml` on every publish
+- Do NOT create per-package tags (`emit-io-core@x.y.z`) manually — use aggregate only
+- Local tag line: `v1.0.0` … `v1.0.6` (contiguous, matching npm)
+
 ## Key patterns
 
 - `Transport` interface requires `close?()` — implement to clean up timers/sockets

@@ -23,7 +23,8 @@
   "sideEffects": false,
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "esbuild src/_bundle.ts --bundle --outfile=dist/index.js --format=esm --platform=browser --external:react --external:react/jsx-runtime --external:react-native --external:@react-navigation/native --external:expo-router --external:emit-io-core --minify --jsx=automatic && esbuild src/_bundle.ts --bundle --outfile=dist/index.cjs --format=cjs --platform=browser --external:react --external:react/jsx-runtime --external:react-native --external:@react-navigation/native --external:expo-router --external:emit-io-core --minify --jsx=automatic",
@@ -60,8 +61,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/movibe/emit-io.git"
+    "url": "git+https://github.com/movibe/emit-io.git",
+    "directory": "packages/react-native"
   },
+  "keywords": [
+    "react-native",
+    "expo",
+    "mobile",
+    "logging",
+    "analytics",
+    "typescript",
+    "observability",
+    "emit-io"
+  ],
+  "bugs": {
+    "url": "https://github.com/movibe/emit-io/issues"
+  },
+  "homepage": "https://github.com/movibe/emit-io#readme",
   "author": "Movibe",
   "license": "MIT"
 }

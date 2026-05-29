@@ -4,12 +4,13 @@
   "description": "CLI code generator for emit-io — define events in YAML, get typed TypeScript tracker",
   "type": "module",
   "bin": {
-    "logger-codegen": "./dist/index.js"
+    "emit-io-codegen": "./dist/index.js"
   },
   "sideEffects": false,
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "bun build ./src/index.ts --outdir=dist --target=node --format=esm --minify",
@@ -31,8 +32,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/movibe/emit-io.git"
+    "url": "git+https://github.com/movibe/emit-io.git",
+    "directory": "packages/codegen"
   },
+  "keywords": [
+    "codegen",
+    "code-generator",
+    "cli",
+    "yaml",
+    "logging",
+    "analytics",
+    "typescript",
+    "observability",
+    "emit-io"
+  ],
+  "bugs": {
+    "url": "https://github.com/movibe/emit-io/issues"
+  },
+  "homepage": "https://github.com/movibe/emit-io#readme",
   "author": "Movibe",
   "license": "MIT"
 }

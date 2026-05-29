@@ -21,7 +21,8 @@
   "sideEffects": false,
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --platform=node --external:hono --external:emit-io-core --minify && esbuild src/index.ts --bundle --outfile=dist/index.cjs --format=cjs --platform=node --external:hono --external:emit-io-core --minify",
@@ -45,8 +46,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/movibe/emit-io.git"
+    "url": "git+https://github.com/movibe/emit-io.git",
+    "directory": "packages/hono"
   },
+  "keywords": [
+    "hono",
+    "edge",
+    "cloudflare-workers",
+    "logging",
+    "analytics",
+    "typescript",
+    "observability",
+    "emit-io"
+  ],
+  "bugs": {
+    "url": "https://github.com/movibe/emit-io/issues"
+  },
+  "homepage": "https://github.com/movibe/emit-io#readme",
   "author": "Movibe",
   "license": "MIT"
 }
