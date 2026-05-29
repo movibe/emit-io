@@ -9,6 +9,18 @@ pre-commit:
 pre-push:
   parallel: false
   commands:
+    changeset-reminder:
+      run: |
+        BRANCH=$(git branch --show-current)
+        if [[ "$BRANCH" == "feat/"* ]] || [[ "$BRANCH" == "fix/"* ]]; then
+          if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v README)" ]; then
+            echo ""
+            echo "⚠️  No changeset found on branch: $BRANCH"
+            echo "   Run: bun run changeset"
+            echo "   Skip: git push --no-verify (if no release needed)"
+            echo ""
+          fi
+        fi
     typecheck:
       run: cd /Users/movibe/sites/libs/logger && bun run typecheck 2>/dev/null || bun run --filter '*' tsc --noEmit 2>&1 | head -30
     tests:
