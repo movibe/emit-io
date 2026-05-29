@@ -4,11 +4,41 @@
   <img src="./assets/logo.svg" alt="emit-io logo" width="500" />
 </p>
 
-[![npm version](https://img.shields.io/npm/v/emit-io-core)](https://www.npmjs.com/package/emit-io-core)
-[![Tests & Coverage](https://github.com/movibe/emit-io/actions/workflows/ci.yml/badge.svg)](https://github.com/movibe/emit-io/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/movibe/emit-io/branch/main/graph/badge.svg)](https://codecov.io/gh/movibe/emit-io)
+<h3 align="center">One type-safe API for logs, analytics, and errors — everywhere your TypeScript runs.</h3>
 
-Universal logging + analytics for TypeScript — Node, browser, edge, React Native.
+<p align="center">
+  Stop wiring together a logger, an analytics SDK, and an error tracker.<br/>
+  emit-io unifies all three behind a single, zero-dependency API that works identically<br/>
+  on Node.js, Cloudflare Workers, browser, and React Native.
+</p>
+
+<p align="center">
+  <strong>Logs · Analytics · Errors &nbsp;·&nbsp; One API &nbsp;·&nbsp; Node · Edge · Browser · React Native &nbsp;·&nbsp; Zero deps · Fully typed</strong>
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/emit-io-core"><img alt="npm version" src="https://img.shields.io/npm/v/emit-io-core"/></a>
+  <a href="https://www.npmjs.com/package/emit-io-core"><img alt="npm downloads" src="https://img.shields.io/npm/dm/emit-io-core"/></a>
+  <a href="https://bundlephobia.com/package/emit-io-core"><img alt="bundle size" src="https://img.shields.io/bundlephobia/minzip/emit-io-core"/></a>
+  <a href="https://www.npmjs.com/package/emit-io-core"><img alt="TypeScript" src="https://img.shields.io/npm/types/emit-io-core"/></a>
+  <a href="https://github.com/movibe/emit-io/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/movibe/emit-io/actions/workflows/ci.yml/badge.svg"/></a>
+  <a href="https://codecov.io/gh/movibe/emit-io"><img alt="codecov" src="https://codecov.io/gh/movibe/emit-io/branch/main/graph/badge.svg"/></a>
+  <a href="./LICENSE"><img alt="license" src="https://img.shields.io/npm/l/emit-io-core"/></a>
+</p>
+
+---
+
+- **Replace 3 tools with 1** — logger + analytics SDK + error tracker behind one typed object. No config drift, no duplicated consent flows.
+- **Write once, run anywhere** — identical API on Node.js, Cloudflare Workers, browser, and React Native.
+- **Catch event typos at compile time** — `EventRegistry` augmentation makes every `emit.event()` call fully type-checked.
+- **GDPR-ready by default** — built-in consent gate (`{ analytics, errors }`) blocks providers until the user opts in. Pre-init buffer replays queued events on consent.
+- **Governed analytics events** — define events in YAML, auto-generate typed trackers, detect schema drift in CI.
+
+```bash
+npm install emit-io-core
+```
+
+→ Jump to [Quick Start](#quick-start) or skip to the [full comparison](#why-emit-io).
 
 ---
 
@@ -40,6 +70,8 @@ Universal logging + analytics for TypeScript — Node, browser, edge, React Nati
 ---
 
 ## Why emit-io?
+
+**The usual pattern: one library for logs, another for product events, another for errors.** Three SDK versions to track, three consent flows to wire up, three runtime compatibility matrices to worry about — and a Sentry `dsn`, a Segment `writeKey`, and a pino `instance` living as separate globals across your codebase.
 
 Most TypeScript stacks bolt together **three separate systems**: a logger (pino/winston) for structured logs, an analytics SDK (Segment/PostHog/GA4) for product events, and an error tracker (Sentry) for crashes — each with its own API, configuration, consent model, and runtime compatibility matrix.
 
