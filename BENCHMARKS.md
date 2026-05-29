@@ -48,7 +48,11 @@ All libraries write real serialized JSON to `/dev/null` so the measurement inclu
 
 ## Interpretation
 
-Pino is the throughput leader across all three scenarios, running roughly 2× faster than `emit-io-core` at median. This is expected: pino is purpose-built for raw log throughput with minimal per-call overhead. `emit-io-core` beats winston in the **context scenario** (median ~1,043K vs ~889K ops/s, ~17% ahead) but is roughly on par with winston in the simple and child scenarios when judged by median rather than mean (which is skewed by outliers in both). The main takeaway: `emit-io-core` runs comfortably in the 1M ops/s range and is never slower than winston, while offering features neither pino nor winston provide out of the box — circuit breaker, per-transport rate limiting, typed analytics events, and consent management.
+Pino is the throughput leader across all three scenarios, running roughly 2× faster than `emit-io-core` at median. This is expected: pino is purpose-built for raw log throughput with minimal per-call overhead.
+
+`emit-io-core` is **behind winston in the simple-log case** (~21% fewer ops/sec on average) and roughly on par in the child-logger case. Where it pulls ahead is the **context-heavy scenario** — adding 3 keys per call — where it runs ~18% faster than winston (median latency: 959ns vs 1,125ns).
+
+The main takeaway: `emit-io-core` is a general-purpose logger-plus-analytics layer, not a throughput-only logger. It runs comfortably in the 1M ops/s range and is competitive with winston, while offering features neither pino nor winston provide out of the box — circuit breaker, per-transport rate limiting, typed analytics events, and consent management. If raw log throughput is the only constraint, pino is the right tool.
 
 ---
 
@@ -56,7 +60,7 @@ Pino is the throughput leader across all three scenarios, running roughly 2× fa
 
 ```bash
 git clone https://github.com/movibe/emit-io.git
-cd logger
+cd emit-io
 bun install
 bun run bench:compare
 ```

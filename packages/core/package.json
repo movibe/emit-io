@@ -60,14 +60,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/movibe/emit-io.git"
+    "url": "git+https://github.com/movibe/emit-io.git",
+    "directory": "packages/core"
   },
   "keywords": [
     "logger",
     "analytics",
     "typescript",
     "logging",
-    "events"
+    "events",
+    "observability",
+    "emit-io",
+    "transport",
+    "type-safe",
+    "opentelemetry"
   ],
   "author": "Movibe",
   "license": "MIT",

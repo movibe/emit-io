@@ -59,8 +59,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/movibe/emit-io.git"
+    "url": "git+https://github.com/movibe/emit-io.git",
+    "directory": "packages/react"
   },
+  "keywords": [
+    "react",
+    "react-hooks",
+    "logging",
+    "analytics",
+    "typescript",
+    "observability",
+    "emit-io"
+  ],
+  "bugs": {
+    "url": "https://github.com/movibe/emit-io/issues"
+  },
+  "homepage": "https://github.com/movibe/emit-io#readme",
   "author": "Movibe",
   "license": "MIT"
 }

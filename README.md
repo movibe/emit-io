@@ -1,14 +1,97 @@
-# emit-io-core
+# emit-io
 
 <p align="center">
-  <img src="./assets/logo.png" alt="emit-io logo" width="500" />
+  <img src="./assets/logo.svg" alt="emit-io logo" width="500" />
 </p>
 
-[![npm version](https://img.shields.io/npm/v/emit-io-core)](https://www.npmjs.com/package/emit-io-core)
-[![Tests & Coverage](https://github.com/movibe/emit-io/actions/workflows/tests.yml/badge.svg)](https://github.com/movibe/emit-io/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/movibe/emit-io/branch/main/graph/badge.svg)](https://codecov.io/gh/movibe/emit-io)
+<h3 align="center">One type-safe API for logs, analytics, and errors — everywhere your TypeScript runs.</h3>
 
-Universal logging + analytics for TypeScript — Node, browser, edge, React Native.
+<p align="center">
+  Stop wiring together a logger, an analytics SDK, and an error tracker.<br/>
+  emit-io unifies all three behind a single, zero-dependency API that works identically<br/>
+  on Node.js, Cloudflare Workers, browser, and React Native.
+</p>
+
+<p align="center">
+  <strong>Logs · Analytics · Errors &nbsp;·&nbsp; One API &nbsp;·&nbsp; Node · Edge · Browser · React Native &nbsp;·&nbsp; Zero deps · Fully typed</strong>
+</p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/emit-io-core"><img alt="npm version" src="https://img.shields.io/npm/v/emit-io-core"/></a>
+  <a href="https://www.npmjs.com/package/emit-io-core"><img alt="npm downloads" src="https://img.shields.io/npm/dm/emit-io-core"/></a>
+  <a href="https://bundlephobia.com/package/emit-io-core"><img alt="bundle size" src="https://img.shields.io/bundlephobia/minzip/emit-io-core"/></a>
+  <a href="https://www.npmjs.com/package/emit-io-core"><img alt="TypeScript" src="https://img.shields.io/npm/types/emit-io-core"/></a>
+  <a href="https://github.com/movibe/emit-io/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/movibe/emit-io/actions/workflows/ci.yml/badge.svg"/></a>
+  <a href="https://codecov.io/gh/movibe/emit-io"><img alt="codecov" src="https://codecov.io/gh/movibe/emit-io/branch/main/graph/badge.svg"/></a>
+  <a href="./LICENSE"><img alt="license" src="https://img.shields.io/npm/l/emit-io-core"/></a>
+</p>
+
+---
+
+- **Replace 3 tools with 1** — logger + analytics SDK + error tracker behind one typed object. No config drift, no duplicated consent flows.
+- **Write once, run anywhere** — identical API on Node.js, Cloudflare Workers, browser, and React Native.
+- **Catch event typos at compile time** — `EventRegistry` augmentation makes every `emit.event()` call fully type-checked.
+- **GDPR-ready by default** — built-in consent gate (`{ analytics, errors }`) blocks providers until the user opts in. Pre-init buffer replays queued events on consent.
+- **Governed analytics events** — define events in YAML, auto-generate typed trackers, detect schema drift in CI.
+
+```bash
+npm install emit-io-core
+```
+
+→ Jump to [Quick Start](#quick-start) or skip to the [full comparison](#why-emit-io).
+
+---
+
+## Table of Contents
+
+- [Why emit-io?](#why-emit-io)
+- [Ecosystem](#ecosystem)
+- [Packages](#packages)
+- [Features](#features)
+- [Quick Start](#quick-start)
+  - [Core](#core)
+  - [React](#react)
+  - [Next.js](#nextjs)
+  - [React Native](#react-native-1)
+- [Transports](#transports)
+- [Plugins](#plugins)
+- [Codegen](#codegen)
+- [OpenTelemetry](#opentelemetry)
+- [Type-Safe Events](#type-safe-events)
+- [Child Loggers + ALS Context](#child-loggers--als-context)
+- [Consent Gate](#consent-gate)
+- [Circuit Breaker](#circuit-breaker)
+- [Examples](#examples)
+- [Benchmarks](#benchmarks)
+- [Migration v2 → v3](#migration-v2--v3)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## Why emit-io?
+
+**The usual pattern: one library for logs, another for product events, another for errors.** Three SDK versions to track, three consent flows to wire up, three runtime compatibility matrices to worry about — and a Sentry `dsn`, a Segment `writeKey`, and a pino `instance` living as separate globals across your codebase.
+
+Most TypeScript stacks bolt together **three separate systems**: a logger (pino/winston) for structured logs, an analytics SDK (Segment/PostHog/GA4) for product events, and an error tracker (Sentry) for crashes — each with its own API, configuration, consent model, and runtime compatibility matrix.
+
+**emit-io collapses all three into one type-safe API** that runs identically on Node.js, Cloudflare Workers, browser, and React Native:
+
+| | pino | winston | Sentry | Segment | **emit-io** |
+|---|:---:|:---:|:---:|:---:|:---:|
+| Structured logs (DEBUG→FATAL) | ✅ | ✅ | — | — | ✅ |
+| Product analytics events | — | — | — | ✅ | ✅ |
+| Error capture | — | — | ✅ | — | ✅ |
+| Type-safe event registry | — | — | — | — | ✅ |
+| GDPR consent gate | — | — | partial | partial | ✅ |
+| YAML-driven codegen | — | — | — | — | ✅ |
+| Runs on edge / Cloudflare Workers | — | — | partial | — | ✅ |
+| Runs on React Native | — | — | ✅ | ✅ | ✅ |
+| Zero runtime deps (core) | — | — | — | — | ✅ |
+| Pre-init analytics buffer | — | — | — | — | ✅ |
+| Circuit breaker for providers | — | — | — | — | ✅ |
+
+> **Note:** pino and winston are best-in-class loggers; Sentry and Segment are category leaders in error tracking and analytics. This table shows **breadth** — one API covering all four areas — not depth in any single niche.
 
 ```typescript
 import { EmitIoStrategy, JSONTransport, ConsoleTransport, redact, sample, LogLevelEnum } from 'emit-io-core'
@@ -38,6 +121,25 @@ await runWithContext({ traceId: 'tx' }, async () => {
 })
 ```
 
+---
+
+## Ecosystem
+
+```
+emit-io-core          ← zero-dep core: transports, plugins, providers, ALS context
+├── emit-io-react          React hooks + AnalyticsProvider + server actions
+├── emit-io-react-native   Expo/RN hooks + AppState + navigation tracking
+├── emit-io-next           Next.js middleware + instrumentRoute
+├── emit-io-fastify        Fastify plugin + per-request child logger
+├── emit-io-hono           Hono middleware + ALS propagation
+├── emit-io-otel           OTel spans (OTelProvider) + OTel logs (OTelTransport)
+└── emit-io-codegen        CLI: YAML events → typed TS tracker + drift detection
+```
+
+All 8 packages share a single linked version and are released together on every push to `main`.
+
+---
+
 ## Packages
 
 | Package | Use | npm |
@@ -53,17 +155,23 @@ await runWithContext({ traceId: 'tx' }, async () => {
 
 ## Features
 
+**Logging**
+
 - **Log levels** — DEBUG, INFO, WARN, ERROR, FATAL with per-transport `minLevel` filtering
-- **Transport system** — ConsoleTransport, JSONTransport, HTTPTransport, DevToolsTransport; pluggable
-- **Plugin pipeline** — transform or drop entries before transport (redact, sample, rateLimit, normalizeStack)
-- **Analytics providers** — unified interface for GA4, PostHog, Sentry, etc. via `AnalyticsProvider`
-- **Type-safe events** — `EventRegistry` module augmentation for compile-time event names + payloads
-- **Child loggers** — `emit.child({ requestId })` inherits transports, merges bindings
-- **AsyncLocalStorage context** — `runWithContext` propagates trace data automatically (Node + edge)
-- **Consent gate** — `setConsent({ analytics, errors })` for GDPR compliance
-- **Pre-init buffer** — queue events before providers are ready, flush on `init()`
-- **Circuit breaker** — wraps any provider to open on repeated failures
-- **Zero runtime dependencies** in core
+- **Transport system** — `ConsoleTransport`, `JSONTransport`, `HTTPTransport` (batched, retried), `DevToolsTransport`; fully pluggable
+- **Plugin pipeline** — `(entry) => entry | null` functions run before every transport: `redact`, `sample`, `rateLimit`, `normalizeStack`
+- **Child loggers** — `emit.child({ requestId })` inherits all transports and providers, merges bindings
+- **AsyncLocalStorage context** — `runWithContext` auto-propagates trace data to every log call in scope (Node + edge)
+- **Zero runtime dependencies** in `emit-io-core`
+
+**Analytics & errors**
+
+- **Bring-your-own providers** — implement the `AnalyticsProvider` interface once (GA4, PostHog, Sentry, custom…) and emit-io fans out to all of them via `event()`, `logScreen()`, `setUser()`, `captureError()`
+- **Type-safe events** — `EventRegistry` module augmentation gives compile-time-checked event names + payloads; falls back to loose strings without augmentation
+- **`captureError`** — writes to transports always (consent-independent) and fires analytics providers only if `consent.errors !== false`
+- **Consent gate** — `setConsent({ analytics, errors })` for GDPR; queued events replay on consent via pre-init buffer
+- **Pre-init buffer** — analytics events queued before `init()` flush automatically when providers are ready
+- **Circuit breaker** — wraps any flaky provider; opens after N failures, self-recovers after cooldown
 
 ## Quick Start
 
@@ -231,6 +339,65 @@ new EmitIoStrategy({
 
 Plugins are plain functions `(entry: LogEntry) => LogEntry | null`. Return `null` to drop the entry.
 
+## Codegen
+
+**The standout differentiator**: define your analytics events once in YAML, get a fully typed TypeScript tracker, automatic CI drift detection, and JSON Schema / Avro export.
+
+```bash
+npm install -D emit-io-codegen
+```
+
+**1. Define events in YAML:**
+
+```yaml
+# events.yml
+events:
+  purchase:
+    description: User completes a purchase
+    properties:
+      orderId:
+        type: string
+        required: true
+      total:
+        type: number
+        required: true
+      currency:
+        type: string
+        pii: false
+  page_view:
+    description: Page viewed
+    properties:
+      path:
+        type: string
+        required: true
+```
+
+**2. Generate the typed tracker:**
+
+```bash
+npx emit-io-codegen generate --input events.yml --output src/tracker.ts
+```
+
+This produces a `tracker.ts` with full `EventRegistry` module augmentation — so every `emit.event('purchase', ...)` call is type-checked against your YAML schema.
+
+**3. Detect schema drift in CI:**
+
+```bash
+npx emit-io-codegen check --input events.yml --output src/tracker.ts
+# Exits non-zero if generated code is out of sync — use in pre-commit or CI
+```
+
+**4. Export to JSON Schema or Avro:**
+
+```bash
+npx emit-io-codegen export --format json-schema --input events.yml
+npx emit-io-codegen export --format avro --input events.yml
+```
+
+**PII detection**: the codegen flags properties marked `pii: true`, letting you enforce redaction rules per event in your pipeline.
+
+See [`examples/15-codegen-workflow.md`](./examples/15-codegen-workflow.md) for a full end-to-end example.
+
 ## OpenTelemetry
 
 Two complementary paths — use one or both:
@@ -340,7 +507,7 @@ Single-concept snippets in [`examples/`](./examples) (files `01-`...`15-`): reda
 
 ## Benchmarks
 
-~1.2M ops/s on Node v22 arm64 (simple `info()` with JSONTransport to `/dev/null`). Faster than winston in context-heavy scenarios, ~2× behind pino in raw throughput. See [BENCHMARKS.md](./BENCHMARKS.md) for full results.
+~1.2M ops/s on Node v22 arm64 (simple `info()` + JSONTransport to `/dev/null`). Runs ~2× behind pino in raw throughput; roughly on par with winston in simple scenarios, faster in context-heavy ones. See [BENCHMARKS.md](./BENCHMARKS.md) for the full breakdown.
 
 ## Migration v2 → v3
 
