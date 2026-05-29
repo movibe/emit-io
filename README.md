@@ -507,7 +507,7 @@ Single-concept snippets in [`examples/`](./examples) (files `01-`...`15-`): reda
 
 ## Benchmarks
 
-~1.2M ops/s on Node v22 arm64 (simple `info()` with JSONTransport to `/dev/null`). Faster than winston in context-heavy scenarios, ~2× behind pino in raw throughput. See [BENCHMARKS.md](./BENCHMARKS.md) for full results.
+~1.2M ops/s on Node v22 arm64 (simple `info()` + JSONTransport to `/dev/null`). Runs ~2× behind pino in raw throughput; roughly on par with winston in simple scenarios, faster in context-heavy ones. See [BENCHMARKS.md](./BENCHMARKS.md) for the full breakdown.
 
 ## Migration v2 → v3
 
