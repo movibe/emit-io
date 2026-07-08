@@ -1,6 +1,6 @@
 {
   "name": "emit-io-react",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "React bindings for emit-io — hooks, context provider, and server action wrapper",
   "type": "module",
   "main": "./dist/index.cjs",
